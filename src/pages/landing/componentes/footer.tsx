@@ -1,3 +1,5 @@
+import { Phone, Mail, Clock, MapPin, Facebook, Instagram, MessageCircle, Shield, CheckCircle, FileText, Lock, Home, PencilLine, HelpCircle } from 'lucide-react';
+
 export function Footer() {
     return (
         <footer className="bg-slate-900 text-white">
@@ -19,16 +21,16 @@ export function Footer() {
                         </p>
                         <div className="flex space-x-4">
                             <a href="#" className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
-                                <span className="text-sm">📘</span>
+                                <Facebook size={16} />
                             </a>
                             <a href="#" className="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-700 transition-colors">
-                                <span className="text-sm">📷</span>
+                                <Instagram size={16} />
                             </a>
                             <a href="#" className="w-8 h-8 bg-black rounded-full flex items-center justify-center hover:bg-gray-800 transition-colors">
-                                <span className="text-sm">🎵</span>
+                                <MessageCircle size={16} />
                             </a>
                             <a href="#" className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center hover:bg-green-700 transition-colors">
-                                <span className="text-sm">📱</span>
+                                <Phone size={16} />
                             </a>
                         </div>
                     </div>
@@ -36,22 +38,24 @@ export function Footer() {
                     {/* Enlaces rápidos */}
                     <div className="space-y-4">
                         <h3 className="text-lg font-semibold">Enlaces Rápidos</h3>
+
                         <ul className="space-y-2">
                             <li>
-                                <a href="#inicio" className="text-slate-300 hover:text-white transition-colors text-sm">
-                                    🏠 Inicio
+                                <a href="/" className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors text-sm">
+                                    <Home className="w-4 h-4" />
+                                    Inicio
                                 </a>
                             </li>
-
                             <li>
-                                <a href="#como-participar" className="text-slate-300 hover:text-white transition-colors text-sm">
-                                    📋 Cómo Participar
+                                <a href="/register" className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors text-sm">
+                                    <PencilLine className="w-4 h-4" />
+                                    Registrarse
                                 </a>
                             </li>
-
                             <li>
-                                <a href="#contacto" className="text-slate-300 hover:text-white transition-colors text-sm">
-                                    📞 Contacto
+                                <a href="/preguntas" className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors text-sm">
+                                    <HelpCircle className="w-4 h-4" />
+                                    Preguntas Frecuentes
                                 </a>
                             </li>
                         </ul>
@@ -62,28 +66,33 @@ export function Footer() {
                         <h3 className="text-lg font-semibold">Información Legal</h3>
                         <ul className="space-y-2">
                             <li>
-                                <a href="#terminos" className="text-slate-300 hover:text-white transition-colors text-sm">
-                                    📄 Términos y Condiciones
+                                <a href="#terminos" className="text-slate-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
+                                    <FileText size={14} />
+                                    <span>Términos y Condiciones</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#privacidad" className="text-slate-300 hover:text-white transition-colors text-sm">
-                                    🔒 Política de Privacidad
+                                <a href="#privacidad" className="text-slate-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
+                                    <Lock size={14} />
+                                    <span>Política de Privacidad</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#reglamento" className="text-slate-300 hover:text-white transition-colors text-sm">
-                                    📋 Reglamento del Sorteo
+                                <a href="#reglamento" className="text-slate-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
+                                    <FileText size={14} />
+                                    <span>Reglamento del Sorteo</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#responsable" className="text-slate-300 hover:text-white transition-colors text-sm">
-                                    🎲 Juego Responsable
+                                <a href="#responsable" className="text-slate-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
+                                    <Shield size={14} />
+                                    <span>Juego Responsable</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#transparencia" className="text-slate-300 hover:text-white transition-colors text-sm">
-                                    ✅ Certificado de Transparencia
+                                <a href="#transparencia" className="text-slate-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
+                                    <CheckCircle size={14} />
+                                    <span>Certificado de Transparencia</span>
                                 </a>
                             </li>
                         </ul>
@@ -94,28 +103,28 @@ export function Footer() {
                         <h3 className="text-lg font-semibold">Contacto & Soporte</h3>
                         <div className="space-y-3">
                             <div className="flex items-center space-x-3">
-                                <span className="text-blue-400">📞</span>
+                                <Phone size={18} className="text-blue-400" />
                                 <div>
                                     <p className="text-sm text-slate-300">Teléfono</p>
                                     <p className="text-sm font-medium">+593 99 123 4567</p>
                                 </div>
                             </div>
                             <div className="flex items-center space-x-3">
-                                <span className="text-blue-400">📧</span>
+                                <Mail size={18} className="text-blue-400" />
                                 <div>
                                     <p className="text-sm text-slate-300">Email</p>
                                     <p className="text-sm font-medium">info@sobreruedas.ec</p>
                                 </div>
                             </div>
                             <div className="flex items-center space-x-3">
-                                <span className="text-blue-400">🕐</span>
+                                <Clock size={18} className="text-blue-400" />
                                 <div>
                                     <p className="text-sm text-slate-300">Horario de Atención</p>
                                     <p className="text-sm font-medium">Lun - Dom: 8:00 AM - 10:00 PM</p>
                                 </div>
                             </div>
                             <div className="flex items-center space-x-3">
-                                <span className="text-blue-400">📍</span>
+                                <MapPin size={18} className="text-blue-400" />
                                 <div>
                                     <p className="text-sm text-slate-300">Ubicación</p>
                                     <p className="text-sm font-medium">Portoviejo, Ecuador</p>
@@ -146,11 +155,11 @@ export function Footer() {
                         {/* Badge de confianza */}
                         <div className="flex items-center space-x-4">
                             <div className="flex items-center space-x-2 bg-slate-800 px-4 py-2 rounded-full">
-                                <span className="text-green-400">✅</span>
+                                <CheckCircle size={16} className="text-green-400" />
                                 <span className="text-xs font-medium">100% Confiable</span>
                             </div>
                             <div className="flex items-center space-x-2 bg-slate-800 px-4 py-2 rounded-full">
-                                <span className="text-blue-400">🔒</span>
+                                <Lock size={16} className="text-blue-400" />
                                 <span className="text-xs font-medium">Pagos Seguros</span>
                             </div>
                         </div>
@@ -161,7 +170,7 @@ export function Footer() {
             {/* Botón flotante de ayuda */}
             <div className="fixed bottom-6 right-6 z-50">
                 <button className="bg-blue-500 hover:bg-blue-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110">
-                    <span className="text-xl">💬</span>
+                    <MessageCircle size={24} />
                 </button>
             </div>
         </footer>

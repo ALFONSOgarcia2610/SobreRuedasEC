@@ -50,7 +50,15 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
   const loginRootRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/login',
-    component: lazy(() => import('@/pages/landing/landing-page')),
+    component: lazy(() => import('@/pages/gestion/login/login')),
+    // beforeLoad: () => {
+    //  if (isAuthenticated()) throw redirect({ to: '/home' });
+    // },
+  });
+    const RegisterRootRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/register',
+    component: lazy(() => import('@/pages/gestion/registro/registro')),
     // beforeLoad: () => {
     //  if (isAuthenticated()) throw redirect({ to: '/home' });
     // },
@@ -111,6 +119,7 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
     indexRoute,
     landingRootRoute,
     loginRootRoute,
+    RegisterRootRoute,
 
     // homeRoute,
     // fallbackRoute,

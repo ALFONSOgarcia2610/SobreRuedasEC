@@ -1,0 +1,25 @@
+{
+  "status": "success",
+  "data": [
+    {
+      "id": 1,
+      "name": "Carro Deportivo Rojo",
+      "imageUrl": "https://www.autodato.com/wp-content/uploads/2018/04/Chevrolet-Cavalier-2018-1.jpeg.webp"
+    },
+    {
+      "id": 2,
+      "name": "SUV Negra",
+      "imageUrl": "https://www.autodato.com/wp-content/uploads/2018/04/Chevrolet-Cavalier-2018-3.jpeg.webp"
+    },
+    {
+      "id": 3,
+      "name": "Carro Clásico Azul",
+      "imageUrl": "https://www.autodato.com/wp-content/uploads/2018/04/Chevrolet-Cavalier-2018-4.jpeg.webp"
+    },
+    {
+      "id": 4,
+      "name": "Convertible Blanco",
+      "imageUrl": "https://www.autodato.com/wp-content/uploads/2018/04/Chevrolet-Cavalier-2018-2.jpeg.webp"
+    }
+  ]
+}
