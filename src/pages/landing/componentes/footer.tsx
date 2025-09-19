@@ -1,6 +1,9 @@
+import { useSorteoCarros } from '@/pages/services/landing.query';
 import { Phone, Mail, Clock, MapPin, Facebook, Instagram, MessageCircle, Shield, CheckCircle, FileText, Lock, Home, PencilLine, HelpCircle } from 'lucide-react';
 
+
 export function Footer() {
+    const DataSorteo = useSorteoCarros();
     return (
         <footer className="bg-slate-900 text-white">
             {/* Sección principal del footer */}
@@ -148,7 +151,7 @@ export function Footer() {
                                 © 2025 SobreRuedas Ecuador. Todos los derechos reservados.
                             </p>
                             <p className="text-slate-500 text-xs mt-1">
-                                Sorteo Chevrolet Cavalier 2025.
+                                Sorteo {DataSorteo.data?.Premio}.
                             </p>
                         </div>
 

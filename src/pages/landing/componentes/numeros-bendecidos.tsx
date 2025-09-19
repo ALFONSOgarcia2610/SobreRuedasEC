@@ -12,7 +12,7 @@ export function NumerosBendecidos({ className }: NumerosBendecidosProps) {
     const [numerosGanadores] = useState([
         { numero: "09183", premio: "¡Premio Entregado!", entregado: true, monto: 300 },
         { numero: "18434", premio: "¡Premio Entregado!", entregado: true, monto: 150 },
-        { numero: "29645", premio: "¡Premio Entregado!", entregado: true, monto:50},
+        { numero: "29645", premio: "¡Premio Entregado!", entregado: true, monto: 50 },
         { numero: "30556", premio: "Disponible", entregado: false, monto: 50 },
         { numero: "47897", premio: "¡Premio Entregado!", entregado: true, monto: 50 },
         { numero: "53678", premio: "Disponible", entregado: false, monto: 50 },
@@ -23,20 +23,13 @@ export function NumerosBendecidos({ className }: NumerosBendecidosProps) {
     ]);
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [isAnimating, setIsAnimating] = useState(false);
-
     useEffect(() => {
         const interval = setInterval(() => {
-            setIsAnimating(true);
-            setTimeout(() => {
-                setCurrentIndex((prev) => (prev + 1) % numerosGanadores.length);
-                setIsAnimating(false);
-            }, 300);
+            setCurrentIndex((prev) => (prev + 1) % numerosGanadores.length);
         }, 3000);
 
         return () => clearInterval(interval);
     }, [numerosGanadores.length]);
-
     return (
         <div className={`max-w-6xl mx-auto px-4 py-12 ${className}`}>
             {/* Título Principal */}
@@ -99,8 +92,8 @@ export function NumerosBendecidos({ className }: NumerosBendecidosProps) {
                                 {/* Valor del Premio */}
                                 <div className={`
                                     text-center py-2 px-3 rounded text-sm font-semibold
-                                    ${item.entregado 
-                                        ? 'bg-gray-100 text-gray-600 border border-gray-300' 
+                                    ${item.entregado
+                                        ? 'bg-gray-100 text-gray-600 border border-gray-300'
                                         : 'bg-blue-100 text-blue-800 border border-blue-300'
                                     }
                                 `}>

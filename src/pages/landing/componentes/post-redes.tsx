@@ -10,7 +10,6 @@ import {
     Instagram,
     Music,
     Users,
-    TrendingUp,
     CheckCircle,
     Clock
 } from "lucide-react";
@@ -276,7 +275,7 @@ export function PostRedes() {
                             <span className="text-xs">{formatNumber(post.comments)}</span>
                         </span>
                         {post.shares && (
-                            <span className="flex items-center space-x-1 hidden sm:flex">
+                            <span className="items-center space-x-1 hidden sm:flex">
                                 <Share size={12} className="text-green-500" />
                                 <span className="text-xs">{formatNumber(post.shares)}</span>
                             </span>
@@ -298,8 +297,8 @@ export function PostRedes() {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-8 sm:py-16">
             {/* Título principal */}
             <div className="text-center mb-8 sm:mb-12">
-              
-                
+
+
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-3 sm:mb-4">
                     Canales Oficiales de Información
                 </h2>
@@ -368,7 +367,7 @@ export function PostRedes() {
                 </div>
             </div>
 
-    
+
         </div>
     );
 }

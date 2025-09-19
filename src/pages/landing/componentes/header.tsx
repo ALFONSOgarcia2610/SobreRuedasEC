@@ -4,21 +4,28 @@ import { ShinyButton } from "@/components/ui/shiny-button";
 import { Clock, Clover, Headset, Tickets, Home, UserPlus, Trophy, Menu } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
 } from "@/components/ui/drawer";
+import { useSorteoCarros } from "@/pages/services/landing.query";
+
 
 export function Header() {
     const location = useLocation();
-
-    // Función para determinar si el enlace está activo
     const isActiveRoute = (path: string) => {
         return location.pathname === path;
     };
+
+    const dataSorteo = useSorteoCarros();
+
+    // Trabajar solo con porcentajes - convertir datos a porcentaje
+    const totalBoletos = dataSorteo.data?.TotalBoletos || 1000;
+    const boletosVendidos = dataSorteo.data?.BoletosVendidos || 0;
+    const targetValue = Math.round((boletosVendidos / totalBoletos) * 100); // Porcentaje base
 
     return (
         <header className="bg-white shadow-lg sticky top-0 z-50">
@@ -29,7 +36,7 @@ export function Header() {
                         <div className="flex items-center space-x-6 text-sm">
                             <div className="flex items-center space-x-2">
                                 <span className="animate-pulse">🔥</span>
-                                <span className="font-medium">45% VENDIDO</span>
+                                <span className="font-medium">{targetValue}% VENDIDO</span>
                             </div>
                         </div>
                         <div className="hidden md:flex items-center space-x-4 text-sm">
@@ -64,37 +71,34 @@ export function Header() {
 
                         {/* Navegación desktop */}
                         <nav className="hidden lg:flex items-center space-x-8">
-                            <Link 
-                                to="/login" 
-                                className={`flex items-center space-x-2 font-medium transition-colors duration-300 px-3 py-2 rounded-lg ${
-                                    isActiveRoute("/login") 
-                                        ? "text-blue-600 bg-blue-50 border border-blue-200" 
-                                        : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
-                                }`}
+                            <Link
+                                to="/login"
+                                className={`flex items-center space-x-2 font-medium transition-colors duration-300 px-3 py-2 rounded-lg ${isActiveRoute("/login")
+                                    ? "text-blue-600 bg-blue-50 border border-blue-200"
+                                    : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
+                                    }`}
                             >
                                 <Home size={16} />
                                 <span>Inicio</span>
                             </Link>
 
-                            <Link 
-                                to="/register" 
-                                className={`flex items-center space-x-2 font-medium transition-colors duration-300 px-3 py-2 rounded-lg ${
-                                    isActiveRoute("/register") 
-                                        ? "text-blue-600 bg-blue-50 border border-blue-200" 
-                                        : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
-                                }`}
+                            <Link
+                                to="/register"
+                                className={`flex items-center space-x-2 font-medium transition-colors duration-300 px-3 py-2 rounded-lg ${isActiveRoute("/register")
+                                    ? "text-blue-600 bg-blue-50 border border-blue-200"
+                                    : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
+                                    }`}
                             >
                                 <UserPlus size={16} />
                                 <span>Registrarse</span>
                             </Link>
 
-                            <Link 
-                                to="/landing" 
-                                className={`flex items-center space-x-2 font-medium transition-colors duration-300 px-3 py-2 rounded-lg ${
-                                    isActiveRoute("/landing") 
-                                        ? "text-blue-600 bg-blue-50 border border-blue-200" 
-                                        : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
-                                }`}
+                            <Link
+                                to="/landing"
+                                className={`flex items-center space-x-2 font-medium transition-colors duration-300 px-3 py-2 rounded-lg ${isActiveRoute("/landing")
+                                    ? "text-blue-600 bg-blue-50 border border-blue-200"
+                                    : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
+                                    }`}
                             >
                                 <Trophy size={16} />
                                 <span>Sorteo</span>
@@ -104,21 +108,10 @@ export function Header() {
                         {/* Botones de acción */}
                         <div className="hidden md:flex items-center space-x-4">
                             {/* Progreso rápido */}
-                            <div className="bg-blue-50 px-4 py-2 rounded-full border border-blue-200">
-                                <div className="flex items-center space-x-2">
-                                    <span className="text-sm font-medium text-blue-800">Progreso:</span>
-                                    <div className="w-16 h-2 bg-blue-200 rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-1000"
-                                            style={{ width: '45%' }}
-                                        ></div>
-                                    </div>
-                                    <span className="text-sm font-bold text-blue-600">45%</span>
-                                </div>
-                            </div>
+
 
                             {/* Botón principal */}
-                           <Link to="/login">
+                            <Link to="/login">
                                 <ShinyButton className="bg-gradient-to-r from-emerald-200 to-green-200 hover:from-emerald-200 hover:to-green-200 text-white px-8 py-3 rounded-full font-bold shadow-xl  hover:shadow-2xl hover:shadow-green-500/30 hover:scale-105 border-2 border-green-400/30">
                                     <div className="flex items-center space-x-2">
                                         <Tickets size={16} className="text-green-900 animate-pulse" />
@@ -147,18 +140,17 @@ export function Header() {
                                             </div>
                                         </DrawerTitle>
                                     </DrawerHeader>
-                                    
+
                                     <div className="p-4 space-y-4">
                                         {/* Navegación móvil en drawer */}
                                         <nav className="space-y-2">
                                             <DrawerClose asChild>
-                                                <Link 
-                                                    to="/login" 
-                                                    className={`flex items-center space-x-3 font-medium py-3 px-4 rounded-lg transition-colors duration-300 w-full ${
-                                                        isActiveRoute("/login") 
-                                                            ? "text-blue-600 bg-blue-50 border border-blue-200" 
-                                                            : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
-                                                    }`}
+                                                <Link
+                                                    to="/login"
+                                                    className={`flex items-center space-x-3 font-medium py-3 px-4 rounded-lg transition-colors duration-300 w-full ${isActiveRoute("/login")
+                                                        ? "text-blue-600 bg-blue-50 border border-blue-200"
+                                                        : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
+                                                        }`}
                                                 >
                                                     <Home size={20} />
                                                     <span>Inicio</span>
@@ -166,13 +158,12 @@ export function Header() {
                                             </DrawerClose>
 
                                             <DrawerClose asChild>
-                                                <Link 
-                                                    to="/register" 
-                                                    className={`flex items-center space-x-3 font-medium py-3 px-4 rounded-lg transition-colors duration-300 w-full ${
-                                                        isActiveRoute("/register") 
-                                                            ? "text-blue-600 bg-blue-50 border border-blue-200" 
-                                                            : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
-                                                    }`}
+                                                <Link
+                                                    to="/register"
+                                                    className={`flex items-center space-x-3 font-medium py-3 px-4 rounded-lg transition-colors duration-300 w-full ${isActiveRoute("/register")
+                                                        ? "text-blue-600 bg-blue-50 border border-blue-200"
+                                                        : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
+                                                        }`}
                                                 >
                                                     <UserPlus size={20} />
                                                     <span>Registrarse</span>
@@ -180,13 +171,12 @@ export function Header() {
                                             </DrawerClose>
 
                                             <DrawerClose asChild>
-                                                <Link 
-                                                    to="/landing" 
-                                                    className={`flex items-center space-x-3 font-medium py-3 px-4 rounded-lg transition-colors duration-300 w-full ${
-                                                        isActiveRoute("/landing") 
-                                                            ? "text-blue-600 bg-blue-50 border border-blue-200" 
-                                                            : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
-                                                    }`}
+                                                <Link
+                                                    to="/landing"
+                                                    className={`flex items-center space-x-3 font-medium py-3 px-4 rounded-lg transition-colors duration-300 w-full ${isActiveRoute("/landing")
+                                                        ? "text-blue-600 bg-blue-50 border border-blue-200"
+                                                        : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
+                                                        }`}
                                                 >
                                                     <Trophy size={20} />
                                                     <span>Sorteo</span>
@@ -207,21 +197,6 @@ export function Header() {
                                                 </div>
                                             </div>
                                         </div>
-
-                                        {/* Progreso del sorteo */}
-                                        <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                                            <div className="text-center space-y-3">
-                                                <p className="text-sm font-semibold text-blue-800">Progreso del Sorteo</p>
-                                                <div className="w-full h-3 bg-blue-200 rounded-full overflow-hidden">
-                                                    <div
-                                                        className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-1000"
-                                                        style={{ width: '45%' }}
-                                                    ></div>
-                                                </div>
-                                                <p className="text-lg font-bold text-blue-600">45% Completado</p>
-                                            </div>
-                                        </div>
-
                                         {/* Botón principal */}
                                         <DrawerClose asChild>
                                             <Link to="/register" className="block">

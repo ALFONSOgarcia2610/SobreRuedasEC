@@ -1,10 +1,11 @@
 import { BoxReveal } from "@/components/ui/box-reveal";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { useImagenesCarros } from "@/pages/services/landing.query";
+import { useImagenesCarros, useSorteoCarros } from "@/pages/services/landing.query";
 import { Loader2 } from "lucide-react";
+
 export default function gestionImaganes() {
     const imgCarro = useImagenesCarros();
-
+    const DataSorteo = useSorteoCarros();
     if (imgCarro.isLoading) {
         return (
             <div className="flex justify-center mb-16">
@@ -36,13 +37,11 @@ export default function gestionImaganes() {
         <div className="flex justify-center mb-16">
             <div className="rounded-2xl shadow-2xl p-8 relative overflow-hidden">
                 <div className="absolute top-4 right-4 bg-slate-700 text-white px-3 py-1 rounded-full text-sm font-bold">
-                    SORTEO OFICIAL
+                    Sorteo #  {DataSorteo.data?.NumeroSorteo}
                 </div>
                 <BoxReveal boxColor={"#334155"} duration={0.5}>
                     <div className="text-center">
-                        <h3 className="text-4xl font-bold text-slate-800 mb-3">
-                            Chevrolet Cavalier
-                        </h3>
+
                         {/* Carousel de fotos del carro */}
                         <div className="my-6 sm:my-8">
                             <Carousel autoplay={true} autoplayDelay={5000} className="w-full max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto">

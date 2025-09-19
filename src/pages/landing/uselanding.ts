@@ -1,8 +1,10 @@
-import { useImagenesCarros } from "../services/landing.query";
-
-
+import { useImagenesCarros, useSorteoCarros } from "../services/landing.query";
 
 export function ImagenesCarro() {
     const ImagenesCarros = useImagenesCarros();
-    return ImagenesCarros;
+    const DatosSorteo = useSorteoCarros();
+    return {
+        ImagenesCarros,
+        DatosSorteo
+    };
 }

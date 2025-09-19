@@ -9,7 +9,10 @@ import { PostRedes } from "./componentes/post-redes";
 import { Footer } from "./componentes/footer";
 import { Header } from "./componentes/header";
 import GestionImaganes from "./componentes/imagenes-carro"; // ← Agregar esta importación
+import { useSorteoCarros } from "../services/landing.query";
+
 export default function LandingPage() {
+    const DataSorteo = useSorteoCarros();
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
@@ -20,13 +23,11 @@ export default function LandingPage() {
             <section className="max-w-6xl mx-auto px-4 py-16">
 
                 <div className="text-center mb-16">
-                    <div className="text-xl font-semibold text-gray-700 -mt-10">
-                        Sorteo #001
-                    </div>
+
                     <div className="mb-8">
                         <SparklesText>
                             <h2 className="text-4xl md:text-5xl font-bold text-slate-800">
-                                Chevrolet Cavalier
+                                {DataSorteo.data?.Premio}
                             </h2>
                         </SparklesText>
                     </div>
@@ -35,7 +36,7 @@ export default function LandingPage() {
                     </p>
                 </div>
 
-             <GestionImaganes />
+                <GestionImaganes />
             </section >
             <section>
                 <AnimatedCircularProgressBarDemo />

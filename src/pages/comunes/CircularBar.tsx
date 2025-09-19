@@ -4,15 +4,26 @@ import { AnimatedCircularProgressBar } from "@/components/ui/animated-circular-p
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle, BarChart3, CheckCircle, TrendingUp, Users, Clock } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useSorteoCarros } from "../services/landing.query";
 
 
 export function AnimatedCircularProgressBarDemo() {
-    const [value, setValue] = useState(0); // Comienza en 0 para animación
-    const [displayValue, setDisplayValue] = useState(0); // Para mostrar números animados
-    const [animationValue, setAnimationValue] = useState(0); // Para la animación constante
-    const targetValue = 45; // Valor final (45% de boletos vendidos)
+
+    const [value, setValue] = useState(0);
+    const [displayValue, setDisplayValue] = useState(0);
+    const [animationValue, setAnimationValue] = useState(0);
+    const dataSorteo = useSorteoCarros();
+
+    // Trabajar solo con porcentajes - convertir datos a porcentaje
+    const totalBoletos = dataSorteo.data?.TotalBoletos || 1000;
+    const boletosVendidos = dataSorteo.data?.BoletosVendidos || 0;
+    const targetValue = Math.round((boletosVendidos / totalBoletos) * 100); // Porcentaje base
+    const porcentajeRestante = 100 - targetValue;
 
     useEffect(() => {
+        // Solo ejecutar animación cuando tengamos datos
+        if (!dataSorteo.data || targetValue === 0) return;
+
         // Animación inicial de llenado de la barra
         const animationDuration = 3000; // 3 segundos
         const steps = 90; // Número de pasos para la animación
@@ -34,17 +45,20 @@ export function AnimatedCircularProgressBarDemo() {
         }, stepTime);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [targetValue, dataSorteo.data]);
 
     useEffect(() => {
-        // Animación constante muy sutil de "llenado progresivo"
+        // Animación constante que simula actualizaciones automáticas
         const constantAnimation = setInterval(() => {
             setAnimationValue(() => {
-                // Oscilación muy ligera entre el valor actual y ligeramente más alto
-                const oscillation = Math.sin(Date.now() / 2000) * 0.5; // Oscilación muy suave
-                return Math.max(0, Math.min(100, value + oscillation));
+                // Oscilación más pronunciada para efecto de "llenado"
+                const time = Date.now() / 1500; // Velocidad de animación
+                const oscillation = Math.sin(time) * 1.5 + Math.cos(time * 0.7) * 0.8; // Combinación de ondas
+                const pulseEffect = Math.sin(time * 2) * 0.3; // Efecto de pulso adicional
+
+                return Math.max(0, Math.min(100, value + oscillation + pulseEffect));
             });
-        }, 200); // Actualiza cada 200ms para animación más suave
+        }, 100); // Actualiza cada 100ms para animación más fluida
 
         return () => clearInterval(constantAnimation);
     }, [value]);
@@ -75,7 +89,117 @@ export function AnimatedCircularProgressBarDemo() {
                             gaugeSecondaryColor="rgba(71, 85, 105, 0.1)"
                             className="mx-auto [&>span]:hidden"
                         />
-                        
+
+                        {/* Efecto de flujo interno - Ondas animadas */}
+                        <div className="absolute inset-0 pointer-events-none">
+                            <svg className="w-full h-full" viewBox="0 0 100 100">
+                                {/* Gradiente animado para efecto de flujo */}
+                                <defs>
+                                    <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stopColor="rgba(59, 130, 246, 0.3)" />
+                                        <stop offset="50%" stopColor="rgba(147, 197, 253, 0.6)" />
+                                        <stop offset="100%" stopColor="rgba(59, 130, 246, 0.3)" />
+                                        <animateTransform
+                                            attributeName="gradientTransform"
+                                            type="translate"
+                                            values="-200 0;200 0;-200 0"
+                                            dur="3s"
+                                            repeatCount="indefinite"
+                                        />
+                                    </linearGradient>
+
+                                    {/* Gradiente secundario para ondas */}
+                                    <linearGradient id="waveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stopColor="rgba(99, 102, 241, 0.4)" />
+                                        <stop offset="50%" stopColor="rgba(168, 85, 247, 0.6)" />
+                                        <stop offset="100%" stopColor="rgba(99, 102, 241, 0.4)" />
+                                        <animateTransform
+                                            attributeName="gradientTransform"
+                                            type="translate"
+                                            values="0 -100;0 100;0 -100"
+                                            dur="2.5s"
+                                            repeatCount="indefinite"
+                                        />
+                                    </linearGradient>
+                                </defs>
+
+                                {/* Círculo base para el flujo */}
+                                <circle
+                                    cx="50"
+                                    cy="50"
+                                    r="45"
+                                    fill="none"
+                                    stroke="url(#flowGradient)"
+                                    strokeWidth="3"
+                                    strokeDasharray={`${(displayValue / 100) * 283} 283`}
+                                    strokeDashoffset="70"
+                                    transform="rotate(-90 50 50)"
+                                    opacity="0.7"
+                                >
+                                    <animate
+                                        attributeName="stroke-dashoffset"
+                                        values="70;-213;70"
+                                        dur="4s"
+                                        repeatCount="indefinite"
+                                    />
+                                </circle>
+
+                                {/* Círculo secundario para efecto de ondas */}
+                                <circle
+                                    cx="50"
+                                    cy="50"
+                                    r="45"
+                                    fill="none"
+                                    stroke="url(#waveGradient)"
+                                    strokeWidth="2"
+                                    strokeDasharray={`${(displayValue / 100) * 283} 283`}
+                                    strokeDashoffset="140"
+                                    transform="rotate(-90 50 50)"
+                                    opacity="0.5"
+                                >
+                                    <animate
+                                        attributeName="stroke-dashoffset"
+                                        values="140;-143;140"
+                                        dur="3.5s"
+                                        repeatCount="indefinite"
+                                    />
+                                </circle>
+
+                                {/* Partículas flotantes para efecto de flujo */}
+                                <g opacity="0.6">
+                                    <circle cx="30" cy="50" r="1" fill="rgba(59, 130, 246, 0.8)">
+                                        <animateMotion
+                                            dur="6s"
+                                            repeatCount="indefinite"
+                                            path="M 30,50 Q 50,30 70,50 Q 50,70 30,50"
+                                        />
+                                        <animate
+                                            attributeName="r"
+                                            values="1;2;1"
+                                            dur="2s"
+                                            repeatCount="indefinite"
+                                        />
+                                    </circle>
+
+                                    <circle cx="40" cy="35" r="0.8" fill="rgba(147, 197, 253, 0.9)">
+                                        <animateMotion
+                                            dur="5s"
+                                            repeatCount="indefinite"
+                                            path="M 40,35 Q 60,25 65,45 Q 45,65 40,35"
+                                        />
+                                    </circle>
+
+                                    <circle cx="60" cy="65" r="1.2" fill="rgba(99, 102, 241, 0.7)">
+                                        <animateMotion
+                                            dur="7s"
+                                            repeatCount="indefinite"
+                                            path="M 60,65 Q 35,55 35,35 Q 65,25 60,65"
+                                        />
+                                    </circle>
+                                </g>
+                            </svg>
+                        </div>
+
                         {/* Contenido central */}
                         <div className="absolute inset-0 flex items-center justify-center">
                             <div className="text-center">
@@ -95,11 +219,11 @@ export function AnimatedCircularProgressBarDemo() {
                             <div className="flex items-center space-x-2 mb-2">
                                 <Users className="w-5 h-5 text-slate-600" />
                                 <span className="text-sm font-medium text-slate-600 uppercase tracking-wide">
-                                    Progreso
+                                    Completado
                                 </span>
                             </div>
                             <div className="text-2xl font-bold text-slate-800">{displayValue}%</div>
-                            <div className="text-sm text-slate-500">completado</div>
+                            <div className="text-sm text-slate-500">del sorteo</div>
                         </div>
 
                         <div className="text-center lg:text-left">
@@ -109,7 +233,7 @@ export function AnimatedCircularProgressBarDemo() {
                                     Restante
                                 </span>
                             </div>
-                            <div className="text-2xl font-bold text-blue-600">{100 - displayValue}%</div>
+                            <div className="text-2xl font-bold text-blue-600">{porcentajeRestante}%</div>
                             <div className="text-sm text-slate-500">por completar</div>
                         </div>
                     </div>
@@ -120,7 +244,7 @@ export function AnimatedCircularProgressBarDemo() {
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                            <span className="text-sm text-slate-600">Estado: En progreso</span>
+                            <span className="text-sm text-slate-600">Estado: {dataSorteo.data?.EstadoSorteo}</span>
                         </div>
                         <div className="text-sm text-slate-500">
                             Actualizado hace menos de 1 minuto
@@ -183,15 +307,19 @@ export function AnimatedCircularProgressBarDemo() {
                                         <span className="font-medium">{displayValue}%</span>
                                     </div>
                                     <div className="flex justify-between">
-                                        <span>Pendiente:</span>
-                                        <span className="font-medium text-blue-600">{100 - displayValue}%</span>
+                                        <span>Restante:</span>
+                                        <span className="font-medium text-blue-600">{porcentajeRestante}%</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span>Progreso:</span>
+                                        <span className="font-medium text-slate-800">{displayValue}/100%</span>
                                     </div>
                                     {displayValue < 100 && (
                                         <div className="pt-2 border-t border-gray-200">
                                             <div className="flex items-center space-x-2">
-                                                <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+                                                <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
                                                 <span className="text-sm text-amber-600 font-medium">
-                                                    Faltan {100 - displayValue}% para sorteo
+                                                    Faltan {porcentajeRestante}% para el sorteo
                                                 </span>
                                             </div>
                                         </div>
