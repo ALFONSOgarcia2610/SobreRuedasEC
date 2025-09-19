@@ -1,12 +1,12 @@
 import { HeroVideoDialog } from "@/components/ui/hero-video-dialog";
-import { 
-    Clock, 
-    Shield, 
-    Smartphone, 
-    UserPlus, 
-    CreditCard, 
-    CheckCircle, 
-    Hash, 
+import {
+    Clock,
+    Shield,
+    Smartphone,
+    UserPlus,
+    CreditCard,
+    CheckCircle,
+    Hash,
     Play,
     ArrowRight,
     Star
@@ -22,8 +22,8 @@ export function HeroVideoDialogDemo() {
                     <Play size={16} />
                     <span className="text-sm font-semibold">Tutorial Interactivo</span>
                 </div>
-                
-        
+
+
 
                 {/* Métricas de confianza */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10 max-w-2xl mx-auto">
@@ -36,7 +36,7 @@ export function HeroVideoDialogDemo() {
                         <div className="text-sm font-bold text-blue-800 mb-1">Proceso Eficiente</div>
                         <div className="text-xs text-blue-600">Registro en menos de 5 minutos</div>
                     </div>
-                    
+
                     <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-200 hover:shadow-lg transition-shadow duration-300">
                         <div className="flex justify-center mb-3">
                             <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
@@ -46,7 +46,7 @@ export function HeroVideoDialogDemo() {
                         <div className="text-sm font-bold text-green-800 mb-1">100% Seguro</div>
                         <div className="text-xs text-green-600">Certificado y auditado</div>
                     </div>
-                    
+
                     <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200 hover:shadow-lg transition-shadow duration-300">
                         <div className="flex justify-center mb-3">
                             <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">

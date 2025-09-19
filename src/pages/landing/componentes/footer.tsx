@@ -150,6 +150,9 @@ export function Footer() {
                             <p className="text-slate-400 text-sm">
                                 © 2025 SobreRuedas Ecuador. Todos los derechos reservados.
                             </p>
+                            <p className="text-slate-400 text-sm">
+                                ® Desarrollado por GarciaSystem. +593989619225
+                            </p>
                             <p className="text-slate-500 text-xs mt-1">
                                 Sorteo {DataSorteo.data?.Premio}.
                             </p>

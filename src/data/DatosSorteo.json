@@ -2,12 +2,12 @@
     "status": "success",
     "data": {
         "id": 1,
-        "Premio": "Chevrolet Cavalier Data Traida",
+        "Premio": "Chevrolet Cavalier",
         "precioporboleto": 1.50,
         "EstadoSorteo": "Completado",
         "NumeroSorteo": "001",
         "TotalBoletos": 99999,
-        "BoletosVendidos": 90000,
+        "BoletosVendidos": 70000,
         "BoletosPremiados": [
             "91989",
             "39222",

@@ -38,7 +38,7 @@ export default function LandingPage() {
 
                 <GestionImaganes />
             </section >
-            <section>
+            <section className="-mt-25">
                 <AnimatedCircularProgressBarDemo />
             </section>
             <section>
