@@ -12,16 +12,12 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useSorteoCarros } from "@/pages/services/landing.query";
-
-
 export function Header() {
     const location = useLocation();
     const isActiveRoute = (path: string) => {
         return location.pathname === path;
     };
-
     const dataSorteo = useSorteoCarros();
-
     // Trabajar solo con porcentajes - convertir datos a porcentaje
     const totalBoletos = dataSorteo.data?.TotalBoletos || 1000;
     const boletosVendidos = dataSorteo.data?.BoletosVendidos || 0;
