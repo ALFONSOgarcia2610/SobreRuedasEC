@@ -1,0 +1,35 @@
+{
+  "currentUser": {
+    "id": "1",
+    "name": "Alfonso García",
+    "email": "alfonso@sobreruedas.ec",
+    "avatar": "/avatars/alfonso.jpg",
+    "role": "usuario"
+  },
+  "availableRoles": [
+    {
+      "key": "super-admin",
+      "label": "Super Admin",
+      "description": "Control total del sistema",
+      "permissions": ["*"]
+    },
+    {
+      "key": "admin", 
+      "label": "Administrador",
+      "description": "Gestión de sorteos y usuarios",
+      "permissions": ["sorteos", "distribuidores", "usuarios", "reportes"]
+    },
+    {
+      "key": "distribuidor",
+      "label": "Distribuidor", 
+      "description": "Ventas y comisiones",
+      "permissions": ["ventas", "clientes", "comisiones"]
+    },
+    {
+      "key": "usuario",
+      "label": "Usuario",
+      "description": "Solo visualización",
+      "permissions": ["view-only"]
+    }
+  ]
+}

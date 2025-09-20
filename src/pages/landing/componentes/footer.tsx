@@ -1,5 +1,5 @@
 import { useSorteoCarros } from '@/pages/services/landing.query';
-import { Phone, Mail, Clock, MapPin, Facebook, Instagram, MessageCircle, Shield, CheckCircle, FileText, Lock, Home, PencilLine, HelpCircle } from 'lucide-react';
+import { Phone, Mail, Clock, MapPin, Facebook, Instagram, MessageCircle, CheckCircle, FileText, Lock, Home, PencilLine } from 'lucide-react';
 
 
 export function Footer() {
@@ -55,12 +55,7 @@ export function Footer() {
                                     Registrarse
                                 </a>
                             </li>
-                            <li>
-                                <a href="/preguntas" className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors text-sm">
-                                    <HelpCircle className="w-4 h-4" />
-                                    Preguntas Frecuentes
-                                </a>
-                            </li>
+                          
                         </ul>
                     </div>
 
@@ -86,18 +81,7 @@ export function Footer() {
                                     <span>Reglamento del Sorteo</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="#responsable" className="text-slate-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
-                                    <Shield size={14} />
-                                    <span>Juego Responsable</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#transparencia" className="text-slate-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
-                                    <CheckCircle size={14} />
-                                    <span>Certificado de Transparencia</span>
-                                </a>
-                            </li>
+                         
                         </ul>
                     </div>
 

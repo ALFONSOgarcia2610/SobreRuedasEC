@@ -1,7 +1,7 @@
 "use client";
 
 import { ShinyButton } from "@/components/ui/shiny-button";
-import { Clock, Clover, Headset, Tickets, Home, UserPlus, Trophy, Menu } from "lucide-react";
+import { Clock, Headset, Tickets, Home, UserPlus, Trophy, Menu } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
 import {
     Drawer,
@@ -195,12 +195,11 @@ export function Header() {
                                         </div>
                                         {/* Botón principal */}
                                         <DrawerClose asChild>
-                                            <Link to="/register" className="block">
-                                                <ShinyButton className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-6 py-3 rounded-full font-bold shadow-xl transition-all duration-300 hover:shadow-2xl hover:shadow-green-500/30 w-full">
-                                                    <div className="flex items-center justify-center space-x-2">
-                                                        <Clover size={18} className="text-yellow-300 animate-pulse" />
-                                                        <span>¡Participar Ahora!</span>
-                                                        <Tickets size={16} className="text-yellow-300" />
+                                            <Link to="/login">
+                                                <ShinyButton className="bg-gradient-to-r from-emerald-200 to-green-200 hover:from-emerald-200 hover:to-green-200 text-white px-8 py-3 rounded-full font-bold shadow-xl  hover:shadow-2xl hover:shadow-green-500/30 hover:scale-105 border-2 border-green-400/30 flex !justify-center items-center w-full">
+                                                    <div className="flex items-center space-x-2 flex justify-center">
+                                                        <Tickets size={16} className="text-green-900 animate-pulse" />
+                                                        <span className="text-green-900 font-bold ">¡Participar Ahora!</span>
                                                     </div>
                                                 </ShinyButton>
                                             </Link>
