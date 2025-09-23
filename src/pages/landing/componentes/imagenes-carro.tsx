@@ -34,12 +34,12 @@ export default function gestionImaganes() {
     }
 
     return (
-        <div className="flex justify-center mb-16">
+        <div className="flex justify-center md:-mt-25">
             <div className="rounded-2xl shadow-2xl p-8 relative overflow-hidden">
                 <div className="absolute top-4 right-4 bg-slate-700 text-white px-3 py-1 rounded-full text-sm font-bold">
                     Sorteo #  {DataSorteo.data?.NumeroSorteo}
                 </div>
-                <BoxReveal boxColor={"#334155"} duration={0.5}>
+                <BoxReveal boxColor={"#dbdf0057"} duration={0.5}>
                     <div className="text-center">
 
                         {/* Carousel de fotos del carro */}
@@ -61,11 +61,6 @@ export default function gestionImaganes() {
                                                                     e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f1f5f9'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='18' fill='%2364748b' text-anchor='middle'%3EImagen no disponible%3C/text%3E%3C/svg%3E";
                                                                 }}
                                                             />
-                                                            <div className="mt-4 text-center">
-                                                                <span className="text-sm sm:text-lg md:text-xl lg:text-2xl font-semibold text-slate-700">
-                                                                    {carro.name}
-                                                                </span>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

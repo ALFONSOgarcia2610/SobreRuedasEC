@@ -184,19 +184,19 @@ export function PostRedes() {
 
     const getPlatformColor = (platform: string) => {
         switch (platform) {
-            case 'facebook': return 'border-blue-500 bg-blue-50';
-            case 'instagram': return 'border-pink-500 bg-pink-50';
-            case 'tiktok': return 'border-black bg-gray-50';
-            default: return 'border-gray-300 bg-gray-50';
+            case 'facebook': return 'border-blue-500/30 bg-slate-800 hover:bg-slate-700';
+            case 'instagram': return 'border-pink-500/30 bg-slate-800 hover:bg-slate-700';
+            case 'tiktok': return 'border-amber-400/30 bg-slate-800 hover:bg-slate-700';
+            default: return 'border-gray-300/30 bg-slate-800 hover:bg-slate-700';
         }
     };
 
     const getPlatformIcon = (platform: string, size: number = 16) => {
         switch (platform) {
-            case 'facebook': return <Facebook size={size} className="text-blue-600" />;
-            case 'instagram': return <Instagram size={size} className="text-pink-600" />;
-            case 'tiktok': return <Music size={size} className="text-black" />;
-            default: return <Users size={size} className="text-gray-600" />;
+            case 'facebook': return <Facebook size={size} className="text-blue-400" />;
+            case 'instagram': return <Instagram size={size} className="text-pink-400" />;
+            case 'tiktok': return <Music size={size} className="text-amber-400" />;
+            default: return <Users size={size} className="text-gray-400" />;
         }
     };
 
@@ -208,53 +208,53 @@ export function PostRedes() {
     };
 
     const PostCard = ({ post }: { post: SocialPost }) => (
-        <Card className={`transition-all duration-300 hover:shadow-lg border-2 ${getPlatformColor(post.platform)}`}>
-            <CardContent className="p-3 sm:p-4">
+        <Card className={`transition-all duration-300 hover:shadow-xl hover:shadow-amber-400/10 border ${getPlatformColor(post.platform)} backdrop-blur-sm`}>
+            <CardContent className="p-2 sm:p-3">
                 {/* Header del post */}
-                <div className="flex items-center space-x-2 sm:space-x-3 mb-2 sm:mb-3">
+                <div className="flex items-center space-x-1.5 sm:space-x-2 mb-1.5 sm:mb-2">
                     <img
                         src={post.profileImage}
                         alt={post.author}
-                        className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover"
+                        className="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover"
                     />
                     <div className="flex-1 min-w-0">
-                        <div className="flex items-center space-x-1 sm:space-x-2">
-                            <span className="font-semibold text-slate-800 text-xs sm:text-sm truncate">{post.author}</span>
-                            {getPlatformIcon(post.platform, 14)}
+                        <div className="flex items-center space-x-1">
+                            <span className="font-semibold text-white text-[10px] sm:text-xs truncate">{post.author}</span>
+                            {getPlatformIcon(post.platform, 10)}
                         </div>
                         <div className="flex items-center space-x-1">
-                            <Clock size={10} className="text-slate-400" />
-                            <span className="text-xs text-slate-500">{post.date}</span>
+                            <Clock size={8} className="text-gray-400" />
+                            <span className="text-[9px] sm:text-xs text-gray-400">{post.date}</span>
                         </div>
                     </div>
                 </div>
 
                 {/* Contenido del post */}
-                <p className="text-xs sm:text-sm text-slate-700 mb-2 sm:mb-3 leading-relaxed line-clamp-3">{post.content}</p>
+                <p className="text-[10px] sm:text-xs text-gray-300 mb-1.5 sm:mb-2 leading-relaxed line-clamp-3">{post.content}</p>
 
                 {/* Imagen o Video */}
                 {post.image && (
-                    <div className="mb-2 sm:mb-3 rounded-lg overflow-hidden">
+                    <div className="mb-1.5 sm:mb-2 rounded-md overflow-hidden">
                         <img
                             src={post.image}
                             alt="Post content"
-                            className="w-full h-24 sm:h-32 object-cover hover:scale-105 transition-transform duration-300"
+                            className="w-full h-16 sm:h-24 object-cover hover:scale-105 transition-transform duration-300"
                         />
                     </div>
                 )}
 
                 {post.video && (
-                    <div className="mb-2 sm:mb-3 rounded-lg overflow-hidden bg-gray-100">
-                        <div className="w-full h-24 sm:h-32 flex items-center justify-center relative">
+                    <div className="mb-1.5 sm:mb-2 rounded-md overflow-hidden bg-slate-700">
+                        <div className="w-full h-16 sm:h-24 flex items-center justify-center relative">
                             <img
                                 src={post.video}
                                 alt="Video thumbnail"
                                 className="w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-white bg-opacity-90 rounded-full flex items-center justify-center">
-                                    <Play size={16} className="sm:hidden text-gray-700 ml-0.5" />
-                                    <Play size={20} className="hidden sm:block text-gray-700 ml-0.5" />
+                                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-amber-400/90 rounded-full flex items-center justify-center">
+                                    <Play size={12} className="sm:hidden text-slate-900 ml-0.5" />
+                                    <Play size={16} className="hidden sm:block text-slate-900 ml-0.5" />
                                 </div>
                             </div>
                         </div>
@@ -262,29 +262,29 @@ export function PostRedes() {
                 )}
 
                 {/* Estadísticas del post */}
-                <div className="flex items-center justify-between text-xs text-slate-500 pt-1.5 sm:pt-2 border-t border-gray-200">
-                    <div className="flex items-center space-x-2 sm:space-x-4">
-                        <span className="flex items-center space-x-1">
-                            <Heart size={10} className="sm:hidden text-red-500" />
-                            <Heart size={12} className="hidden sm:block text-red-500" />
-                            <span className="text-xs">{formatNumber(post.likes)}</span>
+                <div className="flex items-center justify-between text-[9px] sm:text-xs text-gray-400 pt-1 sm:pt-1.5 border-t border-gray-700">
+                    <div className="flex items-center space-x-1.5 sm:space-x-3">
+                        <span className="flex items-center space-x-0.5">
+                            <Heart size={8} className="sm:hidden text-red-400" />
+                            <Heart size={10} className="hidden sm:block text-red-400" />
+                            <span className="text-[9px] sm:text-xs">{formatNumber(post.likes)}</span>
                         </span>
-                        <span className="flex items-center space-x-1">
-                            <MessageCircle size={10} className="sm:hidden text-blue-500" />
-                            <MessageCircle size={12} className="hidden sm:block text-blue-500" />
-                            <span className="text-xs">{formatNumber(post.comments)}</span>
+                        <span className="flex items-center space-x-0.5">
+                            <MessageCircle size={8} className="sm:hidden text-blue-400" />
+                            <MessageCircle size={10} className="hidden sm:block text-blue-400" />
+                            <span className="text-[9px] sm:text-xs">{formatNumber(post.comments)}</span>
                         </span>
                         {post.shares && (
-                            <span className="items-center space-x-1 hidden sm:flex">
-                                <Share size={12} className="text-green-500" />
+                            <span className="items-center space-x-0.5 hidden sm:flex">
+                                <Share size={10} className="text-green-400" />
                                 <span className="text-xs">{formatNumber(post.shares)}</span>
                             </span>
                         )}
                         {post.views && (
-                            <span className="flex items-center space-x-1">
-                                <Eye size={10} className="sm:hidden text-purple-500" />
-                                <Eye size={12} className="hidden sm:block text-purple-500" />
-                                <span className="text-xs">{formatNumber(post.views)}</span>
+                            <span className="flex items-center space-x-0.5">
+                                <Eye size={8} className="sm:hidden text-purple-400" />
+                                <Eye size={10} className="hidden sm:block text-purple-400" />
+                                <span className="text-[9px] sm:text-xs">{formatNumber(post.views)}</span>
                             </span>
                         )}
                     </div>
@@ -294,33 +294,32 @@ export function PostRedes() {
     );
 
     return (
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 py-8 sm:py-16">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 py-6 sm:py-12">
             {/* Título principal */}
-            <div className="text-center mb-8 sm:mb-12">
-
-
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-3 sm:mb-4">
+            <div className="text-center mb-6 sm:mb-10">
+                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 sm:mb-3">
                     Canales Oficiales de Información
                 </h2>
-                <p className="text-sm sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto px-2 sm:px-0">
+                <p className="text-xs sm:text-base md:text-lg text-gray-300 max-w-3xl mx-auto px-2 sm:px-0">
                     Manténgase informado a través de nuestros canales oficiales verificados
                 </p>
             </div>
 
             {/* Facebook Section */}
-            <div className="mb-8 sm:mb-16">
-                <div className="flex items-center justify-center mb-4 sm:mb-8">
-                    <div className="bg-blue-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full flex items-center space-x-2 sm:space-x-3">
-                        <Facebook size={16} className="sm:hidden" />
-                        <Facebook size={20} className="hidden sm:block" />
-                        <span className="font-bold text-sm sm:text-lg">Facebook Oficial</span>
-                        <span className="bg-blue-400 px-2 py-1 rounded-full text-xs">
-                            <CheckCircle size={10} className="inline mr-1" />
+            <div className="mb-6 sm:mb-12">
+                <div className="flex items-center justify-center mb-3 sm:mb-6">
+                    <div className="bg-blue-500 text-white px-3 sm:px-5 py-1.5 sm:py-2 rounded-full flex items-center space-x-1.5 sm:space-x-2">
+                        <Facebook size={12} className="sm:hidden" />
+                        <Facebook size={16} className="hidden sm:block" />
+                        <span className="font-bold text-xs sm:text-base">Facebook Oficial</span>
+                        <span className="bg-blue-400 px-1.5 py-0.5 rounded-full text-[9px] sm:text-xs">
+                            <CheckCircle size={8} className="sm:hidden inline mr-0.5" />
+                            <CheckCircle size={10} className="hidden sm:inline mr-1" />
                             Verificado
                         </span>
                     </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
                     {facebookPosts.map(post => (
                         <PostCard key={post.id} post={post} />
                     ))}
@@ -328,19 +327,20 @@ export function PostRedes() {
             </div>
 
             {/* Instagram Section */}
-            <div className="mb-8 sm:mb-16">
-                <div className="flex items-center justify-center mb-4 sm:mb-8">
-                    <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full flex items-center space-x-2 sm:space-x-3">
-                        <Instagram size={16} className="sm:hidden" />
-                        <Instagram size={20} className="hidden sm:block" />
-                        <span className="font-bold text-sm sm:text-lg">Instagram Oficial</span>
-                        <span className="bg-pink-400 px-2 py-1 rounded-full text-xs">
-                            <CheckCircle size={10} className="inline mr-1" />
+            <div className="mb-6 sm:mb-12">
+                <div className="flex items-center justify-center mb-3 sm:mb-6">
+                    <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 sm:px-5 py-1.5 sm:py-2 rounded-full flex items-center space-x-1.5 sm:space-x-2">
+                        <Instagram size={12} className="sm:hidden" />
+                        <Instagram size={16} className="hidden sm:block" />
+                        <span className="font-bold text-xs sm:text-base">Instagram Oficial</span>
+                        <span className="bg-pink-400 px-1.5 py-0.5 rounded-full text-[9px] sm:text-xs">
+                            <CheckCircle size={8} className="sm:hidden inline mr-0.5" />
+                            <CheckCircle size={10} className="hidden sm:inline mr-1" />
                             Verificado
                         </span>
                     </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
                     {instagramPosts.map(post => (
                         <PostCard key={post.id} post={post} />
                     ))}
@@ -348,19 +348,20 @@ export function PostRedes() {
             </div>
 
             {/* TikTok Section */}
-            <div className="mb-8 sm:mb-16">
-                <div className="flex items-center justify-center mb-4 sm:mb-8">
-                    <div className="bg-black text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full flex items-center space-x-2 sm:space-x-3">
-                        <Music size={16} className="sm:hidden" />
-                        <Music size={20} className="hidden sm:block" />
-                        <span className="font-bold text-sm sm:text-lg">TikTok Oficial</span>
-                        <span className="bg-gray-700 px-2 py-1 rounded-full text-xs">
-                            <CheckCircle size={10} className="inline mr-1" />
+            <div className="mb-6 sm:mb-12">
+                <div className="flex items-center justify-center mb-3 sm:mb-6">
+                    <div className="bg-amber-500 text-slate-900 px-3 sm:px-5 py-1.5 sm:py-2 rounded-full flex items-center space-x-1.5 sm:space-x-2">
+                        <Music size={12} className="sm:hidden" />
+                        <Music size={16} className="hidden sm:block" />
+                        <span className="font-bold text-xs sm:text-base">TikTok Oficial</span>
+                        <span className="bg-amber-400 px-1.5 py-0.5 rounded-full text-[9px] sm:text-xs">
+                            <CheckCircle size={8} className="sm:hidden inline mr-0.5" />
+                            <CheckCircle size={10} className="hidden sm:inline mr-1" />
                             Verificado
                         </span>
                     </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
                     {tiktokPosts.map(post => (
                         <PostCard key={post.id} post={post} />
                     ))}

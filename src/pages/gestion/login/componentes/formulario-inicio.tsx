@@ -10,40 +10,46 @@ export default function LoginForm({
     ...props
 }: React.ComponentProps<"div">) {
     return (
-        <div className={cn("flex flex-col gap-6", className)} {...props}>
-            <Card className="overflow-hidden p-0">
+        <div className={cn("flex flex-col gap-4 sm:gap-6", className)} {...props}>
+            <Card className="overflow-hidden p-0 bg-slate-800 border-slate-700">
                 <CardContent className="grid p-0 md:grid-cols-2">
-                    <form className="p-6 md:p-8">
-                        <div className="flex flex-col gap-6">
+                    <form className="p-4 sm:p-6 md:p-8">
+                        <div className="flex flex-col gap-4 sm:gap-6">
                             <div className="flex flex-col items-center text-center">
-                                <h1 className="text-2xl font-bold">Bienvenido</h1>
-                                <p className="text-muted-foreground text-balance">
+                                <h1 className="text-xl sm:text-2xl font-bold text-white mb-1">Bienvenido</h1>
+                                <p className="text-gray-400 text-balance text-sm">
                                     Inicia sesión en tu cuenta.
                                 </p>
                             </div>
-                            <div className="grid gap-3">
-                                <Label htmlFor="email">Correo electrónico</Label>
+                            <div className="grid gap-2 sm:gap-3">
+                                <Label htmlFor="email" className="text-gray-300 text-sm">Correo electrónico</Label>
                                 <Input
                                     id="email"
                                     type="email"
                                     placeholder="m@example.com"
                                     required
+                                    className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-10 sm:h-11"
                                 />
                             </div>
-                            <div className="grid gap-3">
+                            <div className="grid gap-2 sm:gap-3">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password">Contraseña</Label>
+                                    <Label htmlFor="password" className="text-gray-300 text-sm">Contraseña</Label>
                                     <a
                                         href="#"
-                                        className="ml-auto text-sm underline-offset-2 hover:underline"
+                                        className="ml-auto text-xs sm:text-sm underline-offset-2 hover:underline text-amber-400"
                                     >
                                         ¿Olvidaste tu contraseña?
                                     </a>
                                 </div>
-                                <Input id="password" type="password" required />
+                                <Input 
+                                    id="password" 
+                                    type="password" 
+                                    required 
+                                    className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-10 sm:h-11"
+                                />
                             </div>
-                         <Link to="/dashboard">
-                           <Button type="submit" className="w-full !bg-green-200 !hover:bg-green-300 text-green-800 font-bold">
+                         <Link to="/">
+                           <Button type="submit" className="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold h-10 sm:h-11 text-sm sm:text-base">
                                Iniciar sesión
                            </Button>
                          </Link>
@@ -82,24 +88,23 @@ export default function LoginForm({
                                 </Button>
                             </div>
                             */}
-                            <div className="text-center text-sm">
-                                ¿No Tienes Cuenta?{" "}
-                                <Link to="/register" className="underline underline-offset-4">
+                            <div className="text-center text-xs sm:text-sm">
+                                <span className="text-gray-400">¿No Tienes Cuenta?</span>{" "}
+                                <Link to="/register" className="underline underline-offset-4 text-amber-400 hover:text-amber-300">
                                     Regístrate
                                 </Link>
                             </div>
                         </div>
                     </form>
-                    <div className="flex items-center justify-center space-x-3">
-                        <div className="w-70 h-70 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                            <span className="text-white text-8xl font-bold">SR</span>
-                        </div>
+                    <div className="flex items-center justify-center p-4 sm:p-6 bg-slate-900">
+                        <img src="/img/logoSR.png" alt="Logo SobreRuedasEc" className="w-32 h-32 sm:w-48 sm:h-48 md:w-60 md:h-60 object-contain opacity-90" />
                     </div>
                 </CardContent>
             </Card>
-            <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-                Al hacer clic en Iniciar Sesión, aceptas nuestros <a href="#">Términos de Servicio</a>{" "}
-                y <a href="#">Política de Privacidad</a>.
+            <div className="text-gray-400 text-center text-[10px] sm:text-xs text-balance">
+                Al hacer clic en Iniciar Sesión, aceptas nuestros{" "}
+                <a href="#" className="underline underline-offset-4 text-amber-400 hover:text-amber-300">Términos de Servicio</a>{" "}
+                y <a href="#" className="underline underline-offset-4 text-amber-400 hover:text-amber-300">Política de Privacidad</a>.
             </div>
         </div>
     )

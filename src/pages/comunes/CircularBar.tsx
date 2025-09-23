@@ -64,25 +64,25 @@ export function AnimatedCircularProgressBarDemo() {
     }, [value]);
 
     return (
-        <div className="max-w-5xl mx-auto px-4 py-12">
+        <div className="max-w-5xl mx-auto px-4 py-4 sm:py-6 mt-5">
             {/* Header Ejecutivo */}
-            <div className="text-center mb-12">
-                <div className="inline-flex items-center space-x-2 mb-4">
-                    <BarChart3 className="w-8 h-8 text-slate-600" />
-                    <h3 className="text-2xl md:text-3xl font-semibold text-slate-800">
+            <div className="text-center mb-4 sm:mb-6">
+                <div className="inline-flex items-center space-x-2 mb-2 sm:mb-3">
+                    <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-white">
                         Estado del Sorteo
                     </h3>
                 </div>
-                <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                <p className="text-sm sm:text-base text-white max-w-2xl mx-auto">
                     Monitoreo en tiempo real del progreso de participaciones
                 </p>
             </div>
 
             {/* Progress Section - Más ejecutivo */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
+            <div className="rounded-xl shadow-sm border border-gray-600 bg-slate-800/90 backdrop-blur-sm p-4 sm:p-6 mb-4 sm:mb-6">
                 <div className="flex flex-col lg:flex-row items-center justify-between">
                     {/* Circular Progress */}
-                    <div className="relative mb-8 lg:mb-0">
+                    <div className="relative mb-4 sm:mb-6 lg:mb-0">
                         <AnimatedCircularProgressBar
                             value={displayValue >= targetValue ? animationValue : value}
                             gaugePrimaryColor="rgb(71 85 105)"
@@ -203,10 +203,10 @@ export function AnimatedCircularProgressBarDemo() {
                         {/* Contenido central */}
                         <div className="absolute inset-0 flex items-center justify-center">
                             <div className="text-center">
-                                <div className="text-3xl font-bold text-slate-700 mb-1">
+                                <div className="text-2xl sm:text-3xl font-bold text-white mb-1">
                                     {displayValue}%
                                 </div>
-                                <div className="text-sm text-slate-500 font-medium uppercase tracking-wide">
+                                <div className="text-xs sm:text-sm text-gray-300 font-medium uppercase tracking-wide">
                                     Completado
                                 </div>
                             </div>
@@ -214,39 +214,39 @@ export function AnimatedCircularProgressBarDemo() {
                     </div>
 
                     {/* Métricas Ejecutivas */}
-                    <div className="grid grid-cols-2 gap-6 lg:ml-12">
+                    <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:ml-8">
                         <div className="text-center lg:text-left">
-                            <div className="flex items-center space-x-2 mb-2">
-                                <Users className="w-5 h-5 text-slate-600" />
-                                <span className="text-sm font-medium text-slate-600 uppercase tracking-wide">
+                            <div className="flex items-center space-x-1 sm:space-x-2 mb-1">
+                                <Users className="w-3 h-3 sm:w-4 sm:h-4 text-gray-300" />
+                                <span className="text-[10px] sm:text-xs font-medium text-gray-300 uppercase tracking-wide">
                                     Completado
                                 </span>
                             </div>
-                            <div className="text-2xl font-bold text-slate-800">{displayValue}%</div>
-                            <div className="text-sm text-slate-500">del sorteo</div>
+                            <div className="text-lg sm:text-xl font-bold text-white">{displayValue}%</div>
+                            <div className="text-[10px] sm:text-xs text-gray-400">del sorteo</div>
                         </div>
 
                         <div className="text-center lg:text-left">
-                            <div className="flex items-center space-x-2 mb-2">
-                                <TrendingUp className="w-5 h-5 text-slate-600" />
-                                <span className="text-sm font-medium text-slate-600 uppercase tracking-wide">
+                            <div className="flex items-center space-x-1 sm:space-x-2 mb-1">
+                                <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-gray-300" />
+                                <span className="text-[10px] sm:text-xs font-medium text-gray-300 uppercase tracking-wide">
                                     Restante
                                 </span>
                             </div>
-                            <div className="text-2xl font-bold text-blue-600">{porcentajeRestante}%</div>
-                            <div className="text-sm text-slate-500">por completar</div>
+                            <div className="text-lg sm:text-xl font-bold text-amber-400">{porcentajeRestante}%</div>
+                            <div className="text-[10px] sm:text-xs text-gray-400">por completar</div>
                         </div>
                     </div>
                 </div>
 
                 {/* Status Bar */}
-                <div className="mt-6 pt-6 border-t border-gray-200">
+                <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-600">
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                            <span className="text-sm text-slate-600">Estado: {dataSorteo.data?.EstadoSorteo}</span>
+                        <div className="flex items-center space-x-2">
+                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse"></div>
+                            <span className="text-[10px] sm:text-xs text-gray-300">Estado: {dataSorteo.data?.EstadoSorteo}</span>
                         </div>
-                        <div className="text-sm text-slate-500">
+                        <div className="text-[10px] sm:text-xs text-gray-400">
                             Actualizado hace menos de 1 minuto
                         </div>
                     </div>
@@ -254,18 +254,18 @@ export function AnimatedCircularProgressBarDemo() {
             </div>
 
             {/* Información Ejecutiva */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <Card className="border border-gray-200 bg-white shadow-sm">
-                    <CardContent className="p-6">
-                        <div className="flex items-start space-x-4">
-                            <div className="p-2 bg-amber-100 rounded-lg">
-                                <AlertCircle className="w-6 h-6 text-amber-600" />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
+                <Card className="border border-gray-600 bg-slate-800/90 backdrop-blur-sm shadow-sm">
+                    <CardContent className="p-3 sm:p-4">
+                        <div className="flex items-start space-x-2 sm:space-x-3">
+                            <div className="p-1.5 sm:p-2 bg-amber-500/20 rounded-lg">
+                                <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" />
                             </div>
                             <div className="flex-1">
-                                <h4 className="font-semibold text-gray-900 text-lg mb-2">
+                                <h4 className="font-semibold text-white text-sm sm:text-base mb-1">
                                     Condición de Sorteo
                                 </h4>
-                                <p className="text-gray-600 leading-relaxed">
+                                <p className="text-gray-300 leading-relaxed text-xs sm:text-sm">
                                     El sorteo se ejecutará únicamente al alcanzar el 100% de participaciones vendidas.
                                 </p>
                             </div>
@@ -273,52 +273,52 @@ export function AnimatedCircularProgressBarDemo() {
                     </CardContent>
                 </Card>
 
-                <Card className="border border-gray-200 bg-white shadow-sm">
-                    <CardContent className="p-6">
-                        <div className="flex items-start space-x-4">
-                            <div className="p-2 bg-blue-100 rounded-lg">
-                                <CheckCircle className="w-6 h-6 text-blue-600" />
+                <Card className="border border-gray-600 bg-slate-800/90 backdrop-blur-sm shadow-sm">
+                    <CardContent className="p-3 sm:p-4">
+                        <div className="flex items-start space-x-2 sm:space-x-3">
+                            <div className="p-1.5 sm:p-2 bg-blue-500/20 rounded-lg">
+                                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
                             </div>
                             <div className="flex-1">
-                                <h4 className="font-semibold text-gray-900 text-lg mb-2">
+                                <h4 className="font-semibold text-white text-sm sm:text-base mb-1">
                                     Metodología
                                 </h4>
-                                <p className="text-gray-600 leading-relaxed">
-                                    El número ganador se determinará mediante los primeros 5 dígitos de la Lotería Nacional.
+                                <p className="text-gray-300 leading-relaxed text-xs sm:text-sm">
+                                    El número ganador se determinará mediante los últimos 5 dígitos de la Lotería Nacional.
                                 </p>
                             </div>
                         </div>
                     </CardContent>
                 </Card>
 
-                <Card className="border border-gray-200 bg-white shadow-sm">
-                    <CardContent className="p-6">
-                        <div className="flex items-start space-x-4">
-                            <div className="p-2 bg-slate-100 rounded-lg">
-                                <Clock className="w-6 h-6 text-slate-600" />
+                <Card className="border border-gray-600 bg-slate-800/90 backdrop-blur-sm shadow-sm">
+                    <CardContent className="p-3 sm:p-4">
+                        <div className="flex items-start space-x-2 sm:space-x-3">
+                            <div className="p-1.5 sm:p-2 bg-slate-600/30 rounded-lg">
+                                <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-300" />
                             </div>
                             <div className="flex-1">
-                                <h4 className="font-semibold text-gray-900 text-lg mb-2">
+                                <h4 className="font-semibold text-white text-sm sm:text-base mb-1">
                                     Estado Actual
                                 </h4>
-                                <div className="text-gray-600 space-y-2">
+                                <div className="text-gray-300 space-y-1 text-xs sm:text-sm">
                                     <div className="flex justify-between">
                                         <span>Completado:</span>
-                                        <span className="font-medium">{displayValue}%</span>
+                                        <span className="font-medium text-white">{displayValue}%</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span>Restante:</span>
-                                        <span className="font-medium text-blue-600">{porcentajeRestante}%</span>
+                                        <span className="font-medium text-amber-400">{porcentajeRestante}%</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span>Progreso:</span>
-                                        <span className="font-medium text-slate-800">{displayValue}/100%</span>
+                                        <span className="font-medium text-white">{displayValue}/100%</span>
                                     </div>
                                     {displayValue < 100 && (
-                                        <div className="pt-2 border-t border-gray-200">
-                                            <div className="flex items-center space-x-2">
-                                                <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
-                                                <span className="text-sm text-amber-600 font-medium">
+                                        <div className="pt-1 border-t border-gray-600">
+                                            <div className="flex items-center space-x-1 sm:space-x-2">
+                                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-500 rounded-full animate-pulse"></div>
+                                                <span className="text-[10px] sm:text-xs text-amber-400 font-medium">
                                                     Faltan {porcentajeRestante}% para el sorteo
                                                 </span>
                                             </div>

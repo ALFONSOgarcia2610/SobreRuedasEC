@@ -138,7 +138,6 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
                 items: [
                     { title: "Activos", url: "/sorteos/active" },
                     { title: "Crear Sorteo", url: "/sorteos/create" },
-                    { title: "Historial", url: "/sorteos/history" },
                     { title: "Configuración", url: "/sorteos/settings" }
                 ]
             },
@@ -170,8 +169,7 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
                 icon: FileText,
                 items: [
                     { title: "Ventas", url: "/reportes/sales" },
-                    { title: "Participación", url: "/reportes/participation" },
-                    { title: "Financiero", url: "/reportes/financial" }
+                    { title: "Participación", url: "/reportes/participation" }
                 ]
             },
             {
@@ -205,8 +203,6 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
                 items: [
                     { title: "Vender Números", url: "/ventas/sell" },
                     { title: "Mis Ventas", url: "/ventas/my-sales" },
-                    { title: "Historial", url: "/ventas/history" },
-                    { title: "Metas", url: "/ventas/targets" }
                 ]
             },
             {
@@ -215,8 +211,7 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
                 icon: Users,
                 items: [
                     { title: "Mis Clientes", url: "/clientes/my-clients" },
-                    { title: "Nuevo Cliente", url: "/clientes/new" },
-                    { title: "Seguimiento", url: "/clientes/follow-up" },
+                    { title: "Nuevo Cliente", url: "/clientes/new" }
                 ]
             },
             {
@@ -225,7 +220,6 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
                 icon: Wallet,
                 items: [
                     { title: "Mis Comisiones", url: "/comisiones/my-commissions" },
-                    { title: "Historial", url: "/comisiones/history" },
                     { title: "Pagos", url: "/comisiones/payments" }
                 ]
             },
@@ -235,7 +229,6 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
                 icon: Gift,
                 items: [
                     { title: "Sorteos Activos", url: "/sorteos/active" },
-                    { title: "Historial", url: "/sorteos/my-entries" },
                     { title: "Resultados", url: "/sorteos/results" }
                 ]
             }
@@ -260,9 +253,7 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
                 items: [
                     { title: "Comprar", url: "/participaciones/my-numbers" },
                     { title: "Sorteos Activos", url: "/sorteos/view-active" },
-                    { title: "Próximos", url: "/sorteos/upcoming" },
-                    { title: "Ganadores", url: "/sorteos/winners" },
-                    { title: "Historial", url: "/sorteos/history-view" }
+                    { title: "Ganadores", url: "/sorteos/winners" }
                 ]
             },
             {
@@ -282,7 +273,6 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
                 items: [
                     { title: "Cómo Participar", url: "/info/how-to" },
                     { title: "Términos", url: "/info/terms" },
-                    { title: "FAQ", url: "/info/faq" },
                     { title: "Contacto", url: "/info/contact" }
                 ]
             }

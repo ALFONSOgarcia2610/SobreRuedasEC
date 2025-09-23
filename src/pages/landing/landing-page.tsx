@@ -1,6 +1,5 @@
 
 "use client";
-import { SparklesText } from "@/components/ui/sparkles-text";
 import { HeroVideoDialogDemo } from "./componentes/hero-video";
 import { AnimatedCircularProgressBarDemo } from "../comunes/CircularBar";
 import { NumerosBendecidos } from "./componentes/numeros-bendecidos";
@@ -15,23 +14,18 @@ export default function LandingPage() {
     const DataSorteo = useSorteoCarros();
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
-            {/* Header */}
+        <div className="min-h-screen w-full bg-[#020617] relative">
+            {/* Dark Radial Glow Background */}
             <Header />
-
             {/* Hero Section */}
             <section className="max-w-6xl mx-auto px-4 py-16">
-
-                <div className="text-center mb-16">
-
-                    <div className="mb-8">
-                        <SparklesText>
-                            <h2 className="text-4xl md:text-5xl font-bold text-slate-800">
-                                {DataSorteo.data?.Premio}
-                            </h2>
-                        </SparklesText>
+                <div className="text-center -mt-10">
+                    <div>
+                        <h2 className="text-4xl md:text-5xl font-bold !text-white">
+                            {DataSorteo.data?.Premio}
+                        </h2>
                     </div>
-                    <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                    <p className="text-xl text-white max-w-3xl mx-auto leading-relaxed">
                         ¡El volante de tus sueños puede ser tuyo!
                     </p>
                 </div>
@@ -55,5 +49,6 @@ export default function LandingPage() {
             </div>
             <Footer />
         </div >
+
     );
 }
