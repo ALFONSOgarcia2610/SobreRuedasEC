@@ -20,5 +20,21 @@ export default ({ mode }: { mode: string }) => {
           : Number(process.env.VITE_PORT_PROD),
       host: true,
     },
+    preview: {
+      port: 4173,
+      host: true,
+    },
+    build: {
+      outDir: 'dist',
+      assetsDir: 'assets',
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom'],
+            router: ['@tanstack/react-router'],
+          },
+        },
+      },
+    },
   });
 };
