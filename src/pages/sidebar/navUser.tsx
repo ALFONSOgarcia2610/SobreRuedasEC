@@ -28,7 +28,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { Link } from "@tanstack/react-router"
 import { type UserRole, getRoleConfig } from "@/config/roles.config"
 
 export function NavUser({
@@ -53,16 +52,16 @@ export function NavUser({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="data-[state=open]:bg-slate-800/50 data-[state=open]:text-white hover:bg-slate-800/50 text-slate-200 hover:text-white"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
+              <Avatar className="h-8 w-8 rounded-lg border-2 border-blue-500/30">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">
+                <AvatarFallback className="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 text-white">
                   {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate font-medium text-white">{user.name}</span>
                 <div className="flex items-center gap-1">
                   <RoleIcon className={`w-3 h-3 ${roleConfig.color}`} />
                   <span className={`truncate text-xs font-medium ${roleConfig.color}`}>
@@ -70,25 +69,25 @@ export function NavUser({
                   </span>
                 </div>
               </div>
-              <ChevronsUpDown className="ml-auto size-4" />
+              <ChevronsUpDown className="ml-auto size-4 text-slate-400" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg bg-[#020617] border-slate-700"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
+                <Avatar className="h-8 w-8 rounded-lg border-2 border-blue-500/30">
                   <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">
+                  <AvatarFallback className="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 text-white">
                     {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
+                  <span className="truncate font-medium text-white">{user.name}</span>
                   <div className="flex items-center gap-1">
                     <RoleIcon className={`w-3 h-3 ${roleConfig.color}`} />
                     <span className={`truncate text-xs ${roleConfig.color}`}>
@@ -98,16 +97,16 @@ export function NavUser({
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator className="bg-slate-700" />
 
             <DropdownMenuGroup>
               {userRole === 'super-admin' && (
                 <>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem className="hover:bg-slate-800/50 text-slate-200 hover:text-white cursor-pointer">
                     <Sparkles />
                     Panel Super Admin
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem className="hover:bg-slate-800/50 text-slate-200 hover:text-white cursor-pointer">
                     <BadgeCheck />
                     Configuración Sistema
                   </DropdownMenuItem>
@@ -115,7 +114,7 @@ export function NavUser({
               )}
 
               {(userRole === 'admin' || userRole === 'super-admin') && (
-                <DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-slate-800/50 text-slate-200 hover:text-white cursor-pointer">
                   <BadgeCheck />
                   Panel Administrador
                 </DropdownMenuItem>
@@ -123,11 +122,11 @@ export function NavUser({
 
               {userRole === 'distribuidor' && (
                 <>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem className="hover:bg-slate-800/50 text-slate-200 hover:text-white cursor-pointer">
                     <BadgeCheck />
                     Mi Dashboard
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem className="hover:bg-slate-800/50 text-slate-200 hover:text-white cursor-pointer">
                     <CreditCard />
                     Mis Comisiones
                   </DropdownMenuItem>
@@ -135,14 +134,14 @@ export function NavUser({
               )}
             </DropdownMenuGroup>
 
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator className="bg-slate-700" />
 
-            <Link to="/login">
-              <DropdownMenuItem>
+            <a href="/login">
+              <DropdownMenuItem className="hover:bg-red-900/30 text-slate-200 hover:text-red-400 cursor-pointer">
                 <LogOut />
                 Salir
               </DropdownMenuItem>
-            </Link>
+            </a>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

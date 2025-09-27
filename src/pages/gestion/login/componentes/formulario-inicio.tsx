@@ -28,6 +28,8 @@ export default function LoginForm({
                                     type="email"
                                     placeholder="m@example.com"
                                     required
+                                    autoComplete="email"
+                                    style={{ fontSize: '16px' }} // Previene zoom en iOS
                                     className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-10 sm:h-11"
                                 />
                             </div>
@@ -41,18 +43,20 @@ export default function LoginForm({
                                         ¿Olvidaste tu contraseña?
                                     </a>
                                 </div>
-                                <Input 
-                                    id="password" 
-                                    type="password" 
-                                    required 
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    required
+                                    autoComplete="current-password"
+                                    style={{ fontSize: '16px' }} // Previene zoom en iOS
                                     className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-10 sm:h-11"
                                 />
                             </div>
-                         <Link to="/">
-                           <Button type="submit" className="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold h-10 sm:h-11 text-sm sm:text-base">
-                               Iniciar sesión
-                           </Button>
-                         </Link>
+                            <Link to="/dashboard">
+                                <Button type="submit" className="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold h-10 sm:h-11 text-sm sm:text-base ">
+                                    Iniciar sesión
+                                </Button>
+                            </Link>
                             {/* <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                                 <span className="bg-card text-muted-foreground relative z-10 px-2">
                                     O continúa con

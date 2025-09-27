@@ -228,7 +228,7 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
                 url: "/sorteos-dist",
                 icon: Gift,
                 items: [
-                    { title: "Sorteos Activos", url: "/sorteos/active" },
+                    { title: "Sorteo Activo", url: "/dashboard" },
                     { title: "Resultados", url: "/sorteos/results" }
                 ]
             }
@@ -243,16 +243,16 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
         label: 'Usuario',
         color: 'text-gray-600',
         icon: Eye,
-        permissions: ['view-only'], // Solo visualización
+        permissions: ['view-only'],
         navMain: [
             {
                 title: "Sorteos",
-                url: "/sorteos-view",
+                url: "/dashboard",
                 icon: Gift,
                 isActive: true,
                 items: [
-                    { title: "Comprar", url: "/participaciones/my-numbers" },
-                    { title: "Sorteos Activos", url: "/sorteos/view-active" },
+                    { title: "Comprar", url: "/usuario/compraSorteo" },
+                    { title: "Sorteo Activo", url: "/dashboard" },
                     { title: "Ganadores", url: "/sorteos/winners" }
                 ]
             },
@@ -278,7 +278,7 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
             }
         ],
         navSecondary: [
-            { title: "Comprar Ahora", url: "/account", icon: TicketCheck },
+            { title: "Comprar Ahora", url: "/usuario/compraSorteo", icon: TicketCheck },
             { title: "Mi Cuenta", url: "/account", icon: UserCheck },
             { title: "Ayuda", url: "/help", icon: HelpCircle }
         ]

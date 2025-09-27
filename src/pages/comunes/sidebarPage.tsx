@@ -29,9 +29,9 @@ interface SidebarPageProps {
   className?: string
 }
 
-export default function SidebarPage({ 
-  children, 
-  breadcrumbs = [], 
+export default function SidebarPage({
+  children,
+  breadcrumbs = [],
   title,
   className = ""
 }: SidebarPageProps) {
@@ -51,7 +51,7 @@ export default function SidebarPage({
                 <BreadcrumbList>
                   {breadcrumbs.map((breadcrumb, index) => {
                     const isLast = index === breadcrumbs.length - 1
-                    
+
                     return (
                       <div key={index} className="flex items-center">
                         <BreadcrumbItem className={index > 0 ? "hidden md:block" : ""}>

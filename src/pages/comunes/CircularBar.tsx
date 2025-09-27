@@ -23,7 +23,6 @@ export function AnimatedCircularProgressBarDemo() {
     useEffect(() => {
         // Solo ejecutar animación cuando tengamos datos
         if (!dataSorteo.data || targetValue === 0) return;
-
         // Animación inicial de llenado de la barra
         const animationDuration = 3000; // 3 segundos
         const steps = 90; // Número de pasos para la animación

@@ -41,7 +41,7 @@ export function NavMain({
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel className="flex items-center gap-2">
+      <SidebarGroupLabel className=" flex items-center gap-2 text-slate-200">
         <RoleIcon className={`w-4 h-4 ${roleConfig.color}`} />
         <span>{roleConfig.label}</span>
         <div className={`w-2 h-2 rounded-full bg-current ${roleConfig.color} opacity-60`}></div>
@@ -50,7 +50,7 @@ export function NavMain({
         {items.map((item) => (
           <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip={item.title}>
+              <SidebarMenuButton asChild tooltip={item.title} className="hover:bg-slate-800/50 text-slate-200 hover:text-white">
                 <a href={item.url} className="flex items-center gap-2">
                   <item.icon className="w-4 h-4" />
                   <span>{item.title}</span>
@@ -59,7 +59,7 @@ export function NavMain({
               {item.items?.length ? (
                 <>
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuAction className="data-[state=open]:rotate-90">
+                    <SidebarMenuAction className="data-[state=open]:rotate-90 text-slate-400 hover:text-white">
                       <ChevronRight />
                       <span className="sr-only">Toggle</span>
                     </SidebarMenuAction>
@@ -68,7 +68,7 @@ export function NavMain({
                     <SidebarMenuSub>
                       {item.items?.map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild>
+                          <SidebarMenuSubButton asChild className="hover:bg-slate-800/30 text-slate-300 hover:text-white">
                             <a href={subItem.url}>
                               <span>{subItem.title}</span>
                             </a>

@@ -21,7 +21,7 @@ import { getRoleConfig } from "@/config/roles.config"
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { currentUser } = useUserFromJson()
   const dataSorteo = useSorteoCarros();
-  
+
   // Trabajar solo con porcentajes - convertir datos a porcentaje
   const totalBoletos = dataSorteo.data?.TotalBoletos || 1000;
   const boletosVendidos = dataSorteo.data?.BoletosVendidos || 0;
@@ -35,19 +35,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const roleConfig = getRoleConfig(currentUser.role)
 
   return (
-    <Sidebar variant="inset" {...props}>
-      <SidebarHeader>
+    <Sidebar variant="inset" {...props} className="bg-[#020617] border-slate-800">
+      <SidebarHeader className="bg-gradient-to-br from-[#020617] to-slate-900">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
+            <SidebarMenuButton size="lg" asChild className="hover:bg-slate-800/50">
               <a href="#">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                    <span className="text-white text-xl font-bold">SR</span>
+                  <div className="w-12 h-12 bg-gradient-to-br rounded-xl flex items-center justify-center">
+                    <img src="/img/logoSR.png" alt="Logo SobreRuedasEc" className="w-12 h-12 object-contain" />
                   </div>
                   <div>
-                    <h1 className="text-2xl font-bold text-slate-800">SobreRuedas</h1>
-                    <p className="text-xs text-slate-500">Entregado Sueños</p>
+                    <h1 className="text-2xl font-bold text-white">SobreRuedas</h1>
+                    <p className="text-xs text-slate-300">Entregado Sueños</p>
                   </div>
                 </div>
               </a>
@@ -55,23 +55,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <div className="mt-2 flex items-center !justify-center space-x-6 text-sm ">
               <div className="flex items-center space-x-2">
                 <span className="animate-pulse">🔥</span>
-                <span className="font-bold text-slate-800">{targetValue}% VENDIDO</span>
+                <span className="font-bold text-white">{targetValue}% VENDIDO</span>
               </div>
             </div>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="bg-[#020617]">
         <NavMain items={roleConfig.navMain} userRole={currentUser.role} />
         <NavSecondary items={roleConfig.navSecondary} />
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser 
+      <SidebarFooter className="bg-gradient-to-br from-[#020617] to-slate-900 border-t border-slate-700">
+        <NavUser
           user={{
             name: currentUser.name,
             email: currentUser.email,
             avatar: currentUser.avatar
-          }} 
+          }}
           userRole={currentUser.role}
         />
       </SidebarFooter>

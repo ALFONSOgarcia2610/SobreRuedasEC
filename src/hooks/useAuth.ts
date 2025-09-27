@@ -56,7 +56,7 @@ export function useAuth() {
     setIsLoading(true)
     // Simulación de login
     await new Promise(resolve => setTimeout(resolve, 1000))
-    
+
     // Lógica simple de login basada en email
     const user = Object.values(mockUsers).find(u => u.email === email)
     if (user) {
