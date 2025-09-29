@@ -193,8 +193,8 @@ export function Header() {
                                         {/* Botón principal */}
                                         <DrawerClose asChild>
                                             <Link to="/login">
-                                                <ShinyButton className="bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 hover:from-yellow-300 hover:via-yellow-400 hover:to-amber-500 text-white px-8 py-3 rounded-full font-bold shadow-xl hover:shadow-2xl hover:shadow-amber-500/60 hover:scale-105 border-2 border-yellow-500/70 flex !justify-center items-center w-full relative overflow-hidden">
-                                                    <div className="flex items-center space-x-2  justify-center relative z-10">
+                                                <ShinyButton className="bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 hover:from-yellow-300 hover:via-yellow-400 hover:to-amber-500 text-white px-8 py-3 rounded-full font-bold shadow-xl hover:shadow-2xl hover:shadow-amber-500/60 hover:scale-105 border-2 border-yellow-500/70 flex justify-center items-center w-full relative overflow-hidden">
+                                                    <div className="flex items-center space-x-2 justify-center relative z-10">
                                                         <Tickets size={16} className="text-amber-900 animate-pulse drop-shadow-sm" />
                                                         <span className="text-amber-900 font-bold drop-shadow-sm">¡Participar Ahora!</span>
                                                     </div>
