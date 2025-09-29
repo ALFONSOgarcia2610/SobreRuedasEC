@@ -1,1 +1,9 @@
+# Fallback for History API
 /*    /index.html   200
+
+# Specific routes
+/landing    /index.html   200
+/login      /index.html   200
+/register   /index.html   200
+/dashboard  /index.html   200
+/usuario/*  /index.html   200
