@@ -18,7 +18,7 @@ export default function LandingPage() {
             {/* Dark Radial Glow Background */}
             <Header />
             {/* Hero Section */}
-            <section className="max-w-6xl mx-auto px-4 py-16">
+            <section className="max-w-6xl mx-auto px-4 py-16 pt-32">
                 <div className="text-center -mt-10">
                     <div>
                         <h2 className="text-4xl md:text-5xl font-bold !text-white">

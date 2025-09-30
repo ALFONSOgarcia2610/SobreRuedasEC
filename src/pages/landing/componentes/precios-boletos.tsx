@@ -7,7 +7,6 @@ import {
     Star, 
     Shield, 
     CheckCircle, 
-    Headphones, 
     Target,
     Lightbulb,
     ArrowRight,
@@ -200,42 +199,6 @@ export function PreciosBoletos() {
                             <h5 className="font-bold text-white mb-0.5 sm:mb-1 text-[10px] sm:text-xs md:text-sm">Recomendado</h5>
                             <p className="text-[10px] sm:text-xs text-gray-300 hidden sm:block">10 números es la opción más equilibrada</p>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Call to action final */}
-            <div className="mt-4 sm:mt-6 md:mt-8 text-center">
-                <div className="bg-slate-800/90 backdrop-blur-sm rounded-lg p-2 sm:p-3 md:p-4 border border-amber-500/50 mb-2 sm:mb-3 md:mb-4">
-                    <div className="flex items-center justify-center space-x-2 mb-1 sm:mb-2">
-                        <Target size={14} className="text-amber-400 sm:hidden" />
-                        <Target size={16} className="text-amber-400 hidden sm:block md:w-4 md:h-4" />
-                        <p className="text-xs sm:text-sm md:text-base font-bold text-white">
-                            Promoción Especial Vigente
-                        </p>
-                    </div>
-                    <p className="text-[10px] sm:text-xs md:text-sm text-gray-300">
-                        El paquete de 10 números es la mejor relación inversión-oportunidad
-                    </p>
-                </div>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-2 md:gap-3 max-w-xl mx-auto">
-                    <div className="flex items-center justify-center space-x-1 sm:space-x-2 text-[10px] sm:text-xs text-gray-300 bg-slate-700/50 rounded-lg p-1 sm:p-1.5 md:p-2 border border-gray-600">
-                        <Shield size={10} className="text-green-400 sm:hidden" />
-                        <Shield size={12} className="text-green-400 hidden sm:block md:w-3.5 md:h-3.5" />
-                        <span className="font-medium">100% Seguro</span>
-                    </div>
-                    
-                    <div className="flex items-center justify-center space-x-1 sm:space-x-2 text-[10px] sm:text-xs text-gray-300 bg-slate-700/50 rounded-lg p-1 sm:p-1.5 md:p-2 border border-gray-600">
-                        <CheckCircle size={10} className="text-blue-400 sm:hidden" />
-                        <CheckCircle size={12} className="text-blue-400 hidden sm:block md:w-3.5 md:h-3.5" />
-                        <span className="font-medium">Confirmación Inmediata</span>
-                    </div>
-                    
-                    <div className="flex items-center justify-center space-x-1 sm:space-x-2 text-[10px] sm:text-xs text-gray-300 bg-slate-700/50 rounded-lg p-1 sm:p-1.5 md:p-2 border border-gray-600">
-                        <Headphones size={10} className="text-purple-400 sm:hidden" />
-                        <Headphones size={12} className="text-purple-400 hidden sm:block md:w-3.5 md:h-3.5" />
-                        <span className="font-medium">Soporte 24/7</span>
                     </div>
                 </div>
             </div>

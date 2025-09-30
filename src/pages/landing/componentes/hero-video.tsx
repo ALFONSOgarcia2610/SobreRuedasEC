@@ -2,7 +2,6 @@ import { HeroVideoDialog } from "@/components/ui/hero-video-dialog";
 import {
     Clock,
     Shield,
-    Smartphone,
     UserPlus,
     CreditCard,
     CheckCircle,
@@ -23,40 +22,6 @@ export function HeroVideoDialogDemo() {
                     <span className="text-xs sm:text-sm font-semibold">Tutorial Interactivo</span>
                 </div>
 
-
-
-                {/* Métricas de confianza */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8 md:mb-10 max-w-2xl mx-auto">
-                    <div className="bg-slate-800/90 backdrop-blur-sm rounded-lg p-4 sm:p-6 border border-gray-600 hover:shadow-lg hover:shadow-amber-400/10 transition-all duration-300">
-                        <div className="flex justify-center mb-2 sm:mb-3">
-                            <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-amber-500/20 rounded-lg flex items-center justify-center">
-                                <Clock size={16} className="sm:w-5 sm:h-5 md:w-6 md:h-6 text-amber-400" />
-                            </div>
-                        </div>
-                        <div className="text-xs sm:text-sm font-bold text-white mb-1">Proceso Eficiente</div>
-                        <div className="text-[10px] sm:text-xs text-gray-300">Registro en menos de 5 minutos</div>
-                    </div>
-
-                    <div className="bg-slate-800/90 backdrop-blur-sm rounded-lg p-4 sm:p-6 border border-gray-600 hover:shadow-lg hover:shadow-green-400/10 transition-all duration-300">
-                        <div className="flex justify-center mb-2 sm:mb-3">
-                            <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
-                                <Shield size={16} className="sm:w-5 sm:h-5 md:w-6 md:h-6 text-green-400" />
-                            </div>
-                        </div>
-                        <div className="text-xs sm:text-sm font-bold text-white mb-1">100% Seguro</div>
-                        <div className="text-[10px] sm:text-xs text-gray-300">Certificado y auditado</div>
-                    </div>
-
-                    <div className="bg-slate-800/90 backdrop-blur-sm rounded-lg p-4 sm:p-6 border border-gray-600 hover:shadow-lg hover:shadow-purple-400/10 transition-all duration-300">
-                        <div className="flex justify-center mb-2 sm:mb-3">
-                            <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                                <Smartphone size={16} className="sm:w-5 sm:h-5 md:w-6 md:h-6 text-purple-400" />
-                            </div>
-                        </div>
-                        <div className="text-xs sm:text-sm font-bold text-white mb-1">Multiplataforma</div>
-                        <div className="text-[10px] sm:text-xs text-gray-300">Disponible en todos los dispositivos</div>
-                    </div>
-                </div>
             </div>
 
             {/* Video Tutorial */}

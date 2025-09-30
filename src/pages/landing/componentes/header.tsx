@@ -24,10 +24,11 @@ export function Header() {
     const targetValue = Math.round((boletosVendidos / totalBoletos) * 100); // Porcentaje base
 
     return (
-        <header className="sticky top-0 z-50">
-            {/* Barra superior con información importante */}
-            <div className="bg-black text-white font-semibold">
-                <div className="max-w-7xl mx-auto px-4">
+        <>
+            <header className="fixed top-0 left-0 right-0 z-50 w-full">
+                {/* Barra superior con información importante */}
+                <div className="bg-black text-white font-semibold">
+                    <div className="max-w-7xl mx-auto px-4">
                     <div className="flex items-center justify-between py-2">
                         <div className="flex items-center space-x-6 text-sm">
                             <div className="flex items-center space-x-2">
@@ -58,8 +59,10 @@ export function Header() {
                         <div className="flex items-center space-x-3">
                             <img src="/img/logoSR.png" alt="Logo SobreRuedasEc" className="w-12 h-12 object-contain" />
                             <div>
-                                <h1 className="text-2xl font-bold text-white">SobreRuedasEc</h1>
-                                <p className="text-xs text-white">Entregado Sueños</p>
+                                <h1 className="text-2xl font-bold text-transparent bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text drop-shadow-md">
+                                    SobreRuedasEc
+                                </h1>
+                                <p className="text-xs text-amber-300">Entregado Sueños</p>
                             </div>
                         </div>
 
@@ -129,7 +132,9 @@ export function Header() {
                                         <DrawerTitle className="text-center">
                                             <div className="flex items-center justify-center space-x-3 mb-2">
                                                 <img src="/img/logoSR.png" alt="Logo SobreRuedasEc" className="w-8 h-8 object-contain" />
-                                                <span className="text-xl font-bold text-slate-800">SobreRuedasEc</span>
+                                                <span className="text-xl font-bold text-transparent bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text">
+                                                    SobreRuedasEc
+                                                </span>
                                             </div>
                                         </DrawerTitle>
                                     </DrawerHeader>
@@ -211,5 +216,9 @@ export function Header() {
 
             </div>
         </header>
+        
+        {/* Spacer para crear espacio después del header fijo */}
+        <div className="h-25"></div>
+        </>
     );
 }

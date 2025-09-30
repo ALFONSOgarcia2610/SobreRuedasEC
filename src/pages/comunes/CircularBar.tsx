@@ -1,11 +1,94 @@
 "use client";
 
-import { AnimatedCircularProgressBar } from "@/components/ui/animated-circular-progress-bar";
 import { Card, CardContent } from "@/components/ui/card";
-import { AlertCircle, BarChart3, CheckCircle, TrendingUp, Users, Clock } from "lucide-react";
+import { AlertCircle, CheckCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSorteoCarros } from "../services/landing.query";
 
+// Estilos CSS para las animaciones
+const progressBarStyles = `
+@keyframes slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+@keyframes rainbowFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 
+      0 0 5px rgba(251, 191, 36, 0.3),
+      0 0 10px rgba(245, 158, 11, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 0 8px rgba(251, 191, 36, 0.4),
+      0 0 15px rgba(245, 158, 11, 0.3);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.progress-container:hover .progress-bar {
+  animation: glow 3s ease-in-out infinite;
+}
+
+.metric-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.metric-card:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.beautiful-bar {
+  background: linear-gradient(
+    90deg,
+    #d97706,
+    #f59e0b,
+    #fbbf24,
+    #fcd34d,
+    #fbbf24,
+    #f59e0b,
+    #d97706
+  );
+  background-size: 200% 200%;
+  animation: rainbowFlow 8s ease-in-out infinite;
+}
+`;
 
 export function AnimatedCircularProgressBarDemo() {
 
@@ -18,7 +101,7 @@ export function AnimatedCircularProgressBarDemo() {
     const totalBoletos = dataSorteo.data?.TotalBoletos || 1000;
     const boletosVendidos = dataSorteo.data?.BoletosVendidos || 0;
     const targetValue = Math.round((boletosVendidos / totalBoletos) * 100); // Porcentaje base
-    const porcentajeRestante = 100 - targetValue;
+  
 
     useEffect(() => {
         // Solo ejecutar animación cuando tengamos datos
@@ -47,193 +130,150 @@ export function AnimatedCircularProgressBarDemo() {
     }, [targetValue, dataSorteo.data]);
 
     useEffect(() => {
-        // Animación constante que simula actualizaciones automáticas
+        // Animación sutil y natural que simula actualizaciones automáticas
         const constantAnimation = setInterval(() => {
             setAnimationValue(() => {
-                // Oscilación más pronunciada para efecto de "llenado"
-                const time = Date.now() / 1500; // Velocidad de animación
-                const oscillation = Math.sin(time) * 1.5 + Math.cos(time * 0.7) * 0.8; // Combinación de ondas
-                const pulseEffect = Math.sin(time * 2) * 0.3; // Efecto de pulso adicional
+                // Movimiento muy sutil y natural
+                const time = Date.now() / 3000; // Velocidad más lenta
+                const subtleOscillation = Math.sin(time) * 0.3; // Oscilación muy sutil
+                const breathingEffect = Math.sin(time * 0.5) * 0.2; // Efecto de "respiración"
 
-                return Math.max(0, Math.min(100, value + oscillation + pulseEffect));
+                return Math.max(0, Math.min(100, value + subtleOscillation + breathingEffect));
             });
-        }, 100); // Actualiza cada 100ms para animación más fluida
+        }, 200); // Actualiza cada 200ms para ser menos agresivo
 
         return () => clearInterval(constantAnimation);
     }, [value]);
 
     return (
-        <div className="max-w-5xl mx-auto px-4 py-4 sm:py-6 mt-5">
-            {/* Header Ejecutivo */}
-            <div className="text-center mb-4 sm:mb-6">
-                <div className="inline-flex items-center space-x-2 mb-2 sm:mb-3">
-                    <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-white">
-                        Estado del Sorteo
-                    </h3>
-                </div>
-                <p className="text-sm sm:text-base text-white max-w-2xl mx-auto">
-                    Monitoreo en tiempo real del progreso de participaciones
-                </p>
-            </div>
-
-            {/* Progress Section - Más ejecutivo */}
-            <div className="rounded-xl shadow-sm border border-gray-600 bg-slate-800/90 backdrop-blur-sm p-4 sm:p-6 mb-4 sm:mb-6">
-                <div className="flex flex-col lg:flex-row items-center justify-between">
-                    {/* Circular Progress */}
-                    <div className="relative mb-4 sm:mb-6 lg:mb-0">
-                        <AnimatedCircularProgressBar
-                            value={displayValue >= targetValue ? animationValue : value}
-                            gaugePrimaryColor="rgb(71 85 105)"
-                            gaugeSecondaryColor="rgba(71, 85, 105, 0.1)"
-                            className="mx-auto [&>span]:hidden"
-                        />
-
-                        {/* Efecto de flujo interno - Ondas animadas */}
-                        <div className="absolute inset-0 pointer-events-none">
-                            <svg className="w-full h-full" viewBox="0 0 100 100">
-                                {/* Gradiente animado para efecto de flujo */}
-                                <defs>
-                                    <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" stopColor="rgba(59, 130, 246, 0.3)" />
-                                        <stop offset="50%" stopColor="rgba(147, 197, 253, 0.6)" />
-                                        <stop offset="100%" stopColor="rgba(59, 130, 246, 0.3)" />
-                                        <animateTransform
-                                            attributeName="gradientTransform"
-                                            type="translate"
-                                            values="-200 0;200 0;-200 0"
-                                            dur="3s"
-                                            repeatCount="indefinite"
-                                        />
-                                    </linearGradient>
-
-                                    {/* Gradiente secundario para ondas */}
-                                    <linearGradient id="waveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stopColor="rgba(99, 102, 241, 0.4)" />
-                                        <stop offset="50%" stopColor="rgba(168, 85, 247, 0.6)" />
-                                        <stop offset="100%" stopColor="rgba(99, 102, 241, 0.4)" />
-                                        <animateTransform
-                                            attributeName="gradientTransform"
-                                            type="translate"
-                                            values="0 -100;0 100;0 -100"
-                                            dur="2.5s"
-                                            repeatCount="indefinite"
-                                        />
-                                    </linearGradient>
-                                </defs>
-
-                                {/* Círculo base para el flujo */}
-                                <circle
-                                    cx="50"
-                                    cy="50"
-                                    r="45"
-                                    fill="none"
-                                    stroke="url(#flowGradient)"
-                                    strokeWidth="3"
-                                    strokeDasharray={`${(displayValue / 100) * 283} 283`}
-                                    strokeDashoffset="70"
-                                    transform="rotate(-90 50 50)"
-                                    opacity="0.7"
-                                >
-                                    <animate
-                                        attributeName="stroke-dashoffset"
-                                        values="70;-213;70"
-                                        dur="4s"
-                                        repeatCount="indefinite"
-                                    />
-                                </circle>
-
-                                {/* Círculo secundario para efecto de ondas */}
-                                <circle
-                                    cx="50"
-                                    cy="50"
-                                    r="45"
-                                    fill="none"
-                                    stroke="url(#waveGradient)"
-                                    strokeWidth="2"
-                                    strokeDasharray={`${(displayValue / 100) * 283} 283`}
-                                    strokeDashoffset="140"
-                                    transform="rotate(-90 50 50)"
-                                    opacity="0.5"
-                                >
-                                    <animate
-                                        attributeName="stroke-dashoffset"
-                                        values="140;-143;140"
-                                        dur="3.5s"
-                                        repeatCount="indefinite"
-                                    />
-                                </circle>
-
-                                {/* Partículas flotantes para efecto de flujo */}
-                                <g opacity="0.6">
-                                    <circle cx="30" cy="50" r="1" fill="rgba(59, 130, 246, 0.8)">
-                                        <animateMotion
-                                            dur="6s"
-                                            repeatCount="indefinite"
-                                            path="M 30,50 Q 50,30 70,50 Q 50,70 30,50"
-                                        />
-                                        <animate
-                                            attributeName="r"
-                                            values="1;2;1"
-                                            dur="2s"
-                                            repeatCount="indefinite"
-                                        />
-                                    </circle>
-
-                                    <circle cx="40" cy="35" r="0.8" fill="rgba(147, 197, 253, 0.9)">
-                                        <animateMotion
-                                            dur="5s"
-                                            repeatCount="indefinite"
-                                            path="M 40,35 Q 60,25 65,45 Q 45,65 40,35"
-                                        />
-                                    </circle>
-
-                                    <circle cx="60" cy="65" r="1.2" fill="rgba(99, 102, 241, 0.7)">
-                                        <animateMotion
-                                            dur="7s"
-                                            repeatCount="indefinite"
-                                            path="M 60,65 Q 35,55 35,35 Q 65,25 60,65"
-                                        />
-                                    </circle>
-                                </g>
-                            </svg>
-                        </div>
-
-                        {/* Contenido central */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="text-center">
-                                <div className="text-2xl sm:text-3xl font-bold text-white mb-1">
-                                    {displayValue}%
+        <div className="max-w-5xl mx-auto px-4 py-4 sm:py-6 mt-15">
+            {/* Inyectar estilos CSS */}
+            <style dangerouslySetInnerHTML={{ __html: progressBarStyles }} />
+            {/* Progress Section - UX Mejorada */}
+            <div className="rounded-xl shadow-sm ">
+                <div className="flex flex-col items-center">
+                    {/* Barra Horizontal de Progreso Ultra Bonita */}
+                    <div className="w-full max-w-3xl mb-8 progress-container group">
+                        {/* Etiquetas de progreso elegantes */}
+                        <div className="flex justify-between items-center mb-4">
+                            <div className="flex items-center space-x-3">
+                                <div className="relative">
+                                    <div className="w-4 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-pulse"></div>
+                                    <div className="absolute inset-0 w-4 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-ping opacity-75"></div>
                                 </div>
-                                <div className="text-xs sm:text-sm text-gray-300 font-medium uppercase tracking-wide">
-                                    Completado
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Métricas Ejecutivas */}
-                    <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:ml-8">
-                        <div className="text-center lg:text-left">
-                            <div className="flex items-center space-x-1 sm:space-x-2 mb-1">
-                                <Users className="w-3 h-3 sm:w-4 sm:h-4 text-gray-300" />
-                                <span className="text-[10px] sm:text-xs font-medium text-gray-300 uppercase tracking-wide">
-                                    Completado
+                                <span className="text-lg font-semibold text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text">
+                                    Progreso del Sorteo
                                 </span>
                             </div>
-                            <div className="text-lg sm:text-xl font-bold text-white">{displayValue}%</div>
-                            <div className="text-[10px] sm:text-xs text-gray-400">del sorteo</div>
+                           
                         </div>
 
-                        <div className="text-center lg:text-left">
-                            <div className="flex items-center space-x-1 sm:space-x-2 mb-1">
-                                <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-gray-300" />
-                                <span className="text-[10px] sm:text-xs font-medium text-gray-300 uppercase tracking-wide">
-                                    Restante
+                        {/* Barra de progreso súper bonita */}
+                        <div className="relative h-6 sm:h-12 bg-gradient-to-r from-slate-800 to-slate-700 rounded-2xl overflow-hidden border-2 border-slate-600/50 progress-bar shadow-2xl">
+                            {/* Fondo con efecto cristal */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-slate-800/80 backdrop-blur-sm"></div>
+                            
+                            {/* Barra de progreso principal ultra bonita */}
+                            <div 
+                                className="h-full beautiful-bar rounded-2xl relative overflow-hidden shadow-xl transition-all duration-1000 ease-out"
+                                style={{ width: `${displayValue >= targetValue ? animationValue : value}%` }}
+                            >
+                                {/* Capa de brillo sutil */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/10 to-white/20 rounded-2xl"></div>
+                                
+                                {/* Efectos de flujo suaves */}
+                                <div className="absolute inset-0 overflow-hidden rounded-2xl">
+                                    {/* Onda principal suave */}
+                                    <div 
+                                        className="absolute h-full w-24 bg-gradient-to-r from-transparent via-yellow-200/30 to-transparent"
+                                        style={{
+                                            animation: 'slide 6s linear infinite',
+                                            transform: 'translateX(-100%)'
+                                        }}
+                                    ></div>
+                                    
+                                    {/* Partículas sparkle sutiles - Solo en pantallas grandes */}
+                                    {displayValue > 20 && (
+                                        <div className="hidden sm:block">
+                                            <div className="absolute top-4 left-1/3 w-1.5 h-1.5 bg-yellow-200 rounded-full shadow-sm" style={{ animation: 'sparkle 5s infinite' }}></div>
+                                            <div className="absolute bottom-4 left-2/3 w-1 h-1 bg-amber-300 rounded-full shadow-sm" style={{ animation: 'sparkle 4s infinite 2s' }}></div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Borde interno brillante */}
+                                <div className="absolute inset-0 rounded-2xl border border-white/30"></div>
+                            </div>
+                            
+                            {/* Texto del porcentaje sutil */}
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="relative">
+                                    <span className="text-white font-bold text-lg sm:text-3xl drop-shadow-lg relative z-10">
+                                        {displayValue}%
+                                    </span>
+                                    <div className="absolute inset-0 text-amber-200 blur-sm opacity-30 text-lg sm:text-3xl font-bold">
+                                        {displayValue}%
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {/* Marcadores de progreso premium - Ocultos en todas las pantallas */}
+                            <div className="hidden absolute top-0 left-0 w-full h-full items-center">
+                                {[25, 50, 75].map((mark) => (
+                                    <div 
+                                        key={mark}
+                                        className={`absolute w-1 h-full transition-all duration-500 ${
+                                            displayValue >= mark 
+                                                ? 'bg-gradient-to-t from-white/80 to-yellow-300/80 shadow-lg' 
+                                                : 'bg-slate-500/30'
+                                        }`}
+                                        style={{ left: `${mark}%` }}
+                                    >
+                                        <div className={`absolute -top-9 left-1/2 transform -translate-x-1/2 px-2 py-1 rounded-lg text-xs font-bold transition-all duration-500 ${
+                                            displayValue >= mark 
+                                                ? 'text-white bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg' 
+                                                : 'text-gray-500 bg-slate-700'
+                                        }`}>
+                                            {mark}%
+                                        </div>
+                                        {displayValue >= mark && (
+                                            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full animate-pulse shadow-lg border-2 border-white/50"></div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Indicador de meta alcanzada súper especial */}
+                            {displayValue >= 100 && (
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-green-500/30 via-emerald-500/30 to-green-500/30 rounded-2xl animate-pulse"></div>
+                                    <div className="text-emerald-300 font-black text-lg animate-bounce">
+                                        ✨ ¡SORTEO COMPLETO! ✨
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Reflexión de cristal */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent rounded-2xl pointer-events-none"></div>
+                        </div>
+
+                        {/* Barra de estado mejorada */}
+                        <div className="flex justify-between items-center mt-4 text-sm">
+                            <div className="flex items-center space-x-3">
+                                <div className={`w-3 h-3 rounded-full shadow-lg ${
+                                    displayValue < 30 ? 'bg-gradient-to-r from-red-400 to-orange-400' : 
+                                    displayValue < 70 ? 'bg-gradient-to-r from-yellow-400 to-amber-400' : 
+                                    'bg-gradient-to-r from-green-400 to-emerald-400'
+                                } animate-pulse`}></div>
+                                <span className="text-gray-300 font-medium">
+                                    {displayValue < 30 ? '🚀 Comenzando' : 
+                                     displayValue < 70 ? '⚡ Acelerando' : 
+                                     displayValue < 100 ? '🔥 Casi listo' : '🎉 ¡Completo!'}
                                 </span>
                             </div>
-                            <div className="text-lg sm:text-xl font-bold text-amber-400">{porcentajeRestante}%</div>
-                            <div className="text-[10px] sm:text-xs text-gray-400">por completar</div>
+                            <div className="text-gray-400 font-medium">
+                                {100 - displayValue}% restante
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -241,10 +281,6 @@ export function AnimatedCircularProgressBarDemo() {
                 {/* Status Bar */}
                 <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-600">
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse"></div>
-                            <span className="text-[10px] sm:text-xs text-gray-300">Estado: {dataSorteo.data?.EstadoSorteo}</span>
-                        </div>
                         <div className="text-[10px] sm:text-xs text-gray-400">
                             Actualizado hace menos de 1 minuto
                         </div>
@@ -252,77 +288,43 @@ export function AnimatedCircularProgressBarDemo() {
                 </div>
             </div>
 
-            {/* Información Ejecutiva */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
-                <Card className="border border-gray-600 bg-slate-800/90 backdrop-blur-sm shadow-sm">
+            {/* Información Ejecutiva con UX Mejorada */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
+                <Card className="border border-gray-600 bg-slate-800/90 backdrop-blur-sm shadow-sm transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/20 hover:border-amber-500/50 hover:-translate-y-1 group">
                     <CardContent className="p-3 sm:p-4">
                         <div className="flex items-start space-x-2 sm:space-x-3">
-                            <div className="p-1.5 sm:p-2 bg-amber-500/20 rounded-lg">
-                                <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" />
+                            <div className="p-1.5 sm:p-2 bg-amber-500/20 rounded-lg transition-all duration-300 group-hover:bg-amber-500/30 group-hover:scale-110">
+                                <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 transition-all duration-300 group-hover:text-amber-300" />
                             </div>
                             <div className="flex-1">
-                                <h4 className="font-semibold text-white text-sm sm:text-base mb-1">
+                                <h4 className="font-semibold text-white text-sm sm:text-base mb-1 transition-colors duration-300 group-hover:text-amber-100">
                                     Condición de Sorteo
                                 </h4>
-                                <p className="text-gray-300 leading-relaxed text-xs sm:text-sm">
+                                <p className="text-gray-300 leading-relaxed text-xs sm:text-sm transition-colors duration-300 group-hover:text-gray-200">
                                     El sorteo se ejecutará únicamente al alcanzar el 100% de participaciones vendidas.
                                 </p>
+                              
                             </div>
                         </div>
                     </CardContent>
                 </Card>
 
-                <Card className="border border-gray-600 bg-slate-800/90 backdrop-blur-sm shadow-sm">
+                <Card className="border border-gray-600 bg-slate-800/90 backdrop-blur-sm shadow-sm transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 hover:border-blue-500/50 hover:-translate-y-1 group">
                     <CardContent className="p-3 sm:p-4">
                         <div className="flex items-start space-x-2 sm:space-x-3">
-                            <div className="p-1.5 sm:p-2 bg-blue-500/20 rounded-lg">
-                                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+                            <div className="p-1.5 sm:p-2 bg-blue-500/20 rounded-lg transition-all duration-300 group-hover:bg-blue-500/30 group-hover:scale-110">
+                                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 transition-all duration-300 group-hover:text-blue-300" />
                             </div>
                             <div className="flex-1">
-                                <h4 className="font-semibold text-white text-sm sm:text-base mb-1">
+                                <h4 className="font-semibold text-white text-sm sm:text-base mb-1 transition-colors duration-300 group-hover:text-blue-100">
                                     Metodología
                                 </h4>
-                                <p className="text-gray-300 leading-relaxed text-xs sm:text-sm">
-                                    El número ganador se determinará mediante los últimos 5 dígitos de la Lotería Nacional.
+                                <p className="text-gray-300 leading-relaxed text-xs sm:text-sm transition-colors duration-300 group-hover:text-gray-200">
+                                    El número ganador se determinará mediante los últimos 4 dígitos de la Lotería Nacional.
                                 </p>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <Card className="border border-gray-600 bg-slate-800/90 backdrop-blur-sm shadow-sm">
-                    <CardContent className="p-3 sm:p-4">
-                        <div className="flex items-start space-x-2 sm:space-x-3">
-                            <div className="p-1.5 sm:p-2 bg-slate-600/30 rounded-lg">
-                                <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-300" />
-                            </div>
-                            <div className="flex-1">
-                                <h4 className="font-semibold text-white text-sm sm:text-base mb-1">
-                                    Estado Actual
-                                </h4>
-                                <div className="text-gray-300 space-y-1 text-xs sm:text-sm">
-                                    <div className="flex justify-between">
-                                        <span>Completado:</span>
-                                        <span className="font-medium text-white">{displayValue}%</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>Restante:</span>
-                                        <span className="font-medium text-amber-400">{porcentajeRestante}%</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>Progreso:</span>
-                                        <span className="font-medium text-white">{displayValue}/100%</span>
-                                    </div>
-                                    {displayValue < 100 && (
-                                        <div className="pt-1 border-t border-gray-600">
-                                            <div className="flex items-center space-x-1 sm:space-x-2">
-                                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-500 rounded-full animate-pulse"></div>
-                                                <span className="text-[10px] sm:text-xs text-amber-400 font-medium">
-                                                    Faltan {porcentajeRestante}% para el sorteo
-                                                </span>
-                                            </div>
-                                        </div>
-                                    )}
+                                <div className="mt-2 flex items-center space-x-1">
+                                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                                    <span className="text-xs text-blue-400">Sistema verificado</span>
                                 </div>
                             </div>
                         </div>
