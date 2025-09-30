@@ -14,7 +14,7 @@ export function Footer() {
                     <div className="space-y-4">
                         <div className="flex items-center space-x-3">
                             <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                                <span className="text-xl font-bold">SR</span>
+                                <img src="/img/logoSR.png" alt="Logo SobreRuedasEc" className="w-12 h-12 object-contain" />
                             </div>
                             <span className="text-xl font-bold">SobreRuedas</span>
                         </div>
@@ -55,7 +55,7 @@ export function Footer() {
                                     Registrarse
                                 </a>
                             </li>
-                          
+
                         </ul>
                     </div>
 
@@ -81,7 +81,7 @@ export function Footer() {
                                     <span>Reglamento del Sorteo</span>
                                 </a>
                             </li>
-                         
+
                         </ul>
                     </div>
 
@@ -135,7 +135,7 @@ export function Footer() {
                                 © 2025 SobreRuedas Ecuador. Todos los derechos reservados.
                             </p>
                             <p className="text-slate-400 text-sm">
-                                ® Desarrollado por GarciaSystem. +593989619225
+                                ® Desarrollado por GarciaSystem.
                             </p>
                             <p className="text-slate-500 text-xs mt-1">
                                 Sorteo {DataSorteo.data?.Premio}.
