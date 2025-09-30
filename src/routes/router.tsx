@@ -65,6 +65,15 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
     //  },
   });
 
+  const UsuarioBoletosCompradosRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/usuario/boletosComprados',
+    component: lazy(() => import('@/pages/dashboard/usuario/boletos-comprados')),
+    // beforeLoad: () => {
+    //   if (isAuthenticated()) throw redirect({ to: '/home' });
+    //  },
+  });
+
   const loginRootRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/login',
@@ -139,7 +148,8 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
     loginRootRoute,
     RegisterRootRoute,
     DashboardRootRoute,
-    UsuarioCompraRootRoute
+    UsuarioCompraRootRoute,
+    UsuarioBoletosCompradosRoute
     // homeRoute,
     // fallbackRoute,
     // ...dynamic,

@@ -12,7 +12,6 @@ import {
     CreditCard,
     Gift,
     HelpCircle,
-    Star,
     Target,
     Wallet,
     TrendingUp,
@@ -253,27 +252,7 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
                 items: [
                     { title: "Comprar", url: "/usuario/compraSorteo" },
                     { title: "Sorteo Activo", url: "/dashboard" },
-                    { title: "Ganadores", url: "/sorteos/winners" }
-                ]
-            },
-            {
-                title: "Mis Participaciones",
-                url: "/participaciones",
-                icon: Star,
-                items: [
-
-                    { title: "Números Comprados", url: "/participaciones/my-numbers" },
-                    { title: "Historial", url: "/participaciones/history" }
-                ]
-            },
-            {
-                title: "Información",
-                url: "/informacion",
-                icon: FileText,
-                items: [
-                    { title: "Cómo Participar", url: "/info/how-to" },
-                    { title: "Términos", url: "/info/terms" },
-                    { title: "Contacto", url: "/info/contact" }
+                    { title: "Boletos", url: "/usuario/boletosComprados" }
                 ]
             }
         ],
