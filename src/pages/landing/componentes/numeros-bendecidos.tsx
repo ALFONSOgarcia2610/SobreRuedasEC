@@ -11,23 +11,23 @@ interface NumerosBendecidosProps {
 
 export function NumerosBendecidos({ className, isLoading = false }: NumerosBendecidosProps) {
     const [numerosGanadores] = useState([
-        { numero: "01013", premio: "¡Premio Entregado!", entregado: true, monto: 300 },
-        { numero: "16528", premio: "¡Premio Entregado!", entregado: true, monto: 150 },
-        { numero: "24390", premio: "¡Premio Entregado!", entregado: true, monto: 50 },
-        { numero: "31431", premio: "Disponible", entregado: false, monto: 50 },
-        { numero: "40774", premio: "Disponible", entregado: false, monto: 50 },
-        { numero: "55321", premio: "¡Premio Entregado!", entregado: true, monto: 50 },
-        { numero: "67890", premio: "Disponible", entregado: false, monto: 50 },
-        { numero: "74182", premio: "¡Premio Entregado!", entregado: true, monto: 50 },
-        { numero: "85723", premio: "Disponible", entregado: false, monto: 50 },
-        { numero: "90198", premio: "Disponible", entregado: false, monto: 50 }
+        { numero: "01013", premio: "¡Premio Entregado!", entregado: true },
+        { numero: "16528", premio: "¡Premio Entregado!", entregado: true },
+        { numero: "24390", premio: "¡Premio Entregado!", entregado: true },
+        { numero: "31431", premio: "Disponible", entregado: false },
+        { numero: "40774", premio: "Disponible", entregado: false },
+        { numero: "55321", premio: "¡Premio Entregado!", entregado: true },
+        { numero: "67890", premio: "Disponible", entregado: false },
+        { numero: "74182", premio: "¡Premio Entregado!", entregado: true },
+        { numero: "85723", premio: "Disponible", entregado: false },
+        { numero: "90198", premio: "Disponible", entregado: false }
     ]);
-    
+
     // Función para formatear números sin espacios
     const formatNumberWithSpaces = (numero: string) => {
         return numero; // Sin espacios
     };
-    
+
     useEffect(() => {
         // Ya no necesitamos animación del índice actual
         return;
@@ -101,8 +101,8 @@ export function NumerosBendecidos({ className, isLoading = false }: NumerosBende
             {/* Lista de Números - Una columna en móvil, 5 columnas en pantallas grandes */}
             <div className="max-w-sm mx-auto lg:max-w-6xl grid grid-cols-1 lg:grid-cols-5 gap-3 lg:gap-4 mb-6 sm:mb-8">
                 {numerosGanadores.map((item) => (
-                    <div 
-                        key={item.numero} 
+                    <div
+                        key={item.numero}
                         className="text-center p-2 lg:p-3"
                     >
                         {/* Número con tachado elegante si está entregado */}
@@ -116,7 +116,7 @@ export function NumerosBendecidos({ className, isLoading = false }: NumerosBende
                                 </div>
                             )}
                         </div>
-                        
+
                         {/* Estado */}
                         <div className="mb-2">
                             {item.entregado ? (
@@ -128,11 +128,6 @@ export function NumerosBendecidos({ className, isLoading = false }: NumerosBende
                                     Premio Disponible
                                 </span>
                             )}
-                        </div>
-                        
-                        {/* Monto debajo del estado */}
-                        <div className="text-lg lg:text-base font-semibold text-white">
-                            ${item.monto}
                         </div>
                     </div>
                 ))}

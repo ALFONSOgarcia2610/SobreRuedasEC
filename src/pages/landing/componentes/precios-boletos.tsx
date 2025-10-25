@@ -1,54 +1,60 @@
 import { Card } from "@/components/ui/card";
 import { ShinyButton } from "@/components/ui/shiny-button";
 import { Link } from "@tanstack/react-router";
-import { 
-    Hash, 
-    TrendingUp, 
-    Star, 
-    Shield, 
-    CheckCircle, 
+import {
+    Hash,
+    TrendingUp,
+    Star,
+    Shield,
+    CheckCircle,
     Target,
     Lightbulb,
     ArrowRight,
     Crown
 } from "lucide-react";
+import { useSorteoCarros } from "@/pages/services/landing.query";
 
 export function PreciosBoletos() {
+    const DataSorteo = useSorteoCarros();
+
+    // Precio base por boleto desde el sorteo activo
+    const precioBase = DataSorteo.data?.precioporboleto || 1.00;
+
     const paquetes = [
         {
             numeros: 6,
-            precio: 9,
+            precio: precioBase * 6,
             popular: false,
             descripcion: "Participación básica"
         },
         {
             numeros: 8,
-            precio: 12,
+            precio: precioBase * 8,
             popular: false,
             descripcion: "Oportunidad estándar"
         },
         {
             numeros: 10,
-            precio: 15,
+            precio: precioBase * 10,
             popular: true,
             badge: "RECOMENDADO",
             descripcion: "Mejor relación precio-valor"
         },
         {
             numeros: 20,
-            precio: 30,
+            precio: precioBase * 20,
             popular: false,
             descripcion: "Participación avanzada"
         },
         {
             numeros: 50,
-            precio: 75,
+            precio: precioBase * 50,
             popular: false,
             descripcion: "Oportunidad premium"
         },
         {
             numeros: 100,
-            precio: 150,
+            precio: precioBase * 100,
             popular: false,
             descripcion: "Máxima participación"
         }
@@ -58,14 +64,14 @@ export function PreciosBoletos() {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8 lg:py-12">
             {/* Título principal */}
             <div className="text-center mb-6 sm:mb-8 md:mb-12">
-             
+
                 <h2 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight">
                     Seleccione Su Plan de
                     <span className="block text-amber-400 text-base sm:text-xl md:text-2xl lg:text-3xl mt-1">Participación Oficial</span>
                 </h2>
-                
+
                 <p className="text-xs sm:text-sm md:text-base text-gray-300 max-w-3xl mx-auto leading-relaxed px-2 sm:px-0">
-                    Elija el paquete que mejor se adapte a sus necesidades. Cada número tiene las mismas 
+                    Elija el paquete que mejor se adapte a sus necesidades. Cada número tiene las mismas
                     probabilidades de resultar ganador en nuestro sorteo certificado y auditado.
                 </p>
             </div>
@@ -110,7 +116,7 @@ export function PreciosBoletos() {
                         {/* Precio */}
                         <div className="mb-1 sm:mb-2">
                             <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-0.5">
-                                ${paquete.precio}
+                                ${paquete.precio.toFixed(2)}
                             </div>
                             <p className="text-xs text-gray-400">USD</p>
                         </div>
@@ -169,9 +175,9 @@ export function PreciosBoletos() {
                             Estrategia Inteligente
                         </h4>
                     </div>
-                    
+
                     <p className="text-gray-300 max-w-3xl mx-auto text-xs sm:text-sm md:text-base leading-relaxed mb-2 sm:mb-3 md:mb-4 px-2 sm:px-0">
-                        Los paquetes de mayor cantidad ofrecen más oportunidades. 
+                        Los paquetes de mayor cantidad ofrecen más oportunidades.
                         Múltiples números incrementan sus posibilidades estadísticas.
                     </p>
 
@@ -183,7 +189,7 @@ export function PreciosBoletos() {
                             <h5 className="font-bold text-white mb-0.5 sm:mb-1 text-[10px] sm:text-xs md:text-sm">Más Números</h5>
                             <p className="text-[10px] sm:text-xs text-gray-300 hidden sm:block">Mayor probabilidad estadística</p>
                         </div>
-                        
+
                         <div className="bg-slate-700/50 rounded-lg p-2 sm:p-3 md:p-4 border border-gray-600 shadow-sm">
                             <Target size={16} className="text-green-400 mx-auto mb-0.5 sm:mb-1 md:hidden" />
                             <Target size={20} className="text-green-400 mx-auto mb-1 hidden md:block sm:hidden" />
@@ -191,7 +197,7 @@ export function PreciosBoletos() {
                             <h5 className="font-bold text-white mb-0.5 sm:mb-1 text-[10px] sm:text-xs md:text-sm">Mejor Valor</h5>
                             <p className="text-[10px] sm:text-xs text-gray-300 hidden sm:block">Optimización de inversión</p>
                         </div>
-                        
+
                         <div className="bg-slate-700/50 rounded-lg p-2 sm:p-3 md:p-4 border border-gray-600 shadow-sm">
                             <Star size={16} className="text-purple-400 mx-auto mb-0.5 sm:mb-1 md:hidden" />
                             <Star size={20} className="text-purple-400 mx-auto mb-1 hidden md:block sm:hidden" />

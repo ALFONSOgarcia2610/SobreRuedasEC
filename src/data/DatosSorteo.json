@@ -3,7 +3,7 @@
     "data": {
         "id": 1,
         "Premio": "Chevrolet Sail",
-        "precioporboleto": 1.50,
+        "precioporboleto": 1.00,
         "EstadoSorteo": "Completado",
         "NumeroSorteo": "001",
         "TotalBoletos": 99999,

@@ -35,8 +35,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const roleConfig = getRoleConfig(currentUser.role)
 
   return (
-    <Sidebar variant="inset" {...props} className="bg-[#020617] border-slate-800">
-      <SidebarHeader className="bg-gradient-to-br from-[#020617] to-slate-900">
+    <Sidebar variant="inset" {...props} className="bg-slate-800 border-slate-800">
+      <SidebarHeader className="bg-slate-800">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild className="hover:bg-slate-800/50">
@@ -61,11 +61,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent className="bg-[#020617]">
+      <SidebarContent className="bg-slate-800">
         <NavMain items={roleConfig.navMain} userRole={currentUser.role} />
         <NavSecondary items={roleConfig.navSecondary} />
       </SidebarContent>
-      <SidebarFooter className="bg-gradient-to-br from-[#020617] to-slate-900 border-t border-slate-700">
+      <SidebarFooter className="bg-slate-800 border-t border-slate-700">
         <NavUser
           user={{
             name: currentUser.name,

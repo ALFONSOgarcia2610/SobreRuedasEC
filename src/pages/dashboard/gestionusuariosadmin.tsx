@@ -11,7 +11,7 @@ export default function PageGestionUsuariosAdmin() {
   return (
     <SidebarPage breadcrumbs={breadcrumbs} >
 
-      <div className=" bg-[#020617] relative overflow-y-auto">
+      <div className=" bg-slate-900 relative overflow-y-auto">
         <AnimatedCircularProgressBarDemo />
       </div>
 

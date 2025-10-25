@@ -2,10 +2,21 @@ import { useEffect, useState } from 'react';
 import { RouterProvider } from '@tanstack/react-router';
 import { createAppRouter } from './router';
 import { authStore } from '@/Store/usuario.store';
+import { useSorteoCarros } from '@/pages/services/landing.query';
 
 
 export const AppRouter = () => {
   const [router, setRouter] = useState<any>(null);
+  const DataSorteo = useSorteoCarros();
+
+  // Actualizar el título dinámicamente basado en los datos del sorteo
+  useEffect(() => {
+    if (DataSorteo.data?.Premio) {
+      document.title = `SobreRuedasEc - Sorteo ${DataSorteo.data.Premio}`;
+    } else {
+      document.title = 'SobreRuedasEc';
+    }
+  }, [DataSorteo.data]);
 
   useEffect(() => {
     const unsubscribe = authStore.subscribe(async () => {

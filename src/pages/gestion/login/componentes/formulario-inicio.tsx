@@ -4,11 +4,16 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Link } from "@tanstack/react-router"
+import { useState } from "react"
+import { TerminosCondiciones, PoliticaPrivacidad } from "@/pages/landing/componentes/modales"
 
 export default function LoginForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
+    const [terminosOpen, setTerminosOpen] = useState(false);
+    const [privacidadOpen, setPrivacidadOpen] = useState(false);
+
     return (
         <div className={cn("flex flex-col gap-4 sm:gap-6", className)} {...props}>
             <Card className="overflow-hidden p-0 bg-slate-800 border-slate-700">
@@ -107,9 +112,26 @@ export default function LoginForm({
             </Card>
             <div className="text-gray-400 text-center text-[10px] sm:text-xs text-balance">
                 Al hacer clic en Iniciar Sesión, aceptas nuestros{" "}
-                <a href="#" className="underline underline-offset-4 text-amber-400 hover:text-amber-300">Términos de Servicio</a>{" "}
-                y <a href="#" className="underline underline-offset-4 text-amber-400 hover:text-amber-300">Política de Privacidad</a>.
+                <button
+                    type="button"
+                    onClick={() => setTerminosOpen(true)}
+                    className="underline underline-offset-4 text-amber-400 hover:text-amber-300"
+                >
+                    Términos de Servicio
+                </button>{" "}
+                y{" "}
+                <button
+                    type="button"
+                    onClick={() => setPrivacidadOpen(true)}
+                    className="underline underline-offset-4 text-amber-400 hover:text-amber-300"
+                >
+                    Política de Privacidad
+                </button>.
             </div>
+
+            {/* Modales */}
+            <TerminosCondiciones isOpen={terminosOpen} onClose={() => setTerminosOpen(false)} />
+            <PoliticaPrivacidad isOpen={privacidadOpen} onClose={() => setPrivacidadOpen(false)} />
         </div>
     )
 }

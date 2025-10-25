@@ -14,9 +14,10 @@ export default function LandingPage() {
     const DataSorteo = useSorteoCarros();
 
     return (
-        <div className="min-h-screen w-full bg-[#020617] relative">
+        <div className="min-h-screen w-full bg-slate-900 relative">
             {/* Dark Radial Glow Background */}
             <Header />
+
             {/* Hero Section */}
             <section className="max-w-6xl mx-auto px-4 py-16 pt-32">
                 <div className="text-center -mt-10">
@@ -29,7 +30,6 @@ export default function LandingPage() {
                         ¡El volante de tus sueños puede ser tuyo!
                     </p>
                 </div>
-
                 <GestionImaganes />
             </section >
             <section className="-mt-25">

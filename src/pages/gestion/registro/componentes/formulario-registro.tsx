@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { UserPlus, Shield, Gift } from "lucide-react"
 import { useState } from "react"
 import { Link } from "@tanstack/react-router"
+import { TerminosCondiciones, PoliticaPrivacidad } from "@/pages/landing/componentes/modales"
 
 export default function RegistroForm({
     className,
@@ -15,6 +16,8 @@ export default function RegistroForm({
     const [aceptaTerminos, setAceptaTerminos] = useState(false);
     const [aceptaPrivacidad, setAceptaPrivacidad] = useState(false);
     const [recibirPromociones, setRecibirPromociones] = useState(true);
+    const [terminosOpen, setTerminosOpen] = useState(false);
+    const [privacidadOpen, setPrivacidadOpen] = useState(false);
 
     return (
         <div className={cn("flex flex-col gap-4 sm:gap-6", className)} {...props}>
@@ -34,7 +37,7 @@ export default function RegistroForm({
 
                         {/* Formulario en dos columnas */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
-                            
+
                             {/* Columna Izquierda */}
                             <div className="space-y-4 sm:space-y-6">
                                 {/* Datos Personales */}
@@ -107,22 +110,22 @@ export default function RegistroForm({
 
                                     <div className="grid gap-1.5 sm:gap-2">
                                         <Label htmlFor="password" className="text-gray-300 text-xs sm:text-sm">Contraseña *</Label>
-                                        <Input 
-                                            id="password" 
-                                            type="password" 
+                                        <Input
+                                            id="password"
+                                            type="password"
                                             placeholder="Mínimo 8 caracteres"
-                                            required 
+                                            required
                                             className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-9 sm:h-10"
                                         />
                                     </div>
 
                                     <div className="grid gap-1.5 sm:gap-2">
                                         <Label htmlFor="confirmarPassword" className="text-gray-300 text-xs sm:text-sm">Confirmar Contraseña *</Label>
-                                        <Input 
-                                            id="confirmarPassword" 
-                                            type="password" 
+                                        <Input
+                                            id="confirmarPassword"
+                                            type="password"
                                             placeholder="Repite tu contraseña"
-                                            required 
+                                            required
                                             className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-9 sm:h-10"
                                         />
                                     </div>
@@ -197,7 +200,7 @@ export default function RegistroForm({
 
                                     <div className="space-y-3 sm:space-y-4">
                                         <div className="flex items-start space-x-2 sm:space-x-3">
-                                            <Checkbox 
+                                            <Checkbox
                                                 id="terminos"
                                                 checked={aceptaTerminos}
                                                 onCheckedChange={(checked) => setAceptaTerminos(checked as boolean)}
@@ -206,16 +209,23 @@ export default function RegistroForm({
                                             <div className="flex-1">
                                                 <Label htmlFor="terminos" className="text-xs sm:text-sm leading-relaxed cursor-pointer text-gray-300">
                                                     Acepto los{" "}
-                                                    <a href="#" className="text-amber-400 underline hover:text-amber-300 font-medium">
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            setTerminosOpen(true);
+                                                        }}
+                                                        className="text-amber-400 underline hover:text-amber-300 font-medium"
+                                                    >
                                                         Términos y Condiciones
-                                                    </a>{" "}
+                                                    </button>{" "}
                                                     del sorteo *
                                                 </Label>
                                             </div>
                                         </div>
 
                                         <div className="flex items-start space-x-2 sm:space-x-3">
-                                            <Checkbox 
+                                            <Checkbox
                                                 id="privacidad"
                                                 checked={aceptaPrivacidad}
                                                 onCheckedChange={(checked) => setAceptaPrivacidad(checked as boolean)}
@@ -224,16 +234,23 @@ export default function RegistroForm({
                                             <div className="flex-1">
                                                 <Label htmlFor="privacidad" className="text-xs sm:text-sm leading-relaxed cursor-pointer text-gray-300">
                                                     Acepto la{" "}
-                                                    <a href="#" className="text-amber-400 underline hover:text-amber-300 font-medium">
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            setPrivacidadOpen(true);
+                                                        }}
+                                                        className="text-amber-400 underline hover:text-amber-300 font-medium"
+                                                    >
                                                         Política de Privacidad
-                                                    </a>{" "}
+                                                    </button>{" "}
                                                     y el tratamiento de mis datos *
                                                 </Label>
                                             </div>
                                         </div>
 
                                         <div className="flex items-start space-x-2 sm:space-x-3">
-                                            <Checkbox 
+                                            <Checkbox
                                                 id="promociones"
                                                 checked={recibirPromociones}
                                                 onCheckedChange={(checked) => setRecibirPromociones(checked as boolean)}
@@ -254,7 +271,7 @@ export default function RegistroForm({
                                             <div className="text-[10px] sm:text-xs text-amber-200">
                                                 <p className="font-semibold mb-1">Importante:</p>
                                                 <p>
-                                                    Todos los datos son verificados antes de la entrega del premio. 
+                                                    Todos los datos son verificados antes de la entrega del premio.
                                                     Asegúrate de que la información sea correcta y actualizada.
                                                 </p>
                                             </div>
@@ -266,8 +283,8 @@ export default function RegistroForm({
 
                         {/* Botón de Registro - Ancho completo */}
                         <div className="mt-6 sm:mt-8 space-y-3 sm:space-y-4">
-                            <Button 
-                                type="submit" 
+                            <Button
+                                type="submit"
                                 className="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-2.5 sm:py-3 text-sm sm:text-base h-10 sm:h-11"
                                 disabled={!aceptaTerminos || !aceptaPrivacidad}
                             >
@@ -286,17 +303,9 @@ export default function RegistroForm({
                     </form>
                 </CardContent>
             </Card>
-
-            {/* Footer Legal */}
-            <div className="text-gray-400 text-center text-[10px] sm:text-xs text-balance space-y-1 sm:space-y-2">
-                <p>
-                    Al crear tu cuenta, confirmas que tienes al menos 18 años y aceptas participar 
-                    en sorteos regidos por la legislación ecuatoriana.
-                </p>
-                <p>
-                    Todos los sorteos están supervisados y son transparentes según la normativa vigente.
-                </p>
-            </div>
+            {/* Modales */}
+            <TerminosCondiciones isOpen={terminosOpen} onClose={() => setTerminosOpen(false)} />
+            <PoliticaPrivacidad isOpen={privacidadOpen} onClose={() => setPrivacidadOpen(false)} />
         </div>
     )
 }

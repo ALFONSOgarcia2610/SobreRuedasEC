@@ -101,7 +101,7 @@ export function AnimatedCircularProgressBarDemo() {
     const totalBoletos = dataSorteo.data?.TotalBoletos || 1000;
     const boletosVendidos = dataSorteo.data?.BoletosVendidos || 0;
     const targetValue = Math.round((boletosVendidos / totalBoletos) * 100); // Porcentaje base
-  
+
 
     useEffect(() => {
         // Solo ejecutar animación cuando tengamos datos
@@ -157,41 +157,38 @@ export function AnimatedCircularProgressBarDemo() {
                         {/* Etiquetas de progreso elegantes */}
                         <div className="flex justify-between items-center mb-4">
                             <div className="flex items-center space-x-3">
-                                <div className="relative">
-                                    <div className="w-4 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-pulse"></div>
-                                    <div className="absolute inset-0 w-4 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-ping opacity-75"></div>
-                                </div>
+                                <CheckCircle className="w-6 h-6 text-green-400" />
                                 <span className="text-lg font-semibold text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text">
                                     Progreso del Sorteo
                                 </span>
                             </div>
-                           
+
                         </div>
 
                         {/* Barra de progreso súper bonita */}
                         <div className="relative h-6 sm:h-12 bg-gradient-to-r from-slate-800 to-slate-700 rounded-2xl overflow-hidden border-2 border-slate-600/50 progress-bar shadow-2xl">
                             {/* Fondo con efecto cristal */}
                             <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-slate-800/80 backdrop-blur-sm"></div>
-                            
+
                             {/* Barra de progreso principal ultra bonita */}
-                            <div 
+                            <div
                                 className="h-full beautiful-bar rounded-2xl relative overflow-hidden shadow-xl transition-all duration-1000 ease-out"
                                 style={{ width: `${displayValue >= targetValue ? animationValue : value}%` }}
                             >
                                 {/* Capa de brillo sutil */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/10 to-white/20 rounded-2xl"></div>
-                                
+
                                 {/* Efectos de flujo suaves */}
                                 <div className="absolute inset-0 overflow-hidden rounded-2xl">
                                     {/* Onda principal suave */}
-                                    <div 
+                                    <div
                                         className="absolute h-full w-24 bg-gradient-to-r from-transparent via-yellow-200/30 to-transparent"
                                         style={{
                                             animation: 'slide 6s linear infinite',
                                             transform: 'translateX(-100%)'
                                         }}
                                     ></div>
-                                    
+
                                     {/* Partículas sparkle sutiles - Solo en pantallas grandes */}
                                     {displayValue > 20 && (
                                         <div className="hidden sm:block">
@@ -204,7 +201,7 @@ export function AnimatedCircularProgressBarDemo() {
                                 {/* Borde interno brillante */}
                                 <div className="absolute inset-0 rounded-2xl border border-white/30"></div>
                             </div>
-                            
+
                             {/* Texto del porcentaje sutil */}
                             <div className="absolute inset-0 flex items-center justify-center">
                                 <div className="relative">
@@ -216,24 +213,22 @@ export function AnimatedCircularProgressBarDemo() {
                                     </div>
                                 </div>
                             </div>
-                            
+
                             {/* Marcadores de progreso premium - Ocultos en todas las pantallas */}
                             <div className="hidden absolute top-0 left-0 w-full h-full items-center">
                                 {[25, 50, 75].map((mark) => (
-                                    <div 
+                                    <div
                                         key={mark}
-                                        className={`absolute w-1 h-full transition-all duration-500 ${
-                                            displayValue >= mark 
-                                                ? 'bg-gradient-to-t from-white/80 to-yellow-300/80 shadow-lg' 
-                                                : 'bg-slate-500/30'
-                                        }`}
+                                        className={`absolute w-1 h-full transition-all duration-500 ${displayValue >= mark
+                                            ? 'bg-gradient-to-t from-white/80 to-yellow-300/80 shadow-lg'
+                                            : 'bg-slate-500/30'
+                                            }`}
                                         style={{ left: `${mark}%` }}
                                     >
-                                        <div className={`absolute -top-9 left-1/2 transform -translate-x-1/2 px-2 py-1 rounded-lg text-xs font-bold transition-all duration-500 ${
-                                            displayValue >= mark 
-                                                ? 'text-white bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg' 
-                                                : 'text-gray-500 bg-slate-700'
-                                        }`}>
+                                        <div className={`absolute -top-9 left-1/2 transform -translate-x-1/2 px-2 py-1 rounded-lg text-xs font-bold transition-all duration-500 ${displayValue >= mark
+                                            ? 'text-white bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg'
+                                            : 'text-gray-500 bg-slate-700'
+                                            }`}>
                                             {mark}%
                                         </div>
                                         {displayValue >= mark && (
@@ -248,7 +243,7 @@ export function AnimatedCircularProgressBarDemo() {
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <div className="absolute inset-0 bg-gradient-to-r from-green-500/30 via-emerald-500/30 to-green-500/30 rounded-2xl animate-pulse"></div>
                                     <div className="text-emerald-300 font-black text-lg animate-bounce">
-                                        ✨ ¡SORTEO COMPLETO! ✨
+                                        ¡SORTEO COMPLETO!
                                     </div>
                                 </div>
                             )}
@@ -260,15 +255,14 @@ export function AnimatedCircularProgressBarDemo() {
                         {/* Barra de estado mejorada */}
                         <div className="flex justify-between items-center mt-4 text-sm">
                             <div className="flex items-center space-x-3">
-                                <div className={`w-3 h-3 rounded-full shadow-lg ${
-                                    displayValue < 30 ? 'bg-gradient-to-r from-red-400 to-orange-400' : 
-                                    displayValue < 70 ? 'bg-gradient-to-r from-yellow-400 to-amber-400' : 
-                                    'bg-gradient-to-r from-green-400 to-emerald-400'
-                                } animate-pulse`}></div>
+                                <div className={`w-3 h-3 rounded-full shadow-lg ${displayValue < 30 ? 'bg-gradient-to-r from-red-400 to-orange-400' :
+                                    displayValue < 70 ? 'bg-gradient-to-r from-yellow-400 to-amber-400' :
+                                        'bg-gradient-to-r from-green-400 to-emerald-400'
+                                    } animate-pulse`}></div>
                                 <span className="text-gray-300 font-medium">
-                                    {displayValue < 30 ? '🚀 Comenzando' : 
-                                     displayValue < 70 ? '⚡ Acelerando' : 
-                                     displayValue < 100 ? '🔥 Casi listo' : '🎉 ¡Completo!'}
+                                    {displayValue < 30 ? 'Comenzando' :
+                                        displayValue < 70 ? 'Acelerando' :
+                                            displayValue < 100 ? 'Casi listo' : '¡Completo!'}
                                 </span>
                             </div>
                             <div className="text-gray-400 font-medium">
@@ -303,7 +297,7 @@ export function AnimatedCircularProgressBarDemo() {
                                 <p className="text-gray-300 leading-relaxed text-xs sm:text-sm transition-colors duration-300 group-hover:text-gray-200">
                                     El sorteo se ejecutará únicamente al alcanzar el 100% de participaciones vendidas.
                                 </p>
-                              
+
                             </div>
                         </div>
                     </CardContent>
