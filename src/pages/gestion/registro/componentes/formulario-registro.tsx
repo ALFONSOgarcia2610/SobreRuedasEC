@@ -16,8 +16,6 @@ export default function RegistroForm({
     const [aceptaTerminos, setAceptaTerminos] = useState(false);
     const [aceptaPrivacidad, setAceptaPrivacidad] = useState(false);
     const [recibirPromociones, setRecibirPromociones] = useState(true);
-    const [terminosOpen, setTerminosOpen] = useState(false);
-    const [privacidadOpen, setPrivacidadOpen] = useState(false);
 
     return (
         <div className={cn("flex flex-col gap-4 sm:gap-6", className)} {...props}>
@@ -209,16 +207,16 @@ export default function RegistroForm({
                                             <div className="flex-1">
                                                 <Label htmlFor="terminos" className="text-xs sm:text-sm leading-relaxed cursor-pointer text-gray-300">
                                                     Acepto los{" "}
-                                                    <button
-                                                        type="button"
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            setTerminosOpen(true);
-                                                        }}
-                                                        className="text-amber-400 underline hover:text-amber-300 font-medium"
-                                                    >
-                                                        Términos y Condiciones
-                                                    </button>{" "}
+                                                    <TerminosCondiciones
+                                                        trigger={
+                                                            <button
+                                                                type="button"
+                                                                className="text-amber-400 underline hover:text-amber-300 font-medium"
+                                                            >
+                                                                Términos y Condiciones
+                                                            </button>
+                                                        }
+                                                    />{" "}
                                                     del sorteo *
                                                 </Label>
                                             </div>
@@ -234,16 +232,16 @@ export default function RegistroForm({
                                             <div className="flex-1">
                                                 <Label htmlFor="privacidad" className="text-xs sm:text-sm leading-relaxed cursor-pointer text-gray-300">
                                                     Acepto la{" "}
-                                                    <button
-                                                        type="button"
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            setPrivacidadOpen(true);
-                                                        }}
-                                                        className="text-amber-400 underline hover:text-amber-300 font-medium"
-                                                    >
-                                                        Política de Privacidad
-                                                    </button>{" "}
+                                                    <PoliticaPrivacidad
+                                                        trigger={
+                                                            <button
+                                                                type="button"
+                                                                className="text-amber-400 underline hover:text-amber-300 font-medium"
+                                                            >
+                                                                Política de Privacidad
+                                                            </button>
+                                                        }
+                                                    />{" "}
                                                     y el tratamiento de mis datos *
                                                 </Label>
                                             </div>
@@ -303,9 +301,6 @@ export default function RegistroForm({
                     </form>
                 </CardContent>
             </Card>
-            {/* Modales */}
-            <TerminosCondiciones isOpen={terminosOpen} onClose={() => setTerminosOpen(false)} />
-            <PoliticaPrivacidad isOpen={privacidadOpen} onClose={() => setPrivacidadOpen(false)} />
         </div>
     )
 }

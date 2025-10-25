@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useSorteoCarros } from '@/pages/services/landing.query';
 import { Phone, Mail, Clock, MapPin, Facebook, Instagram, FileText, Lock, Home, PencilLine } from 'lucide-react';
 import { TerminosCondiciones, PoliticaPrivacidad, ReglamentoSorteo } from './modales';
@@ -6,9 +5,6 @@ import { TerminosCondiciones, PoliticaPrivacidad, ReglamentoSorteo } from './mod
 
 export function Footer() {
     const DataSorteo = useSorteoCarros();
-    const [terminosOpen, setTerminosOpen] = useState(false);
-    const [privacidadOpen, setPrivacidadOpen] = useState(false);
-    const [reglamentoOpen, setReglamentoOpen] = useState(false);
 
     return (
         <footer className="bg-slate-800 text-white">
@@ -70,31 +66,34 @@ export function Footer() {
                         <h3 className="text-lg font-semibold">Información Legal</h3>
                         <ul className="space-y-2">
                             <li>
-                                <button
-                                    onClick={() => setTerminosOpen(true)}
-                                    className="text-slate-300 hover:text-white transition-colors text-sm flex items-center space-x-2 cursor-pointer"
-                                >
-                                    <FileText size={14} />
-                                    <span>Términos y Condiciones</span>
-                                </button>
+                                <TerminosCondiciones
+                                    trigger={
+                                        <button className="text-slate-300 hover:text-white transition-colors text-sm flex items-center space-x-2 cursor-pointer">
+                                            <FileText size={14} />
+                                            <span>Términos y Condiciones</span>
+                                        </button>
+                                    }
+                                />
                             </li>
                             <li>
-                                <button
-                                    onClick={() => setPrivacidadOpen(true)}
-                                    className="text-slate-300 hover:text-white transition-colors text-sm flex items-center space-x-2 cursor-pointer"
-                                >
-                                    <Lock size={14} />
-                                    <span>Política de Privacidad</span>
-                                </button>
+                                <PoliticaPrivacidad
+                                    trigger={
+                                        <button className="text-slate-300 hover:text-white transition-colors text-sm flex items-center space-x-2 cursor-pointer">
+                                            <Lock size={14} />
+                                            <span>Política de Privacidad</span>
+                                        </button>
+                                    }
+                                />
                             </li>
                             <li>
-                                <button
-                                    onClick={() => setReglamentoOpen(true)}
-                                    className="text-slate-300 hover:text-white transition-colors text-sm flex items-center space-x-2 cursor-pointer"
-                                >
-                                    <FileText size={14} />
-                                    <span>Reglamento del Sorteo</span>
-                                </button>
+                                <ReglamentoSorteo
+                                    trigger={
+                                        <button className="text-slate-300 hover:text-white transition-colors text-sm flex items-center space-x-2 cursor-pointer">
+                                            <FileText size={14} />
+                                            <span>Reglamento del Sorteo</span>
+                                        </button>
+                                    }
+                                />
                             </li>
 
                         </ul>
@@ -183,11 +182,6 @@ export function Footer() {
                     </svg>
                 </a>
             </div>
-
-            {/* Modales */}
-            <TerminosCondiciones isOpen={terminosOpen} onClose={() => setTerminosOpen(false)} />
-            <PoliticaPrivacidad isOpen={privacidadOpen} onClose={() => setPrivacidadOpen(false)} />
-            <ReglamentoSorteo isOpen={reglamentoOpen} onClose={() => setReglamentoOpen(false)} />
         </footer>
     );
 }

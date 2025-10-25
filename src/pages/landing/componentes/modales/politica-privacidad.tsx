@@ -1,30 +1,32 @@
-import { X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { 
+    Dialog, 
+    DialogTrigger, 
+    DialogPopup, 
+    DialogHeader, 
+    DialogTitle, 
+    DialogDescription,
+} from "@/components/animate-ui/components/base/dialog";
 
 interface PoliticaPrivacidadProps {
-    isOpen: boolean;
-    onClose: () => void;
+    trigger: React.ReactNode;
 }
 
-export function PoliticaPrivacidad({ isOpen, onClose }: PoliticaPrivacidadProps) {
-    if (!isOpen) return null;
-
+export function PoliticaPrivacidad({ trigger }: PoliticaPrivacidadProps) {
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <div className="bg-slate-900 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-slate-700">
-                {/* Header */}
-                <div className="sticky top-0 bg-slate-800 border-b border-slate-700 px-6 py-4 flex items-center justify-between">
+        <Dialog>
+            <DialogTrigger >
+                {trigger}
+            </DialogTrigger>
+            <DialogPopup className="bg-slate-900 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-slate-700">
+                <DialogHeader className="sticky top-0 bg-slate-900 border-b border-slate-700 px-6 py-4 flex items-center justify-between">
                     <div className="flex items-center justify-center space-x-3 mb-2">
                         <img src="/img/logoSR.png" alt="Logo SobreRuedasEc" className="w-8 h-8 object-contain" />
                     </div>
-                    <h2 className="text-base font-bold text-white">Política de Privacidad y Tratamiento de Datos</h2>
-                    <button
-                        onClick={onClose}
-                        className="text-gray-400 hover:text-white transition-colors"
-                    >
-                        <X size={24} />
-                    </button>
-                </div>
+                    <DialogTitle className="text-base font-bold text-white">Política de Privacidad y Tratamiento de Datos</DialogTitle>
+                    <DialogDescription className="sr-only">
+                        Información sobre cómo recopilamos, usamos y protegemos sus datos personales
+                    </DialogDescription>
+                </DialogHeader>
 
                 {/* Content */}
                 <div className="px-6 py-6 overflow-y-auto max-h-[calc(90vh-140px)] text-gray-300">
@@ -215,17 +217,7 @@ export function PoliticaPrivacidad({ isOpen, onClose }: PoliticaPrivacidadProps)
                         </section>
                     </div>
                 </div>
-
-                {/* Footer */}
-                <div className="sticky bottom-0 bg-slate-800 border-t border-slate-700 px-6 py-4 flex justify-end">
-                    <Button
-                        onClick={onClose}
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
-                    >
-                        Entendido
-                    </Button>
-                </div>
-            </div>
-        </div>
+            </DialogPopup>
+        </Dialog>
     );
 }
