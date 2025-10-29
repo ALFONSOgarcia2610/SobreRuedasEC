@@ -1,12 +1,90 @@
 export interface User {
-    idUser: string;
-    secuencialPersona: number;
-    nombre: string;
-    identificacion: string;
-    codigo: string;
-    correo: string;
-    fechaActualizacionClave: Date;
-    periodicadClave: number;
-    cambiarClave: boolean;
-    estaActivo: boolean;
+    userId: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    loginAt?: string;
+}
+
+// DTO para Login
+export interface LoginDto {
+    email: string;
+    password: string;
+}
+
+// Respuesta del Login
+export interface LoginResponse {
+    success: boolean;
+    message: string;
+    data?: {
+        userId: string;
+        email: string;
+        firstName: string;
+        lastName: string;
+        loginAt: string;
+    };
+    errors?: string[];
+}
+
+
+
+
+export interface RegisterUserDto {
+    userStateCode: string;
+    userRoleCode: string;
+    firstName: string;
+    lastName: string;
+    address: string;
+    city: string;
+    province: string;
+    identification: string;
+    phoneNumber: string;
+    email: string;
+    password: string;
+    sendNotices: boolean;
+}
+
+export interface RegisterResponse {
+    success: boolean;
+    message: string;
+    data?: {
+        userId: string;
+        userStateCode: string;
+        userRoleCode: string;
+        secuencial: number;
+        firstName: string;
+        lastName: string;
+        address: string;
+        city: string;
+        province: string;
+        identification: string;
+        phoneNumber: string;
+        email: string;
+        sendNotices: boolean;
+        createdAt: string;
+        updateAt: string;
+        userStateName: string;
+        roleName: string;
+    };
+    errors?: string[];
+}
+
+export interface getAllUsersResponse {
+  userId: string;
+  userStateCode: string;
+  userRoleCode: string;
+  secuencial: number;
+  firstName: string;
+  lastName: string;
+  address: string;
+  city: string;
+  province: string;
+  identification: string;
+  phoneNumber: string;
+  email: string;
+  sendNotices: boolean;
+  createdAt: string; // o Date si lo parseas
+  updateAt: string;  // o Date si lo parseas
+  userStateName: string | null;
+  roleName: string | null;
 }

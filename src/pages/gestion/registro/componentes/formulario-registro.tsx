@@ -4,18 +4,93 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { UserPlus, Shield, Gift } from "lucide-react"
+import { UserPlus, Shield, Gift, Loader2 } from "lucide-react"
 import { useState } from "react"
-import { Link } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
 import { TerminosCondiciones, PoliticaPrivacidad } from "@/pages/landing/componentes/modales"
+import { useRegisterUser } from "@/Services/auth.mutation"
+import type { RegisterUserDto } from "@/interfaces/usuario/usuario.interface"
+import { toast } from "sonner"
 
 export default function RegistroForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
+    const navigate = useNavigate();
+    const registerMutation = useRegisterUser();
+    
     const [aceptaTerminos, setAceptaTerminos] = useState(false);
     const [aceptaPrivacidad, setAceptaPrivacidad] = useState(false);
     const [recibirPromociones, setRecibirPromociones] = useState(true);
+
+    // Estado del formulario
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        identification: '',
+        phoneNumber: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        address: '',
+        city: '',
+        province: '',
+    });
+
+    // Manejar cambios en los inputs
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [id]: value
+        }));
+    };
+
+    // Manejar el submit del formulario
+    const handleSubmit = () => {
+        // Validar que las contraseñas coincidan
+        if (formData.password !== formData.confirmPassword) {
+            toast.error('Las contraseñas no coinciden', {
+                description: 'Por favor verifica que ambas contraseñas sean iguales',
+            });
+            return;
+        }
+
+        // Validar términos y condiciones
+        if (!aceptaTerminos || !aceptaPrivacidad) {
+            toast.warning('Términos y condiciones requeridos', {
+                description: 'Debes aceptar los términos y condiciones para continuar',
+            });
+            return;
+        }
+
+        // Preparar los datos para enviar
+        const userData: RegisterUserDto = {
+            userStateCode: "ACTIVE", // Activo
+            userRoleCode: "USER", // Usuario regular
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            address: formData.address,
+            city: formData.city,
+            province: formData.province,
+            identification: formData.identification,
+            phoneNumber: formData.phoneNumber,
+            email: formData.email,
+            password: formData.password,
+            sendNotices: recibirPromociones,
+        };
+
+        // Ejecutar la mutación
+        registerMutation.mutate(userData, {
+            onSuccess: () => {
+                // El toast se muestra automáticamente en la mutación
+                // Redirigir al dashboard después de un pequeño delay
+                setTimeout(() => {
+                    navigate({ to: '/dashboard' });
+                }, 2000);
+            },
+        });
+    };
 
     return (
         <div className={cn("flex flex-col gap-4 sm:gap-6", className)} {...props}>
@@ -49,21 +124,25 @@ export default function RegistroForm({
 
                                     <div className="grid grid-cols-1 gap-3 sm:gap-4">
                                         <div className="grid gap-1.5 sm:gap-2">
-                                            <Label htmlFor="nombres" className="text-gray-300 text-xs sm:text-sm">Nombres *</Label>
+                                            <Label htmlFor="firstName" className="text-gray-300 text-xs sm:text-sm">Nombres *</Label>
                                             <Input
-                                                id="nombres"
+                                                id="firstName"
                                                 type="text"
                                                 placeholder="Ej: Juan Carlos"
+                                                value={formData.firstName}
+                                                onChange={handleInputChange}
                                                 required
                                                 className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-9 sm:h-10"
                                             />
                                         </div>
                                         <div className="grid gap-1.5 sm:gap-2">
-                                            <Label htmlFor="apellidos" className="text-gray-300 text-xs sm:text-sm">Apellidos *</Label>
+                                            <Label htmlFor="lastName" className="text-gray-300 text-xs sm:text-sm">Apellidos *</Label>
                                             <Input
-                                                id="apellidos"
+                                                id="lastName"
                                                 type="text"
                                                 placeholder="Ej: García López"
+                                                value={formData.lastName}
+                                                onChange={handleInputChange}
                                                 required
                                                 className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-9 sm:h-10"
                                             />
@@ -71,12 +150,14 @@ export default function RegistroForm({
                                     </div>
 
                                     <div className="grid gap-1.5 sm:gap-2">
-                                        <Label htmlFor="cedula" className="text-gray-300 text-xs sm:text-sm">Cédula de Identidad *</Label>
+                                        <Label htmlFor="identification" className="text-gray-300 text-xs sm:text-sm">Cédula de Identidad *</Label>
                                         <Input
-                                            id="cedula"
+                                            id="identification"
                                             type="text"
                                             placeholder="Ej: 1234567890"
                                             maxLength={10}
+                                            value={formData.identification}
+                                            onChange={handleInputChange}
                                             required
                                             className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-9 sm:h-10"
                                         />
@@ -86,11 +167,13 @@ export default function RegistroForm({
                                     </div>
 
                                     <div className="grid gap-1.5 sm:gap-2">
-                                        <Label htmlFor="telefono" className="text-gray-300 text-xs sm:text-sm">Teléfono/Celular *</Label>
+                                        <Label htmlFor="phoneNumber" className="text-gray-300 text-xs sm:text-sm">Teléfono/Celular *</Label>
                                         <Input
-                                            id="telefono"
+                                            id="phoneNumber"
                                             type="tel"
                                             placeholder="Ej: 0998765432"
+                                            value={formData.phoneNumber}
+                                            onChange={handleInputChange}
                                             required
                                             className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-9 sm:h-10"
                                         />
@@ -112,17 +195,21 @@ export default function RegistroForm({
                                             id="password"
                                             type="password"
                                             placeholder="Mínimo 8 caracteres"
+                                            value={formData.password}
+                                            onChange={handleInputChange}
                                             required
                                             className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-9 sm:h-10"
                                         />
                                     </div>
 
                                     <div className="grid gap-1.5 sm:gap-2">
-                                        <Label htmlFor="confirmarPassword" className="text-gray-300 text-xs sm:text-sm">Confirmar Contraseña *</Label>
+                                        <Label htmlFor="confirmPassword" className="text-gray-300 text-xs sm:text-sm">Confirmar Contraseña *</Label>
                                         <Input
-                                            id="confirmarPassword"
+                                            id="confirmPassword"
                                             type="password"
                                             placeholder="Repite tu contraseña"
+                                            value={formData.confirmPassword}
+                                            onChange={handleInputChange}
                                             required
                                             className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-9 sm:h-10"
                                         />
@@ -147,17 +234,21 @@ export default function RegistroForm({
                                             id="email"
                                             type="email"
                                             placeholder="ejemplo@correo.com"
+                                            value={formData.email}
+                                            onChange={handleInputChange}
                                             required
                                             className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-9 sm:h-10"
                                         />
                                     </div>
 
                                     <div className="grid gap-1.5 sm:gap-2">
-                                        <Label htmlFor="direccion" className="text-gray-300 text-xs sm:text-sm">Dirección Completa *</Label>
+                                        <Label htmlFor="address" className="text-gray-300 text-xs sm:text-sm">Dirección Completa *</Label>
                                         <Input
-                                            id="direccion"
+                                            id="address"
                                             type="text"
                                             placeholder="Ej: Av. Principal 123 y Calle Secundaria"
+                                            value={formData.address}
+                                            onChange={handleInputChange}
                                             required
                                             className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-9 sm:h-10"
                                         />
@@ -165,21 +256,25 @@ export default function RegistroForm({
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                                         <div className="grid gap-1.5 sm:gap-2">
-                                            <Label htmlFor="ciudad" className="text-gray-300 text-xs sm:text-sm">Ciudad *</Label>
+                                            <Label htmlFor="city" className="text-gray-300 text-xs sm:text-sm">Ciudad *</Label>
                                             <Input
-                                                id="ciudad"
+                                                id="city"
                                                 type="text"
                                                 placeholder="Ej: Quito"
+                                                value={formData.city}
+                                                onChange={handleInputChange}
                                                 required
                                                 className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-9 sm:h-10"
                                             />
                                         </div>
                                         <div className="grid gap-1.5 sm:gap-2">
-                                            <Label htmlFor="provincia" className="text-gray-300 text-xs sm:text-sm">Provincia *</Label>
+                                            <Label htmlFor="province" className="text-gray-300 text-xs sm:text-sm">Provincia *</Label>
                                             <Input
-                                                id="provincia"
+                                                id="province"
                                                 type="text"
                                                 placeholder="Ej: Pichincha"
+                                                value={formData.province}
+                                                onChange={handleInputChange}
                                                 required
                                                 className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-9 sm:h-10"
                                             />
@@ -282,12 +377,22 @@ export default function RegistroForm({
                         {/* Botón de Registro - Ancho completo */}
                         <div className="mt-6 sm:mt-8 space-y-3 sm:space-y-4">
                             <Button
-                                type="submit"
+                                type="button"
+                                onClick={handleSubmit}
                                 className="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-2.5 sm:py-3 text-sm sm:text-base h-10 sm:h-11"
-                                disabled={!aceptaTerminos || !aceptaPrivacidad}
+                                disabled={!aceptaTerminos || !aceptaPrivacidad || registerMutation.isPending}
                             >
-                                <UserPlus className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
-                                Crear Cuenta y Participar
+                                {registerMutation.isPending ? (
+                                    <>
+                                        <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 animate-spin" />
+                                        Registrando...
+                                    </>
+                                ) : (
+                                    <>
+                                        <UserPlus className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
+                                        Crear Cuenta y Participar
+                                    </>
+                                )}
                             </Button>
 
                             {/* Link a Login */}

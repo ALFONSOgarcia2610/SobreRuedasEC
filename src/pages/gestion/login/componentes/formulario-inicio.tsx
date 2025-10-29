@@ -3,13 +3,60 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Link } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
 import { TerminosCondiciones, PoliticaPrivacidad } from "@/pages/landing/componentes/modales"
+import { useLoginUser } from "@/Services/auth.mutation"
+import { useState } from "react"
+import { toast } from "sonner"
+import { Loader2 } from "lucide-react"
 
 export default function LoginForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
+    const navigate = useNavigate();
+    const { mutate: login, isPending } = useLoginUser();
+    
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [id]: value
+        }));
+    };
+
+    const handleSubmit = () => {
+        // Validaciones
+        if (!formData.email || !formData.password) {
+            toast.error('Por favor completa todos los campos');
+            return;
+        }
+
+        if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            toast.error('Por favor ingresa un correo electrónico válido');
+            return;
+        }
+
+        // Ejecutar login
+        login(
+            {
+                email: formData.email,
+                password: formData.password
+            },
+            {
+                onSuccess: () => {
+                    // Navegar al dashboard
+                    navigate({ to: '/dashboard' });
+                }
+            }
+        );
+    };
+
     return (
         <div className={cn("flex flex-col gap-4 sm:gap-6", className)} {...props}>
             <Card className="overflow-hidden p-0 bg-slate-800 border-slate-700">
@@ -28,8 +75,11 @@ export default function LoginForm({
                                     id="email"
                                     type="email"
                                     placeholder="m@example.com"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
                                     required
                                     autoComplete="email"
+                                    disabled={isPending}
                                     style={{ fontSize: '16px' }} // Previene zoom en iOS
                                     className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-10 sm:h-11"
                                 />
@@ -47,17 +97,30 @@ export default function LoginForm({
                                 <Input
                                     id="password"
                                     type="password"
+                                    value={formData.password}
+                                    onChange={handleInputChange}
                                     required
                                     autoComplete="current-password"
+                                    disabled={isPending}
                                     style={{ fontSize: '16px' }} // Previene zoom en iOS
                                     className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400 text-sm h-10 sm:h-11"
                                 />
                             </div>
-                            <Link to="/dashboard">
-                                <Button type="submit" className="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold h-10 sm:h-11 text-sm sm:text-base ">
-                                    Iniciar sesión
-                                </Button>
-                            </Link>
+                            <Button 
+                                type="button"
+                                onClick={handleSubmit}
+                                disabled={isPending}
+                                className="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold h-10 sm:h-11 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isPending ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        Iniciando sesión...
+                                    </>
+                                ) : (
+                                    'Iniciar sesión'
+                                )}
+                            </Button>
                             {/* <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                                 <span className="bg-card text-muted-foreground relative z-10 px-2">
                                     O continúa con

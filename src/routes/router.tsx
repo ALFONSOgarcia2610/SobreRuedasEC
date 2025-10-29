@@ -7,19 +7,13 @@ import {
   redirect,
   Router,
 } from '@tanstack/react-router';
-// import { authStore, usuarioStore } from '@/store/parametros/usuario.store';
-// import { componentMap } from './generate-routes';
-// import { TokenValidator } from './TokenValidator';
-// import Cookies from 'js-cookie';
+import { authStore } from '@/Store/usuario.store';
+import Error404Page from '@/pages/comunes/error';
 
-// const isAuthenticated = () => {
-// const isAuthStoreAuthenticated = authStore.state.autenticado;
-// const hasToken = !!Cookies.get('auth_token');
-
-// if (isAuthStoreAuthenticated) return true;
-
-// return hasToken;
-// };
+const isAuthenticated = () => {
+  const isAuthStoreAuthenticated = authStore.state.autenticado;
+  return isAuthStoreAuthenticated;
+};
 
 export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
   //  const usuario = usuarioStore.state.usuario;
@@ -30,6 +24,7 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
       <Outlet />
       //</TokenValidator>
     ),
+    notFoundComponent: () => <Error404Page />,
   });
   const indexRoute = createRoute({
     getParentRoute: () => rootRoute,
@@ -43,52 +38,62 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
     getParentRoute: () => rootRoute,
     path: '/landing',
     component: lazy(() => import('@/pages/landing/landing-page')),
-    // beforeLoad: () => {
-    //   if (isAuthenticated()) throw redirect({ to: '/home' });
-    //  },
+    beforeLoad: () => {
+      if (isAuthenticated()) throw redirect({ to: '/dashboard' });
+    },
   });
 
   const DashboardRootRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/dashboard',
     component: lazy(() => import('@/pages/dashboard/gestionusuariosadmin')),
-    // beforeLoad: () => {
-    //   if (isAuthenticated()) throw redirect({ to: '/home' });
-    //  },
+    beforeLoad: () => {
+      if (!isAuthenticated()) throw redirect({ to: '/landing' });
+    },
   });
+
+  const GestionUsuariosRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/gestionUsuarios',
+    component: lazy(() => import('@/pages/dashboard/admin/users')),
+    beforeLoad: () => {
+      if (isAuthenticated()) throw redirect({ to: '/landing' });
+    },
+  });
+
   const UsuarioCompraRootRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/usuario/compraSorteo',
     component: lazy(() => import('@/pages/dashboard/usuario/compra-boletos')),
-    // beforeLoad: () => {
-    //   if (isAuthenticated()) throw redirect({ to: '/home' });
-    //  },
+    beforeLoad: () => {
+      if (!isAuthenticated()) throw redirect({ to: '/landing' });
+    },
   });
 
   const UsuarioBoletosCompradosRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/usuario/boletosComprados',
     component: lazy(() => import('@/pages/dashboard/usuario/boletos-comprados')),
-    // beforeLoad: () => {
-    //   if (isAuthenticated()) throw redirect({ to: '/home' });
-    //  },
+    beforeLoad: () => {
+      if (!isAuthenticated()) throw redirect({ to: '/landing' });
+    },
   });
 
   const loginRootRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/login',
     component: lazy(() => import('@/pages/gestion/login/login')),
-    // beforeLoad: () => {
-    //  if (isAuthenticated()) throw redirect({ to: '/home' });
-    // },
+    beforeLoad: () => {
+      if (isAuthenticated()) throw redirect({ to: '/dashboard' });
+    },
   });
   const RegisterRootRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/register',
     component: lazy(() => import('@/pages/gestion/registro/registro')),
-    // beforeLoad: () => {
-    //  if (isAuthenticated()) throw redirect({ to: '/home' });
-    // },
+    beforeLoad: () => {
+      if (isAuthenticated()) throw redirect({ to: '/dashboard' });
+    },
   });
 
 
@@ -149,7 +154,8 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
     RegisterRootRoute,
     DashboardRootRoute,
     UsuarioCompraRootRoute,
-    UsuarioBoletosCompradosRoute
+    UsuarioBoletosCompradosRoute,
+    GestionUsuariosRoute,
     // homeRoute,
     // fallbackRoute,
     // ...dynamic,
