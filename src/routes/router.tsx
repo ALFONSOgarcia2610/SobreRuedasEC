@@ -7,25 +7,70 @@ import {
   redirect,
   Router,
 } from '@tanstack/react-router';
-import { authStore } from '@/Store/usuario.store';
+import { authStore, usuarioStore } from '@/Store/usuario.store';
+import Cookies from 'js-cookie';
+import { initializeAuthFromCookies } from '@/Services/auth.service';
 import Error404Page from '@/pages/comunes/error';
+import { AppLayout } from '@/layouts/AppLayout';
+import { LayoutProvider } from '@/contexts/LayoutContext';
+import { canAccessRoute, type UserRole } from '@/config/roles.config';
+
+// Inicializar autenticación desde cookies al cargar la app
+initializeAuthFromCookies();
 
 const isAuthenticated = () => {
+  // Verificar si hay token en las cookies
+  const token = Cookies.get('auth_token');
+  
+  // Verificar si el store dice que está autenticado
   const isAuthStoreAuthenticated = authStore.state.autenticado;
-  return isAuthStoreAuthenticated;
+  
+  // Usuario está autenticado si existe el token Y el store lo confirma
+  return !!token && isAuthStoreAuthenticated;
+};
+
+// Función para mapear código de rol a UserRole
+const mapRoleCodeToUserRole = (roleCode: string): UserRole => {
+  const roleMap: Record<string, UserRole> = {
+    'ADMIN': 'ADMIN',
+    'USER': 'USER',
+    'USUARIO': 'USER',
+  }
+  return roleMap[roleCode.toUpperCase()] || 'USER'
+}
+
+// Función para verificar acceso a ruta basado en rol
+const checkRouteAccess = (path: string) => {
+  if (!isAuthenticated()) {
+    throw redirect({ to: '/landing' });
+  }
+  
+  const usuario = usuarioStore.state.usuario;
+  if (!usuario) {
+    throw redirect({ to: '/landing' });
+  }
+  
+  const userRole = mapRoleCodeToUserRole(usuario.userRoleCode);
+  
+  // Verificar si el usuario puede acceder a esta ruta
+  if (!canAccessRoute(userRole, path)) {
+    // Redirigir al dashboard si no tiene acceso
+    throw redirect({ to: '/dashboard' });
+  }
 };
 
 export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
-  //  const usuario = usuarioStore.state.usuario;
-
   const rootRoute = createRootRoute({
     component: () => (
-      //<TokenValidator>
-      <Outlet />
-      //</TokenValidator>
+      <LayoutProvider>
+        <AppLayout>
+          <Outlet />
+        </AppLayout>
+      </LayoutProvider>
     ),
     notFoundComponent: () => <Error404Page />,
   });
+
   const indexRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/',
@@ -48,7 +93,35 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
     path: '/dashboard',
     component: lazy(() => import('@/pages/dashboard/gestionusuariosadmin')),
     beforeLoad: () => {
-      if (!isAuthenticated()) throw redirect({ to: '/landing' });
+      checkRouteAccess('/dashboard');
+    },
+  });
+
+  const ProductRootRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/sorteos/create',
+    component: lazy(() => import('@/pages/dashboard/admin/componentes/CreateProduct')),
+    beforeLoad: () => {
+      checkRouteAccess('/sorteos/create');
+    },
+  });
+
+  
+  const SorteoActivoRootRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/sorteos/active',
+    component: lazy(() => import('@/pages/dashboard/admin/componentes/sorteo-activo')),
+    beforeLoad: () => {
+      checkRouteAccess('/sorteos/active');
+    },
+  });
+
+  const ConfiguracionRootRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/sorteos/settings',
+    component: lazy(() => import('@/pages/dashboard/admin/componentes/cuentas-financieras')),
+    beforeLoad: () => {
+      checkRouteAccess('/sorteos/settings');
     },
   });
 
@@ -57,7 +130,7 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
     path: '/gestionUsuarios',
     component: lazy(() => import('@/pages/dashboard/admin/users')),
     beforeLoad: () => {
-      if (isAuthenticated()) throw redirect({ to: '/landing' });
+      checkRouteAccess('/gestionUsuarios');
     },
   });
 
@@ -66,7 +139,7 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
     path: '/usuario/compraSorteo',
     component: lazy(() => import('@/pages/dashboard/usuario/compra-boletos')),
     beforeLoad: () => {
-      if (!isAuthenticated()) throw redirect({ to: '/landing' });
+      checkRouteAccess('/usuario/compraSorteo');
     },
   });
 
@@ -75,7 +148,7 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
     path: '/usuario/boletosComprados',
     component: lazy(() => import('@/pages/dashboard/usuario/boletos-comprados')),
     beforeLoad: () => {
-      if (!isAuthenticated()) throw redirect({ to: '/landing' });
+      checkRouteAccess('/usuario/boletosComprados');
     },
   });
 
@@ -156,6 +229,9 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
     UsuarioCompraRootRoute,
     UsuarioBoletosCompradosRoute,
     GestionUsuariosRoute,
+    ProductRootRoute,
+    SorteoActivoRootRoute,
+    ConfiguracionRootRoute,
     // homeRoute,
     // fallbackRoute,
     // ...dynamic,

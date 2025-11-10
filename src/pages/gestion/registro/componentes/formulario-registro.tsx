@@ -67,7 +67,6 @@ export default function RegistroForm({
         // Preparar los datos para enviar
         const userData: RegisterUserDto = {
             userStateCode: "ACTIVE", // Activo
-            userRoleCode: "USER", // Usuario regular
             firstName: formData.firstName,
             lastName: formData.lastName,
             address: formData.address,

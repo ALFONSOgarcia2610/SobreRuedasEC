@@ -1,11 +1,8 @@
 "use client"
 
 import {
-  BadgeCheck,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
-  Sparkles,
 } from "lucide-react"
 
 import {
@@ -16,7 +13,6 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -29,10 +25,11 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { type UserRole, getRoleConfig } from "@/config/roles.config"
+import { logoutService } from "@/Services/auth.service"
 
 export function NavUser({
   user,
-  userRole = 'usuario',
+  userRole = 'USER',
 }: {
   user: {
     name: string
@@ -99,49 +96,15 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator className="bg-slate-700" />
 
-            <DropdownMenuGroup>
-              {userRole === 'super-admin' && (
-                <>
-                  <DropdownMenuItem className="hover:bg-slate-800/50 text-slate-200 hover:text-white cursor-pointer">
-                    <Sparkles />
-                    Panel Super Admin
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="hover:bg-slate-800/50 text-slate-200 hover:text-white cursor-pointer">
-                    <BadgeCheck />
-                    Configuración Sistema
-                  </DropdownMenuItem>
-                </>
-              )}
-
-              {(userRole === 'admin' || userRole === 'super-admin') && (
-                <DropdownMenuItem className="hover:bg-slate-800/50 text-slate-200 hover:text-white cursor-pointer">
-                  <BadgeCheck />
-                  Panel Administrador
-                </DropdownMenuItem>
-              )}
-
-              {userRole === 'distribuidor' && (
-                <>
-                  <DropdownMenuItem className="hover:bg-slate-800/50 text-slate-200 hover:text-white cursor-pointer">
-                    <BadgeCheck />
-                    Mi Dashboard
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="hover:bg-slate-800/50 text-slate-200 hover:text-white cursor-pointer">
-                    <CreditCard />
-                    Mis Comisiones
-                  </DropdownMenuItem>
-                </>
-              )}
-            </DropdownMenuGroup>
-
             <DropdownMenuSeparator className="bg-slate-700" />
 
-            <a href="/login">
-              <DropdownMenuItem className="hover:bg-red-900/30 text-slate-200 hover:text-red-400 cursor-pointer">
-                <LogOut />
-                Salir
-              </DropdownMenuItem>
-            </a>
+            <DropdownMenuItem 
+              className="hover:bg-red-900/30 text-slate-200 hover:text-red-400 cursor-pointer"
+              onClick={logoutService}
+            >
+              <LogOut />
+              Salir
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

@@ -1,29 +1,20 @@
 import {
-    Shield,
     ShieldCheck,
-    Users,
     Eye,
-    Settings,
-    Database,
     UserCheck,
-    Truck,
-    BarChart3,
     FileText,
-    CreditCard,
     Gift,
     HelpCircle,
     Target,
-    Wallet,
-    TrendingUp,
     type LucideIcon,
     TicketCheck
 } from "lucide-react"
 
-export type UserRole = 'super-admin' | 'admin' | 'distribuidor' | 'usuario'
+export type UserRole = 'ADMIN' | 'USER' 
 
 export interface MenuItem {
     title: string
-    url: string
+    url?: string  // Ahora es opcional
     icon: LucideIcon
     isActive?: boolean
     items?: {
@@ -43,87 +34,9 @@ export interface RoleConfig {
 }
 
 export const roleConfigs: Record<UserRole, RoleConfig> = {
-    'super-admin': {
-        role: 'super-admin',
-        label: 'Super Admin',
-        color: 'text-red-600',
-        icon: Shield,
-        permissions: ['*'], // Acceso total
-        navMain: [
-            {
-                title: "Sistema",
-                url: "/sistema",
-                icon: Database,
-                items: [
-                    { title: "Configuración Global", url: "/sistema/config" },
-                    { title: "Base de Datos", url: "/sistema/database" },
-                    { title: "Respaldos", url: "/sistema/backups" },
-                    { title: "Logs del Sistema", url: "/sistema/logs" }
-                ]
-            },
-            {
-                title: "Administradores",
-                url: "/admins",
-                icon: ShieldCheck,
-                items: [
-                    { title: "Gestionar Admins", url: "/admins/manage" },
-                    { title: "Crear Admin", url: "/admins/create" },
-                    { title: "Permisos", url: "/admins/permissions" },
-                    { title: "Auditoría", url: "/admins/audit" }
-                ]
-            },
-            {
-                title: "Sorteos Globales",
-                url: "/sorteos-global",
-                icon: Target,
-                items: [
-                    { title: "Todos los Sorteos", url: "/sorteos/all" },
-                    { title: "Crear Sorteo", url: "/sorteos/create" },
-                    { title: "Configuración", url: "/sorteos/config" },
-                    { title: "Estadísticas", url: "/sorteos/stats" }
-                ]
-            },
-            {
-                title: "Distribuidores",
-                url: "/distribuidores",
-                icon: Truck,
-                items: [
-                    { title: "Gestionar Distribuidores", url: "/distribuidores/manage" },
-                    { title: "Crear Distribuidor", url: "/distribuidores/create" },
-                    { title: "Comisiones", url: "/distribuidores/commissions" },
-                    { title: "Reportes", url: "/distribuidores/reports" }
-                ]
-            },
-            {
-                title: "Usuarios",
-                url: "/usuarios",
-                icon: Users,
-                items: [
-                    { title: "Todos los Usuarios", url: "/usuarios/all" },
-                    { title: "Participantes", url: "/usuarios/participants" },
-                    { title: "Suspendidos", url: "/usuarios/suspended" },
-                    { title: "Estadísticas", url: "/usuarios/stats" }
-                ]
-            },
-            {
-                title: "Finanzas",
-                url: "/finanzas",
-                icon: BarChart3,
-                items: [
-                    { title: "Dashboard Financiero", url: "/finanzas/dashboard" },
-                    { title: "Ingresos Totales", url: "/finanzas/income" },
-                    { title: "Gastos", url: "/finanzas/expenses" },
-                    { title: "Reportes", url: "/finanzas/reports" }
-                ]
-            }
-        ],
-        navSecondary: [
-            { title: "Configuración Sistema", url: "/settings/system", icon: Settings }
-        ]
-    },
-
-    'admin': {
-        role: 'admin',
+  
+    'ADMIN': {
+        role: 'ADMIN',
         label: 'Administrador',
         color: 'text-blue-600',
         icon: ShieldCheck,
@@ -131,18 +44,16 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
         navMain: [
             {
                 title: "Sorteos",
-                url: "/sorteos",
                 icon: Target,
                 isActive: true,
                 items: [
-                    { title: "Activos", url: "/sorteos/active" },
+                    { title: "Activo", url: "/sorteos/active" },
                     { title: "Crear Sorteo", url: "/sorteos/create" },
                     { title: "Configuración", url: "/sorteos/settings" }
                 ]
             },
-            {
+           /*  {
                 title: "Distribuidores",
-                url: "/distribuidores",
                 icon: Truck,
                 items: [
                     { title: "Lista", url: "/distribuidores/list" },
@@ -150,95 +61,24 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
                     { title: "Comisiones", url: "/distribuidores/commissions" },
                     { title: "Rendimiento", url: "/distribuidores/performance" }
                 ]
-            },
-            {
-                title: "Participantes",
-                url: "/participantes",
-                icon: Users,
-                items: [
-                    { title: "Todos", url: "/participantes/all" },
-                    { title: "Activos", url: "/participantes/active" },
-                    { title: "Ganadores", url: "/participantes/winners" },
-                    { title: "Estadísticas", url: "/participantes/stats" }
-                ]
-            },
-            {
-                title: "Reportes",
-                url: "/reportes",
+            }, */
+             {
+                title: "Usuarios",
                 icon: FileText,
                 items: [
-                    { title: "Ventas", url: "/reportes/sales" },
-                    { title: "Participación", url: "/reportes/participation" }
+                    { title: "Ventas", url: "/usuarios/sales" },
+                    { title: "Usuarios", url: "/gestionUsuarios" }
                 ]
             },
-            {
-                title: "Pagos",
-                url: "/pagos",
-                icon: CreditCard,
-                items: [
-                    { title: "Transacciones", url: "/pagos/transactions" },
-                    { title: "Pendientes", url: "/pagos/pending" },
-                    { title: "Verificación", url: "/pagos/verification" }
-                ]
-            }
+         
         ],
         navSecondary: [
-            { title: "Configuración", url: "/settings", icon: Settings },
             { title: "Soporte", url: "/support", icon: HelpCircle }
         ]
     },
 
-    'distribuidor': {
-        role: 'distribuidor',
-        label: 'Distribuidor',
-        color: 'text-green-600',
-        icon: Truck,
-        permissions: ['ventas', 'clientes', 'comisiones'],
-        navMain: [
-            {
-                title: "Ventas",
-                url: "/ventas",
-                icon: TrendingUp,
-                items: [
-                    { title: "Vender Números", url: "/ventas/sell" },
-                    { title: "Mis Ventas", url: "/ventas/my-sales" },
-                ]
-            },
-            {
-                title: "Clientes",
-                url: "/clientes",
-                icon: Users,
-                items: [
-                    { title: "Mis Clientes", url: "/clientes/my-clients" },
-                    { title: "Nuevo Cliente", url: "/clientes/new" }
-                ]
-            },
-            {
-                title: "Comisiones",
-                url: "/comisiones",
-                icon: Wallet,
-                items: [
-                    { title: "Mis Comisiones", url: "/comisiones/my-commissions" },
-                    { title: "Pagos", url: "/comisiones/payments" }
-                ]
-            },
-            {
-                title: "Sorteos",
-                url: "/sorteos-dist",
-                icon: Gift,
-                items: [
-                    { title: "Sorteo Activo", url: "/dashboard" },
-                    { title: "Resultados", url: "/sorteos/results" }
-                ]
-            }
-        ],
-        navSecondary: [
-            { title: "Mi Perfil", url: "/profile", icon: UserCheck }
-        ]
-    },
-
-    'usuario': {
-        role: 'usuario',
+    'USER': {
+        role: 'USER',
         label: 'Usuario',
         color: 'text-gray-600',
         icon: Eye,
@@ -246,19 +86,19 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
         navMain: [
             {
                 title: "Sorteos",
-                url: "/dashboard",
                 icon: Gift,
                 isActive: true,
                 items: [
                     { title: "Comprar", url: "/usuario/compraSorteo" },
-                    { title: "Sorteo Activo", url: "/dashboard" },
-                    { title: "Boletos", url: "/usuario/boletosComprados" }
+                    { title: "Sorteo Activo", url: "/sorteos/active" },
+                    { title: "Boletos", url: "/usuario/boletosComprados" },
                 ]
             }
+              
         ],
         navSecondary: [
             { title: "Comprar Ahora", url: "/usuario/compraSorteo", icon: TicketCheck },
-            { title: "Mi Cuenta", url: "/account", icon: UserCheck },
+            { title: "Mi Cuenta", url: "/landing", icon: UserCheck },
             { title: "Ayuda", url: "/help", icon: HelpCircle }
         ]
     }
@@ -266,11 +106,48 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
 
 // Función para obtener la configuración basada en el rol
 export const getRoleConfig = (role: UserRole): RoleConfig => {
-    return roleConfigs[role] || roleConfigs.usuario
+    return roleConfigs[role] || roleConfigs.USER
 }
 
 // Función para verificar permisos
 export const hasPermission = (userRole: UserRole, permission: string): boolean => {
     const config = getRoleConfig(userRole)
     return config.permissions.includes('*') || config.permissions.includes(permission)
+}
+
+// Función para obtener todas las rutas permitidas para un rol
+export const getAllowedRoutes = (role: UserRole): string[] => {
+    const config = getRoleConfig(role)
+    const routes: string[] = []
+    
+    // Extraer URLs de navMain
+    config.navMain.forEach(item => {
+        if (item.url) routes.push(item.url)
+        if (item.items) {
+            item.items.forEach(subItem => routes.push(subItem.url))
+        }
+    })
+    
+    // Extraer URLs de navSecondary
+    config.navSecondary.forEach(item => {
+        if (item.url) routes.push(item.url)
+    })
+    
+    return routes
+}
+
+// Función para verificar si un usuario puede acceder a una ruta
+export const canAccessRoute = (userRole: UserRole, routePath: string): boolean => {
+    const allowedRoutes = getAllowedRoutes(userRole)
+    
+    // Rutas públicas siempre accesibles
+    const publicRoutes = ['/landing', '/login', '/register', '/']
+    if (publicRoutes.includes(routePath)) return true
+    
+    // Rutas comunes para todos los usuarios autenticados
+    const commonAuthRoutes = ['/dashboard']
+    if (commonAuthRoutes.includes(routePath)) return true
+    
+    // Verificar si la ruta está en las rutas permitidas del rol
+    return allowedRoutes.includes(routePath)
 }

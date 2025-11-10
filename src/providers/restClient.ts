@@ -1,45 +1,45 @@
+import { axiosInstance } from '@/lib/axios-interceptor';
+
+interface GetConfig {
+  params?: Record<string, any>;
+  headers?: Record<string, string>;
+  [key: string]: any; // permite pasar otras opciones como timeout, signal, etc.
+}
+
 /**
- * Cliente HTTP para hacer peticiones a la API
+ * Cliente HTTP para hacer peticiones a la API usando Axios
  */
-class NetworkClient {
-  /**
-   * Realiza una petición POST
-   */
-  async post<T>(url: string, data: any): Promise<T> {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-    }
-
-    return response.json();
-  }
-
+export const networkClient = {
   /**
    * Realiza una petición GET
    */
-  async get<T>(url: string): Promise<T> {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+  async get<T>(url: string, config?: GetConfig): Promise<T> {
+    const response = await axiosInstance.get<T>(url, config);
+    return response.data;
+  },
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-    }
+  /**
+   * Realiza una petición POST
+   */
+  async post<T>(url: string, data: any, config?: object): Promise<T> {
+    const response = await axiosInstance.post<T>(url, data, config);
+    return response.data;
+  },
 
-    return response.json();
-  }
-}
+  /**
+   * Realiza una petición PATCH
+   */
+  async patch<T>(url: string, data: any, config?: object): Promise<T> {
+    const response = await axiosInstance.patch<T>(url, data, config);
+    return response.data;
+  },
 
-export const networkClient = new NetworkClient();
+  /**
+   * Realiza una petición DELETE
+   */
+  async delete<T>(url: string, config?: GetConfig): Promise<T> {
+    const response = await axiosInstance.delete<T>(url, config);
+    return response.data;
+  },
+};
+

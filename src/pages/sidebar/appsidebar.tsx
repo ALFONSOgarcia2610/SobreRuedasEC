@@ -17,28 +17,47 @@ import { NavUser } from "./navUser"
 import { useSorteoCarros } from "../services/landing.query"
 import { useStore } from "@tanstack/react-store"
 import { usuarioStore } from "@/Store/usuario.store"
-import { getRoleConfig } from "@/config/roles.config"
+import { getRoleConfig, type UserRole } from "@/config/roles.config"
+
+// Exportar el porcentaje para usarlo en otros componentes
+export function useSorteoPercentage() {
+  const dataSorteo = useSorteoCarros();
+  const totalBoletos = dataSorteo.data?.TotalBoletos || 1000;
+  const boletosVendidos = dataSorteo.data?.BoletosVendidos || 0;
+  return Math.round((boletosVendidos / totalBoletos) * 100);
+}
+
+/**
+ * Mapea el código de rol de la API al tipo UserRole
+ */
+const mapRoleCodeToUserRole = (roleCode: string): UserRole => {
+  const roleMap: Record<string, UserRole> = {
+    'ADMIN': 'ADMIN',
+    'USER': 'USER',
+    'USUARIO': 'USER', // Alias para compatibilidad
+  }
+  
+  const mappedRole = roleMap[roleCode.toUpperCase()]
+  
+  return mappedRole || 'USER'
+}
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const usuario = useStore(usuarioStore, (state) => state.usuario)
-  const dataSorteo = useSorteoCarros();
+  const targetValue = useSorteoPercentage()
 
-  // Trabajar solo con porcentajes - convertir datos a porcentaje
-  const totalBoletos = dataSorteo.data?.TotalBoletos || 1000;
-  const boletosVendidos = dataSorteo.data?.BoletosVendidos || 0;
-  const targetValue = Math.round((boletosVendidos / totalBoletos) * 100); // Porcentaje base
-
-  // Si no hay usuario, usar configuración por defecto
+  // Si no hay usuario, no mostrar sidebar
   if (!usuario) {
     return null
   }
+  // Obtener el rol del usuario desde el store y mapearlo
+  const userRole = mapRoleCodeToUserRole(usuario.userRoleCode)
+  const roleConfig = getRoleConfig(userRole)
 
-  // Por ahora usar rol de usuario por defecto, más adelante se puede agregar al User interface
-  const roleConfig = getRoleConfig('usuario')
 
   // Crear nombre completo
   const nombreCompleto = `${usuario.firstName} ${usuario.lastName}`
-  
+
   // Generar iniciales para el avatar
   const iniciales = `${usuario.firstName.charAt(0)}${usuario.lastName.charAt(0)}`.toUpperCase()
 
@@ -60,18 +79,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </div>
               </a>
             </SidebarMenuButton>
-            <div className="mt-2 flex items-center !justify-center space-x-6 text-sm ">
-              <div className="flex items-center space-x-2">
-                <span className="animate-pulse">🔥</span>
-                <span className="font-bold text-white">{targetValue}% VENDIDO</span>
-              </div>
-            </div>
+    
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent className="bg-slate-800">
-        <NavMain items={roleConfig.navMain} userRole={'usuario'} />
-        <NavSecondary items={roleConfig.navSecondary} />
+        <NavMain items={roleConfig.navMain} userRole={userRole} />
+        <NavSecondary items={roleConfig.navSecondary.filter((item): item is typeof item & { url: string } => item.url !== undefined)} />
       </SidebarContent>
       <SidebarFooter className="bg-slate-800 border-t border-slate-700">
         <NavUser
@@ -80,7 +94,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             email: usuario.email,
             avatar: `/api/placeholder/40/40?text=${iniciales}`
           }}
-          userRole={'usuario'}
+          userRole={userRole}
         />
       </SidebarFooter>
     </Sidebar>

@@ -1,6 +1,8 @@
 "use client"
 
 import { ChevronRight, type LucideIcon } from "lucide-react"
+import { Link } from "@tanstack/react-router"
+import { useState } from "react"
 
 import {
   Collapsible,
@@ -11,7 +13,6 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
@@ -26,7 +27,7 @@ export function NavMain({
 }: {
   items: {
     title: string
-    url: string
+    url?: string  // Ahora es opcional
     icon: LucideIcon
     isActive?: boolean
     items?: {
@@ -47,41 +48,55 @@ export function NavMain({
         <div className={`w-2 h-2 rounded-full bg-current ${roleConfig.color} opacity-60`}></div>
       </SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
-          <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip={item.title} className="hover:bg-slate-800/50 text-slate-200 hover:text-white">
-                <a href={item.url} className="flex items-center gap-2">
-                  <item.icon className="w-4 h-4" />
-                  <span>{item.title}</span>
-                </a>
-              </SidebarMenuButton>
-              {item.items?.length ? (
-                <>
+        {items.map((item) => {
+          const [isOpen, setIsOpen] = useState(item.isActive || false)
+          
+          return (
+            <Collapsible 
+              key={item.title} 
+              open={isOpen} 
+              onOpenChange={setIsOpen}
+            >
+              <SidebarMenuItem>
+                {/* Si tiene URL, es un enlace. Si NO tiene URL, es un trigger para el collapsible */}
+                {item.url ? (
+                  // Menu con URL (navegación directa)
+                  <SidebarMenuButton asChild tooltip={item.title} className="hover:bg-slate-800/50 text-slate-200 hover:text-white">
+                    <Link to={item.url} className="flex items-center gap-2">
+                      <item.icon className="w-4 h-4" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                ) : (
+                  // Menu sin URL (solo para desplegar submenús)
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuAction className="data-[state=open]:rotate-90 text-slate-400 hover:text-white">
-                      <ChevronRight />
-                      <span className="sr-only">Toggle</span>
-                    </SidebarMenuAction>
+                    <SidebarMenuButton tooltip={item.title} className="hover:bg-slate-800/50 text-slate-200 hover:text-white">
+                      <item.icon className="w-4 h-4" />
+                      <span>{item.title}</span>
+                      <ChevronRight className={`ml-auto transition-transform duration-200 ${isOpen ? 'rotate-90' : ''}`} />
+                    </SidebarMenuButton>
                   </CollapsibleTrigger>
+                )}
+                
+                {item.items?.length ? (
                   <CollapsibleContent>
                     <SidebarMenuSub>
                       {item.items?.map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
                           <SidebarMenuSubButton asChild className="hover:bg-slate-800/30 text-slate-300 hover:text-white">
-                            <a href={subItem.url}>
+                            <Link to={subItem.url}>
                               <span>{subItem.title}</span>
-                            </a>
+                            </Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}
                     </SidebarMenuSub>
                   </CollapsibleContent>
-                </>
-              ) : null}
-            </SidebarMenuItem>
-          </Collapsible>
-        ))}
+                ) : null}
+              </SidebarMenuItem>
+            </Collapsible>
+          )
+        })}
       </SidebarMenu>
     </SidebarGroup>
   )

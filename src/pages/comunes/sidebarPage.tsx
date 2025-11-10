@@ -1,4 +1,4 @@
-
+import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,7 +13,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { AppSidebar } from "../sidebar/appsidebar"
 import { type ReactNode } from "react"
 
 interface BreadcrumbItem {
@@ -39,45 +38,43 @@ export default function SidebarPage({
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-2 data-[orientation=vertical]:h-4"
-            />
-            {breadcrumbs.length > 0 && (
-              <Breadcrumb>
-                <BreadcrumbList>
-                  {breadcrumbs.map((breadcrumb, index) => {
-                    const isLast = index === breadcrumbs.length - 1
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator
+            orientation="vertical"
+            className="mr-2 data-[orientation=vertical]:h-4"
+          />
+          {breadcrumbs.length > 0 && (
+            <Breadcrumb>
+              <BreadcrumbList>
+                {breadcrumbs.map((breadcrumb, index) => {
+                  const isLast = index === breadcrumbs.length - 1
 
-                    return (
-                      <div key={index} className="flex items-center">
-                        <BreadcrumbItem className={index > 0 ? "hidden md:block" : ""}>
-                          {breadcrumb.isActive || isLast ? (
-                            <BreadcrumbPage>{breadcrumb.label}</BreadcrumbPage>
-                          ) : (
-                            <BreadcrumbLink href={breadcrumb.href || "#"}>
-                              {breadcrumb.label}
-                            </BreadcrumbLink>
-                          )}
-                        </BreadcrumbItem>
-                        {!isLast && (
-                          <BreadcrumbSeparator className="hidden md:block" />
+                  return (
+                    <div key={index} className="flex items-center">
+                      <BreadcrumbItem className={index > 0 ? "hidden md:block" : ""}>
+                        {breadcrumb.isActive || isLast ? (
+                          <BreadcrumbPage>{breadcrumb.label}</BreadcrumbPage>
+                        ) : (
+                          <BreadcrumbLink href={breadcrumb.href || "#"}>
+                            {breadcrumb.label}
+                          </BreadcrumbLink>
                         )}
-                      </div>
-                    )
-                  })}
-                </BreadcrumbList>
-              </Breadcrumb>
-            )}
-            {title && !breadcrumbs.length && (
-              <div className="font-semibold text-slate-800">{title}</div>
-            )}
-          </div>
+                      </BreadcrumbItem>
+                      {!isLast && (
+                        <BreadcrumbSeparator className="hidden md:block" />
+                      )}
+                    </div>
+                  )
+                })}
+              </BreadcrumbList>
+            </Breadcrumb>
+          )}
+          {title && !breadcrumbs.length && (
+            <div className="font-semibold">{title}</div>
+          )}
         </header>
-        <div className={`flex flex-1 flex-col gap-4 p-4 pt-0 ${className}`}>
+        <div className={`flex flex-1 flex-col gap-4 p-4 ${className}`}>
           {children}
         </div>
       </SidebarInset>

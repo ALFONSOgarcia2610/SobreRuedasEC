@@ -1,9 +1,21 @@
 export interface User {
-    userId: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    loginAt?: string;
+           userId: string;
+        userStateCode: string;
+        userRoleCode: string;
+        secuencial: number;
+        firstName: string;
+        lastName: string;
+        address: string;
+        city: string;
+        province: string;
+        identification: string;
+        phoneNumber: string;
+        email: string;
+        sendNotices: boolean;
+        createdAt: string;
+        updateAt: string;
+        token: string;
+        loginAt: string;
 }
 
 // DTO para Login
@@ -18,9 +30,21 @@ export interface LoginResponse {
     message: string;
     data?: {
         userId: string;
-        email: string;
+        userStateCode: string;
+        userRoleCode: string;
+        secuencial: number;
         firstName: string;
         lastName: string;
+        address: string;
+        city: string;
+        province: string;
+        identification: string;
+        phoneNumber: string;
+        email: string;
+        sendNotices: boolean;
+        createdAt: string;
+        updateAt: string;
+        token: string;
         loginAt: string;
     };
     errors?: string[];
@@ -31,7 +55,6 @@ export interface LoginResponse {
 
 export interface RegisterUserDto {
     userStateCode: string;
-    userRoleCode: string;
     firstName: string;
     lastName: string;
     address: string;

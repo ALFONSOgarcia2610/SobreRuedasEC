@@ -7,6 +7,7 @@ import type {
 } from '@/interfaces/usuario/usuario.interface';
 import { networkClient } from '@/providers/restClient';
 import { usuarioStore, authStore } from '@/Store/usuario.store';
+import Cookies from 'js-cookie';
 
 /**
  * Servicio de registro de usuario
@@ -34,9 +35,21 @@ export const registerUser = async (payload: RegisterUserDto): Promise<RegisterRe
       ...prev,
       usuario: {
         userId: userData.userId,
-        email: userData.email,
+        userStateCode: userData.userStateCode,
+        userRoleCode: userData.userRoleCode,
+        secuencial: userData.secuencial,
         firstName: userData.firstName,
         lastName: userData.lastName,
+        address: userData.address,
+        city: userData.city,
+        province: userData.province,
+        identification: userData.identification,
+        phoneNumber: userData.phoneNumber,
+        email: userData.email,
+        sendNotices: userData.sendNotices,
+        createdAt: userData.createdAt,
+        updateAt: userData.updateAt,
+        token: '', // El registro no devuelve token
         loginAt: new Date().toISOString(),
       }
     }));
@@ -66,14 +79,31 @@ export const loginService = async (payload: LoginDto): Promise<string> => {
     throw new Error(response?.message || 'Credenciales inválidas');
   }
 
-  // Actualizar el store del usuario
+  // Guardar el token en las cookies (expira en 7 días)
+  if (response.data.token) {
+    Cookies.set('auth_token', response.data.token, { expires: 7 });
+  }
+
+  // Actualizar el store del usuario (se guardará automáticamente en localStorage por la suscripción)
   usuarioStore.setState((prev) => ({
     ...prev,
     usuario: {
       userId: response.data!.userId,
-      email: response.data!.email,
+      userStateCode: response.data!.userStateCode,
+      userRoleCode: response.data!.userRoleCode,
+      secuencial: response.data!.secuencial,
       firstName: response.data!.firstName,
       lastName: response.data!.lastName,
+      address: response.data!.address,
+      city: response.data!.city,
+      province: response.data!.province,
+      identification: response.data!.identification,
+      phoneNumber: response.data!.phoneNumber,
+      email: response.data!.email,
+      sendNotices: response.data!.sendNotices,
+      createdAt: response.data!.createdAt,
+      updateAt: response.data!.updateAt,
+      token: response.data!.token,
       loginAt: response.data!.loginAt,
     },
   }));
@@ -91,6 +121,9 @@ export const loginService = async (payload: LoginDto): Promise<string> => {
  * Servicio de logout
  */
 export const logoutService = async (): Promise<void> => {
+  // Eliminar el token de las cookies
+  Cookies.remove('auth_token');
+  
   // Limpiar el store del usuario
   usuarioStore.setState({ usuario: null });
   
@@ -99,6 +132,39 @@ export const logoutService = async (): Promise<void> => {
   
   // Recargar la página
   window.location.reload();
+};
+
+/**
+ * Inicializar sesión desde cookies
+ * Verifica si hay un token en las cookies al cargar la app
+ * Los datos del usuario se cargan automáticamente desde localStorage por el store
+ */
+export const initializeAuthFromCookies = (): boolean => {
+  const token = Cookies.get('auth_token');
+  const currentUser = usuarioStore.state.usuario;
+  
+  // Si no hay token, limpiar todo
+  if (!token) {
+    usuarioStore.setState({ usuario: null });
+    authStore.setState({ autenticado: false });
+    return false;
+  }
+  
+  // Si hay token y hay usuario en el store (cargado desde localStorage)
+  if (currentUser && currentUser.token === token) {
+    authStore.setState({ autenticado: true });
+    return true;
+  }
+  
+  // Si hay token pero no coincide o no hay usuario, limpiar
+  if (!currentUser || currentUser.token !== token) {
+    Cookies.remove('auth_token');
+    usuarioStore.setState({ usuario: null });
+    authStore.setState({ autenticado: false });
+    return false;
+  }
+  
+  return false;
 };
 
 

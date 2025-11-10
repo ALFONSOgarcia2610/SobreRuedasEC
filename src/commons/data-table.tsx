@@ -121,7 +121,7 @@ export function DataTable<TData, TValue>({
 
 
   return (
-    <div className="w-full space-y-4  bg-slate-800 p-4 rounded-lg border shadow-sm">
+    <div className="w-full space-y-4  bg-slate-900 p-4 rounded-lg border shadow-sm">
       <div className="flex flex-wrap gap-4 items-center justify-between">
         {filterConfig && (
           <Input

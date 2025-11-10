@@ -12,13 +12,13 @@ import {
     ArrowRight,
     Crown
 } from "lucide-react";
-import { useSorteoCarros } from "@/pages/services/landing.query";
+import { useGetCurrentLottery } from "@/Services/admin/product.query";
 
 export function PreciosBoletos() {
-    const DataSorteo = useSorteoCarros();
+    const { data: currentLottery } = useGetCurrentLottery();
 
-    // Precio base por boleto desde el sorteo activo
-    const precioBase = DataSorteo.data?.precioporboleto || 1.00;
+    // Precio base por boleto desde el sorteo activo (voucherPrice)
+    const precioBase = currentLottery?.voucherPrice || 1.00;
 
     const paquetes = [
         {

@@ -2,21 +2,27 @@ import { useEffect, useState } from 'react';
 import { RouterProvider } from '@tanstack/react-router';
 import { createAppRouter } from './router';
 import { authStore } from '@/Store/usuario.store';
-import { useSorteoCarros } from '@/pages/services/landing.query';
+import { useGetCurrentLottery, useGetProductsByLotteryId } from '@/Services/admin/product.query';
 
 
 export const AppRouter = () => {
   const [router, setRouter] = useState<any>(null);
-  const DataSorteo = useSorteoCarros();
+    const { data: currentLottery } = useGetCurrentLottery();
+    const { data: products } = useGetProductsByLotteryId(currentLottery?.lotteryId);
+
+    // Concatenar nombres de productos con " & "
+    const productosTexto = products && products.length > 0
+        ? products.map(p => p.name).join(' & ')
+        : 'Premios increíbles';
 
   // Actualizar el título dinámicamente basado en los datos del sorteo
   useEffect(() => {
-    if (DataSorteo.data?.Premio) {
-      document.title = `SobreRuedasEc - Sorteo ${DataSorteo.data.Premio}`;
+    if (productosTexto) {
+      document.title = `SobreRuedasEc -  ${productosTexto}`;
     } else {
       document.title = 'SobreRuedasEc';
     }
-  }, [DataSorteo.data]);
+  }, [productosTexto]);
 
   useEffect(() => {
     const unsubscribe = authStore.subscribe(async () => {

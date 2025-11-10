@@ -1,4 +1,3 @@
-import SidebarPage from "@/pages/comunes/sidebarPage";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -66,7 +65,7 @@ const boletosEjemplo: BoletoComprado[] = [
     }
 ];
 
-const BoletosCompradosContent = () => {
+export default function BoletosComprados() {
     const [filtroEstado, setFiltroEstado] = useState<'todos' | 'activo' | 'ganador' | 'perdedor'>('todos');
 
     const boletosFiltrados = filtroEstado === 'todos'
@@ -115,8 +114,8 @@ const BoletosCompradosContent = () => {
 
     return (
         <div className="w-full bg-[#020617] min-h-screen p-4 md:p-6 lg:p-8">
-            {/* Header */}
-            <div className="mb-8">
+            {/* Header */} 
+            <div className="-mt-7">
                 <h1 className="text-3xl font-bold text-white mb-2">Mis Boletos Comprados</h1>
                 <p className="text-gray-400">Revisa el historial y estado de todos tus boletos</p>
             </div>
@@ -324,16 +323,3 @@ const BoletosCompradosContent = () => {
         </div>
     );
 };
-
-export default function BoletosComprados() {
-    const breadcrumbs = [
-        { label: "Dashboard", href: "/dashboard" },
-        { label: "Boletos Comprados", isActive: true }
-    ];
-
-    return (
-        <SidebarPage breadcrumbs={breadcrumbs}>
-            <BoletosCompradosContent />
-        </SidebarPage>
-    );
-}

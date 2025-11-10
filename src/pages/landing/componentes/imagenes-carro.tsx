@@ -1,9 +1,17 @@
 import { BoxReveal } from "@/components/ui/box-reveal";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { useImagenesCarros, useSorteoCarros } from "@/pages/services/landing.query";
+import { useGetCurrentLottery, useGetProductsByLotteryId } from "@/Services/admin/product.query";
 import { Loader2 } from "lucide-react";
 
 export default function gestionImaganes() {
+    
+  const { data: currentLottery } = useGetCurrentLottery();
+    const { data: products } = useGetProductsByLotteryId(currentLottery?.lotteryId);
+
+    // Concatenar numeor sorteo
+    const numeroSorteo = currentLottery ? `Sorteo #${currentLottery.number}` : 'Sorteo';
+
     const imgCarro = useImagenesCarros();
     const DataSorteo = useSorteoCarros();
     if (imgCarro.isLoading) {
@@ -37,7 +45,7 @@ export default function gestionImaganes() {
         <div className="flex justify-center md:-mt-25">
             <div className="rounded-2xl shadow-2xl p-8 relative overflow-hidden">
                 <div className="absolute top-4 right-4 bg-slate-700 text-white px-3 py-1 rounded-full text-sm font-bold">
-                    Sorteo #  {DataSorteo.data?.NumeroSorteo}
+                    {numeroSorteo}
                 </div>
                 <BoxReveal boxColor={"#dbdf0057"} duration={0.5}>
                     <div className="text-center">

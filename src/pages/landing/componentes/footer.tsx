@@ -1,10 +1,17 @@
-import { useSorteoCarros } from '@/pages/services/landing.query';
+
 import { Phone, Mail, Clock, MapPin, Facebook, Instagram, FileText, Lock, Home, PencilLine } from 'lucide-react';
 import { TerminosCondiciones, PoliticaPrivacidad, ReglamentoSorteo } from './modales';
+import { useGetCurrentLottery, useGetProductsByLotteryId } from '@/Services/admin/product.query';
 
 
 export function Footer() {
-    const DataSorteo = useSorteoCarros();
+    const { data: currentLottery } = useGetCurrentLottery();
+      const { data: products } = useGetProductsByLotteryId(currentLottery?.lotteryId);
+  
+      // Concatenar nombres de productos con " & "
+      const productosTexto = products && products.length > 0
+          ? products.map(p => p.name).join(' & ')
+          : 'Premios increíbles';
 
     return (
         <footer className="bg-slate-800 text-white">
@@ -95,10 +102,8 @@ export function Footer() {
                                     }
                                 />
                             </li>
-
                         </ul>
                     </div>
-
                     {/* Contacto y soporte */}
                     <div className="space-y-4">
                         <h3 className="text-lg font-semibold">Contacto & Soporte</h3>
@@ -107,7 +112,7 @@ export function Footer() {
                                 <Phone size={18} className="text-blue-400" />
                                 <div>
                                     <p className="text-sm text-slate-300">Teléfono</p>
-                                    <p className="text-sm font-medium">+593 99 123 4567</p>
+                                    <p className="text-sm font-medium">+593 98 594 1069</p>
                                 </div>
                             </div>
                             <div className="flex items-center space-x-3">
@@ -135,14 +140,10 @@ export function Footer() {
                     </div>
                 </div>
             </div>
-
-
-
             {/* Pie del footer */}
             <div className="bg-slate-950 border-t border-slate-800">
                 <div className="max-w-7xl mx-auto px-4 py-6">
                     <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-
                         {/* Copyright */}
                         <div className="text-center md:text-left">
                             <p className="text-slate-400 text-sm">
@@ -152,7 +153,7 @@ export function Footer() {
                                 ® Desarrollado por GarciaSystem.
                             </p> */}
                             <p className="text-slate-500 text-xs mt-1">
-                                Sorteo {DataSorteo.data?.Premio}.
+                                Sorteo {productosTexto}.
                             </p>
                         </div>
 
@@ -171,7 +172,7 @@ export function Footer() {
             {/* Botón flotante de ayuda */}
             <div className="fixed bottom-6 right-6 z-50">
                 <a
-                    href="https://wa.me/593991234567?text=Hola,%20necesito%20ayuda%20con%20SobreRuedas"
+                    href="https://wa.me/593985941069?text=Hola,%20necesito%20ayuda%20con%20SobreRuedas"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
