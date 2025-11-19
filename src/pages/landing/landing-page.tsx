@@ -4,7 +4,6 @@ import { HeroVideoDialogDemo } from "./componentes/hero-video";
 import { AnimatedCircularProgressBarDemo } from "../comunes/CircularBar";
 import { NumerosBendecidos } from "./componentes/numeros-bendecidos";
 import { PreciosBoletos } from "./componentes/precios-boletos";
-import { PostRedes } from "./componentes/post-redes";
 import { Footer } from "./componentes/footer";
 import GestionImaganes from "./componentes/imagenes-carro";
 import { useGetCurrentLottery, useGetProductsByLotteryId } from "@/Services/admin/product.query";
@@ -31,7 +30,7 @@ export default function LandingPage() {
                         </h2>
                     </div>
                     <p className="text-xl text-white max-w-3xl mx-auto leading-relaxed">
-                        ¡El volante de tus sueños puede ser tuyo!
+                        ¡Cumpliendo Tus Sueños!
                     </p>
                 </div>
                 <GestionImaganes />

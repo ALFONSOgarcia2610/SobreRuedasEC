@@ -1,7 +1,7 @@
 import type { Lottery, Product, EntityFinance } from "@/interfaces/product.interface";
 import { useQuery } from "@tanstack/react-query";
-import { getAllLotteriesService, getAllProductsService, getCurrentLotteryService, getProductsByLotteryIdService, getAllEntityFinancesService } from "./products.service";
-
+import { getAllLotteriesService, getAllProductsService, getCurrentLotteryService, getProductsByLotteryIdService, getAllEntityFinancesService, getAllVoucherbyLoterry, getAllVoucherState } from "./products.service";
+import type { Voucher } from "../user/usercompra.service";
 // Hook para obtener todos los productos
 export const useGetAllProducts = () => {
   return useQuery<Product[], Error>({
@@ -62,5 +62,30 @@ export const useGetAllEntityFinances = () => {
     queryFn: getAllEntityFinancesService,
     staleTime: 1000 * 60 * 5, // 5 minutos
     retry: 2,
+  });
+};
+
+export const useGetAllVoucherByLottery = (lotteryId: string | undefined) => {
+  return useQuery<Voucher[], Error>({
+    queryKey: ['voucher-entity-finance', lotteryId],
+    queryFn: () => getAllVoucherbyLoterry(lotteryId ?? ''),
+    enabled: !!lotteryId,
+  });
+};
+
+// El endpoint devuelve un array de objetos, no strings
+export interface VoucherState {
+  voucherStateId: string;
+  name: string;
+  code: string;
+  secuencial: number;
+  active: boolean;
+  createAt: string;
+}
+
+export const useGetAllVoucherStates = () => {
+  return useQuery<VoucherState[], Error>({
+    queryKey: ['voucher-states'],
+    queryFn: () => getAllVoucherState(),
   });
 };

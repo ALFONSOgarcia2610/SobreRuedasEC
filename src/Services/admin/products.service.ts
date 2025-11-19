@@ -1,6 +1,7 @@
 import { envs } from "@/commons/envs";
 import type { CreateLotteryDto, CreateProductDto, Lottery, Product, CreateLotteryProductDto, LotteryProduct, CreateEntityFinanceDto, EntityFinance } from "@/interfaces/product.interface";
 import { networkClient } from "@/providers/restClient";
+import type { Voucher } from "../user/usercompra.service";
 
 export const productService = {
   createProduct: async (data: CreateProductDto): Promise<Product> => {
@@ -12,19 +13,13 @@ export const productService = {
       value: Number(data.value),
       isCash: Boolean(data.isCash),
     };
-
-    console.log('📤 Enviando datos de producto:', productData);
     const response = await networkClient.post<any>(`${envs.VITE_API_URL}/api/Product`, productData);
-    console.log('✅ Respuesta completa de producto:', response);
-    
     // Extraer datos y normalizar el ID
     const apiData = response?.data?.data || response?.data || response;
     const result = {
       ...apiData,
       id: apiData.productId || apiData.id // Normalizar productId -> id
     };
-    console.log('📦 Datos normalizados del producto:', result);
-    console.log('🆔 ID del producto:', result?.id);
     return result;
   },
 };
@@ -39,10 +34,7 @@ export const lotteryService = {
       voucherPrice: parseFloat(String(data.voucherPrice)),
     };
 
-    console.log('📤 Enviando datos de sorteo:', lotteryData);
-    
     const response = await networkClient.post<any>(`${envs.VITE_API_URL}/api/Lottery`, lotteryData);
-    console.log('✅ Respuesta completa de sorteo:', response);
     
     // Extraer datos y normalizar el ID
     const apiData = response?.data?.data || response?.data || response;
@@ -50,8 +42,6 @@ export const lotteryService = {
       ...apiData,
       id: apiData.lotteryId || apiData.id // Normalizar lotteryId -> id
     };
-    console.log('📦 Datos normalizados del sorteo:', result);
-    console.log('🆔 ID del sorteo:', result?.id);
     return result;
   },
 };
@@ -190,3 +180,37 @@ export const getAllEntityFinancesService = async (): Promise<EntityFinance[]> =>
 
   return response.data;
 };
+
+// Servicio para obtener voucher por sorteo 
+export const getAllVoucherbyLoterry = async (lotteryId: string): Promise<Voucher[]> => {
+  const response = await networkClient.get<{ 
+    success: boolean; 
+    message: string; 
+    data: Voucher[];
+  }>(
+    `${envs.VITE_API_URL}/api/Voucher/lottery/${lotteryId}?pageNumber=1&pageSize=250`
+  );
+
+  if (!response || !response.success || !response.data) {
+    throw new Error(response?.message || 'Error al obtener vouchers');
+  }
+  return response.data;
+};
+
+// Servicio para obtener todos los estados de voucher
+import type { VoucherState } from './product.query';
+export const getAllVoucherState = async (): Promise<VoucherState[]> => {
+  const response = await networkClient.get<{ 
+    success: boolean; 
+    message: string; 
+    data: VoucherState[];
+  }>(
+    `${envs.VITE_API_URL}/api/VoucherState`
+  );
+
+  if (!response || !response.success || !response.data) {
+    throw new Error(response?.message || 'Error al obtener estados de voucher');
+  }
+  return response.data;
+};
+

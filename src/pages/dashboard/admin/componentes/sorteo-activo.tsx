@@ -62,7 +62,31 @@ export default function SorteoActivo() {
     <div className="space-y-6">
     <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700 shadow-xl">
       <CardHeader className="space-y-3">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between text-3xl font-bold text-white">
+          <div>
+            <h1>Sorteo Actual</h1>
+          </div>
+            <div className="flex items-center gap-2 text-sm text-slate-300">
+            <Calendar className="w-4 h-4 text-slate-400" />
+            <span className="text-slate-400">Creado:</span>
+            <span className="font-medium">
+              {new Date(currentLottery.createdAt).toLocaleDateString('es-ES', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+              })}
+            </span>
+          </div>
+          
+        </div>
+        
+      </CardHeader>
+
+      <CardContent className="space-y-2">
+        {/* Grid de estadísticas */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {/* Número de sorteo */}
+          <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-green-600/20 rounded-lg">
               <Ticket className="w-8 h-8 text-green-500" />
@@ -77,15 +101,6 @@ export default function SorteoActivo() {
             </div>
           </div>
         </div>
-        <CardDescription className="text-slate-300 text-base">
-          Sorteo actual obtenido exitosamente
-        </CardDescription>
-      </CardHeader>
-
-      <CardContent className="space-y-6">
-        {/* Grid de estadísticas */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Número de sorteo */}
           <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-blue-600/20 rounded-lg">
@@ -148,39 +163,11 @@ export default function SorteoActivo() {
             <span>{(currentLottery.maxTickets - ticketsVendidos).toLocaleString()} disponibles</span>
           </div>
         </div>
-
-        {/* Información adicional */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-700">
-          <div className="flex items-center gap-2 text-sm text-slate-300">
-            <Calendar className="w-4 h-4 text-slate-400" />
-            <span className="text-slate-400">Creado:</span>
-            <span className="font-medium">
-              {new Date(currentLottery.createdAt).toLocaleDateString('es-ES', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric'
-              })}
-            </span>
-          </div>
-          
-          <div className="flex items-center gap-2 text-sm text-slate-300">
-            <Calendar className="w-4 h-4 text-slate-400" />
-            <span className="text-slate-400">Actualizado:</span>
-            <span className="font-medium">
-              {new Date(currentLottery.updatedAt).toLocaleDateString('es-ES', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric'
-              })}
-            </span>
-          </div>
-        </div>
       </CardContent>
-    </Card>
 
     {/* Sección de Productos */}
-    <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700 shadow-xl">
-      <CardHeader>
+   
+ {/*      <CardHeader>
         <div className="flex items-center gap-3">
           <div className="p-3 bg-blue-600/20 rounded-lg">
             <Package className="w-6 h-6 text-blue-500" />
@@ -199,7 +186,7 @@ export default function SorteoActivo() {
             </CardDescription>
           </div>
         </div>
-      </CardHeader>
+      </CardHeader> */}
 
       <CardContent>
         {isLoadingProducts ? (

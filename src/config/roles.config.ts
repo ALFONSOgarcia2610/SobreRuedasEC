@@ -48,8 +48,8 @@ export const roleConfigs: Record<UserRole, RoleConfig> = {
                 isActive: true,
                 items: [
                     { title: "Activo", url: "/sorteos/active" },
-                    { title: "Crear Sorteo", url: "/sorteos/create" },
-                    { title: "Configuración", url: "/sorteos/settings" }
+                    { title: "Gestion Sorteo", url: "/sorteos/settings" },
+                    { title: "Financiero", url: "/sorteos/financial" }
                 ]
             },
            /*  {

@@ -27,6 +27,7 @@ export default ({ mode }: { mode: string }) => {
     build: {
       outDir: 'dist',
       assetsDir: 'assets',
+      target: 'es2015',   // ← Safari iOS 12+ compatible
       rollupOptions: {
         output: {
           manualChunks: {
@@ -36,5 +37,6 @@ export default ({ mode }: { mode: string }) => {
         },
       },
     },
+
   });
 };

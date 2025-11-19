@@ -6,7 +6,6 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/animate-ui/components/base/dialog";
-import { ShinyButton } from "@/components/ui/shiny-button";
 import {
     Select,
     SelectContent,
@@ -14,6 +13,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import {
     Copy,
@@ -25,10 +26,13 @@ import {
     Hash,
     Mail,
     Phone,
-    FileText,
+    Loader2,
 } from "lucide-react";
 import { useGetAllEntityFinances } from "@/Services/admin/product.query";
+import { useGetCurrentLottery } from "@/Services/admin/product.query";
+import { useCreateVoucherMutation, useCreateTicketMutation } from "@/Services/user/usercompra.muation";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Loading } from "@/pages/comunes/Loading";
 
 interface PurchaseVerificationDialogProps {
     isOpen: boolean;
@@ -51,12 +55,17 @@ export function PurchaseVerificationDialog({
 }: PurchaseVerificationDialogProps) {
     const [copiedField, setCopiedField] = useState<string | null>(null);
     const [cuentaSeleccionada, setCuentaSeleccionada] = useState<string>("");
+    const [referenceNumber, setReferenceNumber] = useState<string>("");
+    const [entityMemoria, setEntityMemoria] = useState<string>("");
+    const [isProcessing, setIsProcessing] = useState(false);
     
-    // Obtener cuentas financieras del backend
+    // Obtener cuentas financieras y sorteo activo
     const { data: cuentasFinancieras, isLoading: isLoadingCuentas } = useGetAllEntityFinances();
+    const { data: currentLottery } = useGetCurrentLottery();
     
-    // Generar número de voucher único
-    const voucherNumber = `VCH-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+    // Mutations
+    const createVoucherMutation = useCreateVoucherMutation();
+    const createTicketMutation = useCreateTicketMutation();
 
     // Obtener datos de la cuenta seleccionada
     const datosBancarios = cuentasFinancieras?.find(
@@ -70,17 +79,95 @@ export function PurchaseVerificationDialog({
         setTimeout(() => setCopiedField(null), 2000);
     };
 
-    // Función para confirmar compra
-    const handleConfirmar = () => {
-        toast.success("¡Gracias por tu pedido!", {
-            description: "Recibirás confirmación una vez validemos tu pago.",
-            duration: 4000,
-        });
-        onClose();
+    // Función para confirmar compra y crear voucher + tickets
+    const handleConfirmar = async () => {
+        // Validaciones
+        if (!cuentaSeleccionada) {
+            toast.error("Selecciona una cuenta bancaria");
+            return;
+        }
+        
+        if (!referenceNumber.trim()) {
+            toast.error("Ingresa el número de referencia de la transferencia");
+            return;
+        }
+
+        if (!entityMemoria.trim()) {
+            toast.error("Ingresa el banco desde donde enviaste la transferencia");
+            return;
+        }
+
+        if (!currentLottery?.lotteryId && !currentLottery?.id) {
+            toast.error("No hay sorteo activo disponible");
+            return;
+        }
+
+        setIsProcessing(true);
+
+        try {
+            // 1. Crear el voucher
+            const voucherData = {
+                entityFinanceId: cuentaSeleccionada, // ID temporal (se ignora por ahora)
+                entidadEmisora: entityMemoria.trim(), // Banco desde donde se envió la transferencia
+                referenceNumber: referenceNumber.trim(),
+                amount: precio,
+            };
+
+            const voucherResponse = await createVoucherMutation.mutateAsync(voucherData);
+            
+            const voucherId = voucherResponse.voucherId;
+            
+            if (!voucherId) {
+                throw new Error("No se pudo obtener el ID del voucher creado");
+            }
+
+            // 2. Crear los tickets (uno por cada número de boleto)
+            const lotteryId = currentLottery.lotteryId || currentLottery.id;
+            
+            if (!lotteryId) {
+                throw new Error("No se pudo obtener el ID del sorteo activo");
+            }
+            
+            // Mostrar el spinner mientras se procesan los tickets
+            for (let i = 0; i < numeros; i++) {
+                const ticketData = {
+                    userId: "", // Se valida con el token en el backend
+                    voucherId: voucherId,
+                    lotteryId: lotteryId,
+                };
+                await createTicketMutation.mutateAsync(ticketData);
+            }
+
+            // Éxito
+            toast.success("¡Compra registrada exitosamente!", {
+                description: `Tu compra se pasó al departamento financiero. Cuando se valide se te asignarán los ${numeros} números.`,
+                duration: 5000,
+            });
+
+            // Limpiar y cerrar
+            setReferenceNumber("");
+            setEntityMemoria("");
+            setCuentaSeleccionada("");
+            onClose();
+
+        } catch (error: any) {
+            console.error("Error al procesar la compra:", error);
+            toast.error("Error al procesar la compra", {
+                description: error?.message || "Ocurrió un error inesperado. Por favor, intenta nuevamente.",
+            });
+        } finally {
+            setIsProcessing(false);
+        }
     };
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
+            {/* Overlay de loading */}
+            {isProcessing && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+                    <Loading show={createTicketMutation.isPending} />
+                </div>
+            )}
             <DialogPopup className="bg-slate-900 border-slate-700 text-white max-w-lg max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle className="text-xl font-bold text-amber-400 flex items-center gap-2">
@@ -93,46 +180,22 @@ export function PurchaseVerificationDialog({
                 </DialogHeader>
 
                 <div className="space-y-4 py-2">
-                    {/* Resumen y Voucher combinados */}
-                    <div className="bg-slate-800  p-2.5 space-y-2">
-                        {/* Resumen en una línea */}
-                        <div className="flex items-center justify-between text-xs">
-                            <div className="flex items-center gap-3">
-                                <div>
-                                    <span className="text-slate-400">Boletos:</span>
-                                    <span className="font-bold text-white ml-1">{numeros}</span>
-                                </div>
-                                <div>
-                                    <span className="text-slate-400">Total:</span>
-                                    <span className="font-bold text-amber-400 ml-1">${precio.toFixed(2)}</span>
-                                </div>
-                            </div>
-                            <Hash className="w-3.5 h-3.5 text-amber-400" />
-                        </div>
-
-                        <div className="border-t border-slate-700/50"></div>
-
-                        {/* Voucher compacto */}
+                    {/* Resumen de compra */}
+                    <div className="bg-slate-800 border border-slate-700 rounded-lg p-3">
                         <div className="flex items-center justify-between">
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-1 mb-0.5">
-                                    <FileText className="w-3 h-3 text-blue-400" />
-                                    <span className="text-xs text-blue-400 font-semibold">Voucher</span>
+                            <div className="flex items-center gap-4">
+                                <div>
+                                    <p className="text-xs text-slate-400 mb-1">Boletos</p>
+                                    <p className="text-xl font-bold text-white">{numeros}</p>
                                 </div>
-                                <p className="text-xs font-mono font-bold text-white truncate">{voucherNumber}</p>
+                                <div className="h-10 w-px bg-slate-700"></div>
+                                <div>
+                                    <p className="text-xs text-slate-400 mb-1">Total a Pagar</p>
+                                    <p className="text-xl font-bold text-amber-400">${precio.toFixed(2)}</p>
+                                </div>
                             </div>
-                            <button
-                                onClick={() => copyToClipboard(voucherNumber, 'voucher')}
-                                className="p-1 hover:bg-slate-700 rounded transition-colors ml-2"
-                            >
-                                {copiedField === 'voucher' ? (
-                                    <Check className="w-3.5 h-3.5 text-green-400" />
-                                ) : (
-                                    <Copy className="w-3.5 h-3.5 text-slate-400" />
-                                )}
-                            </button>
+                            <Hash className="w-6 h-6 text-amber-400" />
                         </div>
-                        <p className="text-xs text-slate-400">⚠️ Incluye este número al enviar comprobante</p>
                     </div>
 
                     {/* Datos bancarios compactos */}
@@ -262,7 +325,7 @@ export function PurchaseVerificationDialog({
                         <ol className="space-y-1.5 text-xs text-slate-300">
                             <li className="flex gap-2">
                                 <span className="text-amber-400 font-bold">1.</span>
-                                <span>Transfiere <strong className="text-white">${precio.toFixed(2)}</strong> exactos</span>
+                                <span>Realiza la transferencia de <strong className="text-white">${precio.toFixed(2)}</strong> exactos a la cuenta seleccionada</span>
                             </li>
                             <li className="flex gap-2">
                                 <span className="text-amber-400 font-bold">2.</span>
@@ -270,9 +333,60 @@ export function PurchaseVerificationDialog({
                             </li>
                             <li className="flex gap-2">
                                 <span className="text-amber-400 font-bold">3.</span>
-                                <span>Envía comprobante + <strong className="text-blue-400">número de voucher</strong> por:</span>
+                                <span>Ingresa el <strong className="text-blue-400">número de referencia</strong> y el <strong className="text-blue-400">banco de origen</strong> abajo</span>
+                            </li>
+                            <li className="flex gap-2">
+                                <span className="text-amber-400 font-bold">4.</span>
+                                <span>Envía el comprobante de pago por WhatsApp o correo (opcional pero recomendado)</span>
+                            </li>
+                            <li className="flex gap-2">
+                                <span className="text-amber-400 font-bold">5.</span>
+                                <span>Click en <strong className="text-green-400">"Validar Compra"</strong> para completar el proceso</span>
                             </li>
                         </ol>
+                    </div>
+
+                    {/* Campos de datos de transferencia */}
+                    <div className="space-y-3">
+                        {/* Campo para número de referencia */}
+                        <div className="bg-slate-800 border border-slate-700 rounded-lg p-3">
+                            <Label htmlFor="referenceNumber" className="text-sm text-white mb-2 flex items-center gap-2">
+                                <Hash className="w-4 h-4 text-amber-400" />
+                                Número de Referencia de la Transferencia
+                            </Label>
+                            <Input
+                                id="referenceNumber"
+                                type="text"
+                                value={referenceNumber}
+                                onChange={(e) => setReferenceNumber(e.target.value)}
+                                placeholder="Ej: 1234567890"
+                                className="w-full bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-amber-400 focus:ring-amber-400"
+                                disabled={isProcessing}
+                            />
+                            <p className="text-xs text-slate-400 mt-1.5">
+                                Este número aparece en tu comprobante bancario
+                            </p>
+                        </div>
+
+                        {/* Campo para banco de origen */}
+                        <div className="bg-slate-800 border border-slate-700 rounded-lg p-3">
+                            <Label htmlFor="entityMemoria" className="text-sm text-white mb-2 flex items-center gap-2">
+                                <Building2 className="w-4 h-4 text-blue-400" />
+                                Banco desde donde enviaste la transferencia
+                            </Label>
+                            <Input
+                                id="entityMemoria"
+                                type="text"
+                                value={entityMemoria}
+                                onChange={(e) => setEntityMemoria(e.target.value)}
+                                placeholder="Ej: Banco Pichincha, Banco Guayaquil, etc."
+                                className="w-full bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-blue-400 focus:ring-blue-400"
+                                disabled={isProcessing}
+                            />
+                            <p className="text-xs text-slate-400 mt-1.5">
+                                El banco de tu cuenta personal desde donde hiciste la transferencia
+                            </p>
+                        </div>
                     </div>
 
                     {/* Contacto compacto */}
@@ -322,16 +436,25 @@ export function PurchaseVerificationDialog({
                 <div className="flex gap-2 pt-2">
                     <button
                         onClick={onClose}
-                        className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm rounded-md transition-colors"
+                        disabled={isProcessing}
+                        className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        Cerrar
+                        Cancelar
                     </button>
-                    <ShinyButton
+                    <button
                         onClick={handleConfirmar}
-                        className="flex-1 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-sm"
+                        disabled={isProcessing || !cuentaSeleccionada || !referenceNumber.trim() || !entityMemoria.trim()}
+                        className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-sm font-semibold rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:from-green-500 disabled:hover:to-green-600"
                     >
-                        Confirmar
-                    </ShinyButton>
+                        {isProcessing ? (
+                            <div className="flex items-center justify-center gap-2">
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                                <span>Procesando...</span>
+                            </div>
+                        ) : (
+                            "Validar Compra"
+                        )}
+                    </button>
                 </div>
             </DialogPopup>
         </Dialog>

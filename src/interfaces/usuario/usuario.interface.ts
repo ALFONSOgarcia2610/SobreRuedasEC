@@ -87,6 +87,7 @@ export interface RegisterResponse {
         createdAt: string;
         updateAt: string;
         userStateName: string;
+          token: string;
         roleName: string;
     };
     errors?: string[];

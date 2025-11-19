@@ -23,13 +23,17 @@ export const registerUser = async (payload: RegisterUserDto): Promise<RegisterRe
   if (!response) {
     throw new Error('Error en el registro');
   }
+    
 
   // Si el registro es exitoso, actualizar el store
   if (response.success && response.data) {
     console.log('✅ Usuario registrado:', response.data);
     
     const userData = response.data;
-    
+    if (userData.token) {
+      Cookies.set('auth_token', userData.token, { expires: 7 });
+    }
+
     // Actualizar el store del usuario
     usuarioStore.setState((prev) => ({
       ...prev,
@@ -49,7 +53,7 @@ export const registerUser = async (payload: RegisterUserDto): Promise<RegisterRe
         sendNotices: userData.sendNotices,
         createdAt: userData.createdAt,
         updateAt: userData.updateAt,
-        token: '', // El registro no devuelve token
+        token: response.data!.token,
         loginAt: new Date().toISOString(),
       }
     }));

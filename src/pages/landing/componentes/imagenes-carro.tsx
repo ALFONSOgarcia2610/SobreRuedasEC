@@ -1,19 +1,16 @@
 import { BoxReveal } from "@/components/ui/box-reveal";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { useImagenesCarros, useSorteoCarros } from "@/pages/services/landing.query";
-import { useGetCurrentLottery, useGetProductsByLotteryId } from "@/Services/admin/product.query";
+import { useImagenesCarros } from "@/pages/services/landing.query";
+import { useGetCurrentLottery } from "@/Services/admin/product.query";
 import { Loader2 } from "lucide-react";
 
 export default function gestionImaganes() {
     
   const { data: currentLottery } = useGetCurrentLottery();
-    const { data: products } = useGetProductsByLotteryId(currentLottery?.lotteryId);
 
     // Concatenar numeor sorteo
     const numeroSorteo = currentLottery ? `Sorteo #${currentLottery.number}` : 'Sorteo';
-
     const imgCarro = useImagenesCarros();
-    const DataSorteo = useSorteoCarros();
     if (imgCarro.isLoading) {
         return (
             <div className="flex justify-center mb-16">

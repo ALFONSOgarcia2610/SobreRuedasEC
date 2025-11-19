@@ -44,7 +44,6 @@ const mapRoleCodeToUserRole = (roleCode: string): UserRole => {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const usuario = useStore(usuarioStore, (state) => state.usuario)
-  const targetValue = useSorteoPercentage()
 
   // Si no hay usuario, no mostrar sidebar
   if (!usuario) {

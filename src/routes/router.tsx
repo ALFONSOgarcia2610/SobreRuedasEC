@@ -99,10 +99,10 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
 
   const ProductRootRoute = createRoute({
     getParentRoute: () => rootRoute,
-    path: '/sorteos/create',
+    path: '/sorteos/settings',
     component: lazy(() => import('@/pages/dashboard/admin/componentes/CreateProduct')),
     beforeLoad: () => {
-      checkRouteAccess('/sorteos/create');
+      checkRouteAccess('/sorteos/settings');
     },
   });
 
@@ -118,10 +118,10 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
 
   const ConfiguracionRootRoute = createRoute({
     getParentRoute: () => rootRoute,
-    path: '/sorteos/settings',
+    path: '/sorteos/financial',
     component: lazy(() => import('@/pages/dashboard/admin/componentes/cuentas-financieras')),
     beforeLoad: () => {
-      checkRouteAccess('/sorteos/settings');
+      checkRouteAccess('/sorteos/financial');
     },
   });
 
@@ -131,6 +131,15 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
     component: lazy(() => import('@/pages/dashboard/admin/users')),
     beforeLoad: () => {
       checkRouteAccess('/gestionUsuarios');
+    },
+  });
+
+  const GestionUsuariosVouchersRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/usuarios/sales',
+    component: lazy(() => import('@/pages/dashboard/admin/componentes/voucher-vendidos')),
+    beforeLoad: () => {
+      checkRouteAccess('/usuarios/sales');
     },
   });
 
@@ -232,6 +241,7 @@ export async function createAppRouter(): Promise<Router<typeof rootRoute>> {
     ProductRootRoute,
     SorteoActivoRootRoute,
     ConfiguracionRootRoute,
+    GestionUsuariosVouchersRoute,
     // homeRoute,
     // fallbackRoute,
     // ...dynamic,

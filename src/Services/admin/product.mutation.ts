@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { lotteryService, productService, lotteryProductService, createEntityFinanceService } from './products.service';
 import type { CreateLotteryDto, CreateProductDto, CreateLotteryProductDto, CreateEntityFinanceDto } from '@/interfaces/product.interface';
 import { toast } from 'sonner';
+import type { AxiosError } from 'axios';
 
 /**
  * Función helper para extraer mensajes de error del backend
@@ -48,7 +49,7 @@ export const useCreateProduct = () => {
       queryClient.invalidateQueries({ queryKey: ['get-all-products'] });
       toast.success('Producto creado exitosamente');
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError) => {
       const errorMessage = getErrorMessage(error);
       toast.error(errorMessage);
       console.error('Error en useCreateProduct:', error);
