@@ -154,17 +154,6 @@ export function AnimatedCircularProgressBarDemo() {
                 <div className="flex flex-col items-center">
                     {/* Barra Horizontal de Progreso Ultra Bonita */}
                     <div className="w-full max-w-3xl mb-8 progress-container group">
-                        {/* Etiquetas de progreso elegantes */}
-                        <div className="flex justify-between items-center mb-4">
-                            <div className="flex items-center space-x-3">
-                                <CheckCircle className="w-6 h-6 text-green-400" />
-                                <span className="text-lg font-semibold text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text">
-                                    Progreso del Sorteo
-                                </span>
-                            </div>
-
-                        </div>
-
                         {/* Barra de progreso súper bonita */}
                         <div className="relative h-6 sm:h-12 bg-gradient-to-r from-slate-800 to-slate-700 rounded-2xl overflow-hidden border-2 border-slate-600/50 progress-bar shadow-2xl">
                             {/* Fondo con efecto cristal */}
@@ -265,18 +254,6 @@ export function AnimatedCircularProgressBarDemo() {
                                             displayValue < 100 ? 'Casi listo' : '¡Completo!'}
                                 </span>
                             </div>
-                            <div className="text-gray-400 font-medium">
-                                {100 - displayValue}% restante
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Status Bar */}
-                <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-600">
-                    <div className="flex items-center justify-between">
-                        <div className="text-[10px] sm:text-xs text-gray-400">
-                            Actualizado hace menos de 1 minuto
                         </div>
                     </div>
                 </div>
@@ -287,8 +264,8 @@ export function AnimatedCircularProgressBarDemo() {
                 <Card className="border border-gray-600 bg-slate-800/90 backdrop-blur-sm shadow-sm transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/20 hover:border-amber-500/50 hover:-translate-y-1 group">
                     <CardContent className="p-3 sm:p-4">
                         <div className="flex items-start space-x-2 sm:space-x-3">
-                            <div className="p-1.5 sm:p-2 bg-amber-500/20 rounded-lg transition-all duration-300 group-hover:bg-amber-500/30 group-hover:scale-110">
-                                <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 transition-all duration-300 group-hover:text-amber-300" />
+                            <div className="p-1.5 sm:p-2 bg-amber-200 rounded-lg transition-all duration-300 group-hover:bg-amber-300 group-hover:scale-110">
+                                <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-800 transition-all duration-300 group-hover:text-amber-900" />
                             </div>
                             <div className="flex-1">
                                 <h4 className="font-semibold text-white text-sm sm:text-base mb-1 transition-colors duration-300 group-hover:text-amber-100">
@@ -306,8 +283,8 @@ export function AnimatedCircularProgressBarDemo() {
                 <Card className="border border-gray-600 bg-slate-800/90 backdrop-blur-sm shadow-sm transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 hover:border-blue-500/50 hover:-translate-y-1 group">
                     <CardContent className="p-3 sm:p-4">
                         <div className="flex items-start space-x-2 sm:space-x-3">
-                            <div className="p-1.5 sm:p-2 bg-blue-500/20 rounded-lg transition-all duration-300 group-hover:bg-blue-500/30 group-hover:scale-110">
-                                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 transition-all duration-300 group-hover:text-blue-300" />
+                            <div className="p-1.5 sm:p-2 bg-blue-200 rounded-lg transition-all duration-300 group-hover:bg-blue-300 group-hover:scale-110">
+                                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-800 transition-all duration-300 group-hover:text-blue-900" />
                             </div>
                             <div className="flex-1">
                                 <h4 className="font-semibold text-white text-sm sm:text-base mb-1 transition-colors duration-300 group-hover:text-blue-100">
@@ -316,10 +293,6 @@ export function AnimatedCircularProgressBarDemo() {
                                 <p className="text-gray-300 leading-relaxed text-xs sm:text-sm transition-colors duration-300 group-hover:text-gray-200">
                                     El número ganador se determinará mediante los últimos 4 dígitos de la Lotería Nacional.
                                 </p>
-                                <div className="mt-2 flex items-center space-x-1">
-                                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                                    <span className="text-xs text-blue-400">Sistema verificado</span>
-                                </div>
                             </div>
                         </div>
                     </CardContent>

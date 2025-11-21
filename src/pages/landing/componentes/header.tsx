@@ -39,7 +39,7 @@ export function Header() {
                             <div className="hidden md:flex items-center space-x-4 text-sm">
                                 <div className="flex items-center space-x-1">
                                     <span><Headset size={16} strokeWidth={2.25} /></span>
-                                    <span>+593 99 123 4567</span>
+                                    <span>+593 98 594 1069</span>
                                 </div>
                                 <div className="flex items-center space-x-1">
                                     <span><Clock size={16} strokeWidth={2.25} /></span>

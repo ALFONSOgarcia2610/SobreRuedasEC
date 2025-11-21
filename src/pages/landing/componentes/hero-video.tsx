@@ -17,7 +17,7 @@ export function HeroVideoDialogDemo() {
         <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6 md:py-8">
             {/* Título y descripción del tutorial */}
             <div className="text-center mb-6 sm:mb-8 md:mb-12">
-                <div className="inline-flex items-center space-x-2 bg-amber-500/20 text-amber-400 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-4 sm:mb-6 border border-amber-500/50">
+                <div className="inline-flex items-center font-bold space-x-2 bg-sky-200 text-sky-900 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-4 sm:mb-6 border border-amber-500/50">
                     <Play size={14} className="sm:w-4 sm:h-4" />
                     <span className="text-xs sm:text-sm font-semibold">Tutorial Interactivo</span>
                 </div>

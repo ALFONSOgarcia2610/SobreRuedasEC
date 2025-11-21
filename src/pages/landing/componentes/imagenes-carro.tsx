@@ -1,4 +1,3 @@
-import { BoxReveal } from "@/components/ui/box-reveal";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { useImagenesCarros } from "@/pages/services/landing.query";
 import { useGetCurrentLottery } from "@/Services/admin/product.query";
@@ -44,16 +43,14 @@ export default function gestionImaganes() {
                 <div className="absolute top-4 right-4 bg-slate-700 text-white px-3 py-1 rounded-full text-sm font-bold">
                     {numeroSorteo}
                 </div>
-                <BoxReveal boxColor={"#dbdf0057"} duration={0.5}>
                     <div className="text-center">
-
                         {/* Carousel de fotos del carro */}
                         <div className="my-6 sm:my-8">
                             <Carousel autoplay={true} autoplayDelay={5000} className="w-full max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto">
                                 <CarouselContent>
                                     {imgCarro.data?.data.map((carro) => (
                                         <CarouselItem key={carro.id}>
-                                            <div className="p-2 sm:p-4">
+                                            <div className="">
                                                 <div >
                                                     <div className="flex aspect-video items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 from-slate-100 to-slate-200">
                                                         <div className="w-full h-full">
@@ -76,7 +73,6 @@ export default function gestionImaganes() {
                             </Carousel>
                         </div>
                     </div>
-                </BoxReveal>
             </div>
         </div>
     );

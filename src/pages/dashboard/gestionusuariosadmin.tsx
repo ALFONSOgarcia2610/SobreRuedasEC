@@ -19,7 +19,7 @@ export default function gestionImaganes() {
                     </div>
                 </div>
                 <div className="flex justify-center">
-                  <ShimmeringText className="text-3xl md:text-4xl font-extrabold text-white" text="Entregando Sueños" />
+                  <ShimmeringText className="text-2xl md:text-4xl font-extrabold text-white" text="Entregando Sueños" />
     
                 </div>
             </div>

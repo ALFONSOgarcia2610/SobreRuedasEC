@@ -81,7 +81,7 @@ export function PreciosBoletos() {
                 {paquetes.map((paquete, index) => (
                     <Card
                         key={index}
-                        className={`relative p-2 sm:p-3 md:p-4 text-center transition-all duration-300 hover:shadow-xl group ${paquete.popular
+                        className={`relative p-9 sm:p-5 md:p-6 text-center transition-all duration-300 hover:shadow-xl group ${paquete.popular
                             ? 'border-2 border-amber-400 shadow-lg shadow-amber-400/30 transform scale-105 bg-slate-800/90 backdrop-blur-sm ring-2 ring-amber-400/50'
                             : 'border border-gray-600 hover:border-amber-500/50 bg-slate-800/90 backdrop-blur-sm hover:shadow-amber-400/10'
                             }`}
@@ -136,8 +136,8 @@ export function PreciosBoletos() {
                         {/* Indicador simple para móviles */}
                         <div className="mb-2 sm:hidden">
                             <div className="flex items-center justify-center space-x-1">
-                                <CheckCircle size={10} className="text-green-400" />
-                                <Shield size={10} className="text-blue-400" />
+                                <CheckCircle size={25} className="text-green-400" />
+                                <Shield size={25} className="text-blue-400" />
                             </div>
                         </div>
 
