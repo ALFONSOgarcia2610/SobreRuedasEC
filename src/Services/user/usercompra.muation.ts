@@ -1,8 +1,11 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createVoucherService, createTicketService } from './usercompra.service';
-import type { CreateVoucherDto, CreateTicketDto } from './usercompra.service';
-import { toast } from 'sonner';
-import type { AxiosError } from 'axios';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  createVoucherService,
+  createTicketService,
+} from "./usercompra.service";
+import type { CreateVoucherDto, CreateTicketDto } from "./usercompra.service";
+import { toast } from "sonner";
+import type { AxiosError } from "axios";
 
 /**
  * Función helper para extraer mensajes de error del backend
@@ -10,25 +13,25 @@ import type { AxiosError } from 'axios';
 const getErrorMessage = (error: any): string => {
   if (error?.response?.data) {
     const data = error.response.data;
-    
+
     if (data.errors && Array.isArray(data.errors) && data.errors.length > 0) {
       return data.errors[0];
     }
-    
+
     if (data.message) {
       return data.message;
     }
-    
+
     if (data.title) {
       return data.title;
     }
   }
-  
+
   if (error?.message) {
     return error.message;
   }
-  
-  return 'Ocurrió un error inesperado';
+
+  return "Ocurrió un error inesperado";
 };
 
 /**
@@ -38,20 +41,18 @@ export const useCreateVoucherMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (voucherData: CreateVoucherDto) => createVoucherService(voucherData),
-    onSuccess: (data) => {
-      toast.success('Voucher creado exitosamente', {
-        description: `Voucher creado con referencia: ${data.referenceNumber}`,
-      });
+    mutationFn: (voucherData: CreateVoucherDto) =>
+      createVoucherService(voucherData),
+    onSuccess: () => {
       // Invalida las queries relacionadas si las hay
-      queryClient.invalidateQueries({ queryKey: ['vouchers'] });
+      queryClient.invalidateQueries({ queryKey: ["vouchers"] });
     },
     onError: (error: AxiosError) => {
       const errorMessage = getErrorMessage(error);
-      toast.error('Error al crear voucher', {
+      toast.error("Error al crear voucher", {
         description: errorMessage,
       });
-      console.error('Error en la mutación de crear voucher:', error);
+      console.error("Error en la mutación de crear voucher:", error);
     },
   });
 };
@@ -63,21 +64,19 @@ export const useCreateTicketMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (ticketData: CreateTicketDto) => createTicketService(ticketData),
-    onSuccess: (data) => {
-      toast.success('Ticket creado exitosamente', {
-        description: `Ticket #${data.data.number} creado correctamente`,
-      });
+    mutationFn: (ticketData: CreateTicketDto) =>
+      createTicketService(ticketData),
+    onSuccess: () => {
       // Invalida las queries relacionadas
-      queryClient.invalidateQueries({ queryKey: ['tickets'] });
-      queryClient.invalidateQueries({ queryKey: ['lottery'] });
+      queryClient.invalidateQueries({ queryKey: ["tickets"] });
+      queryClient.invalidateQueries({ queryKey: ["lottery"] });
     },
     onError: (error: AxiosError) => {
       const errorMessage = getErrorMessage(error);
-      toast.error('Error al crear ticket', {
+      toast.error("Error al crear ticket", {
         description: errorMessage,
       });
-      console.error('Error en la mutación de crear ticket:', error);
+      console.error("Error en la mutación de crear ticket:", error);
     },
   });
 };

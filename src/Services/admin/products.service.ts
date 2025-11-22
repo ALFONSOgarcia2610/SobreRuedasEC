@@ -1,216 +1,270 @@
 import { envs } from "@/commons/envs";
-import type { CreateLotteryDto, CreateProductDto, Lottery, Product, CreateLotteryProductDto, LotteryProduct, CreateEntityFinanceDto, EntityFinance } from "@/interfaces/product.interface";
+import type {
+  CreateLotteryDto,
+  CreateProductDto,
+  Lottery,
+  Product,
+  CreateLotteryProductDto,
+  LotteryProduct,
+  CreateEntityFinanceDto,
+  EntityFinance,
+} from "@/interfaces/product.interface";
 import { networkClient } from "@/providers/restClient";
 import type { Voucher } from "../user/usercompra.service";
 
 export const productService = {
   createProduct: async (data: CreateProductDto): Promise<Product> => {
     const productData = {
-      productStateId: data.productStateId || 'a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d',
+      productStateId:
+        data.productStateId || "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
       code: String(data.code),
       name: String(data.name),
       description: String(data.description),
       value: Number(data.value),
       isCash: Boolean(data.isCash),
     };
-    const response = await networkClient.post<any>(`${envs.VITE_API_URL}/api/Product`, productData);
+    const response = await networkClient.post<any>(
+      `${envs.VITE_API_URL}/api/Product`,
+      productData
+    );
     // Extraer datos y normalizar el ID
     const apiData = response?.data?.data || response?.data || response;
     const result = {
       ...apiData,
-      id: apiData.productId || apiData.id // Normalizar productId -> id
+      id: apiData.productId || apiData.id, // Normalizar productId -> id
     };
     return result;
   },
 };
 
-
 export const lotteryService = {
   createLottery: async (data: CreateLotteryDto): Promise<Lottery> => {
     const lotteryData = {
-      lotteryStateId: data.lotteryStateId || 'd0e1f2a3-b4c5-4d6e-7f8a-9b0c1d2e3f4a',
+      lotteryStateId:
+        data.lotteryStateId || "d0e1f2a3-b4c5-4d6e-7f8a-9b0c1d2e3f4a",
       number: parseInt(String(data.number), 10),
       maxTickets: parseInt(String(data.maxTickets), 10),
       voucherPrice: parseFloat(String(data.voucherPrice)),
     };
 
-    const response = await networkClient.post<any>(`${envs.VITE_API_URL}/api/Lottery`, lotteryData);
-    
+    const response = await networkClient.post<any>(
+      `${envs.VITE_API_URL}/api/Lottery`,
+      lotteryData
+    );
+
     // Extraer datos y normalizar el ID
     const apiData = response?.data?.data || response?.data || response;
     const result = {
       ...apiData,
-      id: apiData.lotteryId || apiData.id // Normalizar lotteryId -> id
+      id: apiData.lotteryId || apiData.id, // Normalizar lotteryId -> id
     };
     return result;
   },
 };
 
-
 export const lotteryProductService = {
-  createLotteryProduct: async (data: CreateLotteryProductDto): Promise<LotteryProduct> => {
-    const response = await networkClient.post<LotteryProduct>(`${envs.VITE_API_URL}/api/LotteryProduct`, data);
+  createLotteryProduct: async (
+    data: CreateLotteryProductDto
+  ): Promise<LotteryProduct> => {
+    const response = await networkClient.post<LotteryProduct>(
+      `${envs.VITE_API_URL}/api/LotteryProduct`,
+      data
+    );
     return response;
   },
 
   getLotteryProducts: async (): Promise<LotteryProduct[]> => {
-    const response = await networkClient.get<LotteryProduct[]>(`${envs.VITE_API_URL}/api/LotteryProduct`);
+    const response = await networkClient.get<LotteryProduct[]>(
+      `${envs.VITE_API_URL}/api/LotteryProduct`
+    );
     return response;
   },
 
   getLotteryProductById: async (id: string): Promise<LotteryProduct> => {
-    const response = await networkClient.get<LotteryProduct>(`${envs.VITE_API_URL}/api/LotteryProduct/${id}`);
+    const response = await networkClient.get<LotteryProduct>(
+      `${envs.VITE_API_URL}/api/LotteryProduct/${id}`
+    );
     return response;
   },
 };
 
-
 // Servicio para obtener todos los productos
 export const getAllProductsService = async (): Promise<Product[]> => {
-  const response = await networkClient.get<{ 
-    success: boolean; 
-    message: string; 
+  const response = await networkClient.get<{
+    success: boolean;
+    message: string;
     data: Product[];
-  }>(
-    `${envs.VITE_API_URL}/api/Product`
-  );
+  }>(`${envs.VITE_API_URL}/api/Product`);
 
   if (!response || !response.success || !response.data) {
-    throw new Error(response?.message || 'Error al obtener productos');
+    throw new Error(response?.message || "Error al obtener productos");
   }
 
   return response.data;
 };
-
 
 // Servicio para obtener todos los sorteos
 export const getAllLotteriesService = async (): Promise<Lottery[]> => {
-  const response = await networkClient.get<{ 
-    success: boolean; 
-    message: string; 
+  const response = await networkClient.get<{
+    success: boolean;
+    message: string;
     data: Lottery[];
-  }>(
-    `${envs.VITE_API_URL}/api/Lottery`
-  );
+  }>(`${envs.VITE_API_URL}/api/Lottery`);
 
   if (!response || !response.success || !response.data) {
-    throw new Error(response?.message || 'Error al obtener sorteos');
+    throw new Error(response?.message || "Error al obtener sorteos");
   }
 
   return response.data;
 };
-
 
 // Servicio para obtener la lotería activa actual
 export const getCurrentLotteryService = async (): Promise<Lottery> => {
-  const response = await networkClient.get<{ 
-    success: boolean; 
-    message: string; 
+  const response = await networkClient.get<{
+    success: boolean;
+    message: string;
     data: Lottery;
-  }>(
-    `${envs.VITE_API_URL}/api/Lottery/current`
-  );
+  }>(`${envs.VITE_API_URL}/api/Lottery/current`);
 
   if (!response || !response.success || !response.data) {
-    throw new Error(response?.message || 'Error al obtener la lotería activa');
+    throw new Error(response?.message || "Error al obtener la lotería activa");
   }
 
   return response.data;
 };
 
-
 // Servicio para obtener productos por ID de lotería
-export const getProductsByLotteryIdService = async (lotteryId: string): Promise<Product[]> => {
-  const response = await networkClient.get<{ 
-    success: boolean; 
-    message: string; 
+export const getProductsByLotteryIdService = async (
+  lotteryId: string
+): Promise<Product[]> => {
+  const response = await networkClient.get<{
+    success: boolean;
+    message: string;
     data: Product[];
   }>(
     `${envs.VITE_API_URL}/api/Product/lottery/${lotteryId}?pageNumber=1&pageSize=10`
   );
 
   if (!response || !response.success || !response.data) {
-    throw new Error(response?.message || 'Error al obtener productos de la lotería');
+    throw new Error(
+      response?.message || "Error al obtener productos de la lotería"
+    );
   }
 
   return response.data;
 };
 
-
 // ==================== ENTITY FINANCE SERVICES ====================
 
 // Servicio para crear una cuenta financiera
-export const createEntityFinanceService = async (data: CreateEntityFinanceDto): Promise<EntityFinance> => {
+export const createEntityFinanceService = async (
+  data: CreateEntityFinanceDto
+): Promise<EntityFinance> => {
   const response = await networkClient.post<{
     success: boolean;
     message: string;
     data: EntityFinance;
-  }>(
-    `${envs.VITE_API_URL}/api/EntityFinance`,
-    data
-  );
+  }>(`${envs.VITE_API_URL}/api/EntityFinance`, data);
 
   if (!response || !response.success || !response.data) {
-    throw new Error(response?.message || 'Error al crear cuenta financiera');
+    throw new Error(response?.message || "Error al crear cuenta financiera");
   }
 
   // Normalizar el ID
   const result = {
     ...response.data,
-    id: response.data.entityFinanceId || response.data.id
+    id: response.data.entityFinanceId || response.data.id,
   };
 
   return result;
 };
 
-
 // Servicio para obtener todas las cuentas financieras
-export const getAllEntityFinancesService = async (): Promise<EntityFinance[]> => {
-  const response = await networkClient.get<{ 
-    success: boolean; 
-    message: string; 
+export const getAllEntityFinancesService = async (): Promise<
+  EntityFinance[]
+> => {
+  const response = await networkClient.get<{
+    success: boolean;
+    message: string;
     data: EntityFinance[];
-  }>(
-    `${envs.VITE_API_URL}/api/EntityFinance?pageNumber=1&pageSize=10`
-  );
+  }>(`${envs.VITE_API_URL}/api/EntityFinance?pageNumber=1&pageSize=10`);
 
   if (!response || !response.success || !response.data) {
-    throw new Error(response?.message || 'Error al obtener cuentas financieras');
+    throw new Error(
+      response?.message || "Error al obtener cuentas financieras"
+    );
   }
 
   return response.data;
 };
 
-// Servicio para obtener voucher por sorteo 
-export const getAllVoucherbyLoterry = async (lotteryId: string): Promise<Voucher[]> => {
-  const response = await networkClient.get<{ 
-    success: boolean; 
-    message: string; 
+// Servicio para obtener voucher por sorteo
+export const getAllVoucherbyLoterry = async (
+  lotteryId: string
+): Promise<Voucher[]> => {
+  const response = await networkClient.get<{
+    success: boolean;
+    message: string;
     data: Voucher[];
   }>(
     `${envs.VITE_API_URL}/api/Voucher/lottery/${lotteryId}?pageNumber=1&pageSize=250`
   );
 
   if (!response || !response.success || !response.data) {
-    throw new Error(response?.message || 'Error al obtener vouchers');
+    throw new Error(response?.message || "Error al obtener vouchers");
+  }
+  return response.data;
+};
+
+// Servicio para obtener usuario por id
+export const getUserID = async (id: string): Promise<Voucher[]> => {
+  const response = await networkClient.get<{
+    success: boolean;
+    message: string;
+    data: Voucher[];
+  }>(`${envs.VITE_API_URL}/api/User/${id}?pageNumber=1&pageSize=250`);
+
+  if (!response || !response.success || !response.data) {
+    throw new Error(response?.message || "Error al obtener usuario");
   }
   return response.data;
 };
 
 // Servicio para obtener todos los estados de voucher
-import type { VoucherState } from './product.query';
+import type { VoucherState } from "./product.query";
 export const getAllVoucherState = async (): Promise<VoucherState[]> => {
-  const response = await networkClient.get<{ 
-    success: boolean; 
-    message: string; 
+  const response = await networkClient.get<{
+    success: boolean;
+    message: string;
     data: VoucherState[];
-  }>(
-    `${envs.VITE_API_URL}/api/VoucherState`
-  );
+  }>(`${envs.VITE_API_URL}/api/VoucherState`);
 
   if (!response || !response.success || !response.data) {
-    throw new Error(response?.message || 'Error al obtener estados de voucher');
+    throw new Error(response?.message || "Error al obtener estados de voucher");
   }
   return response.data;
 };
 
+// Servicio para aprobar un voucher
+export const approveVoucherService = async (id: string): Promise<void> => {
+  const response = await networkClient.patch<{
+    success: boolean;
+    message: string;
+  }>(`${envs.VITE_API_URL}/api/Voucher/${id}/approve`, {});
+
+  if (!response || !response.success) {
+    throw new Error(response?.message || "Error al aprobar voucher");
+  }
+};
+
+// Servicio para rechazar un voucher
+export const rejectVoucherService = async (id: string): Promise<void> => {
+  const response = await networkClient.patch<{
+    success: boolean;
+    message: string;
+  }>(`${envs.VITE_API_URL}/api/Voucher/${id}/reject`, {});
+
+  if (!response || !response.success) {
+    throw new Error(response?.message || "Error al rechazar voucher");
+  }
+};

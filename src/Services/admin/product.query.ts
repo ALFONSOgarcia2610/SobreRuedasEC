@@ -1,33 +1,44 @@
-import type { Lottery, Product, EntityFinance } from "@/interfaces/product.interface";
+import type {
+  Lottery,
+  Product,
+  EntityFinance,
+} from "@/interfaces/product.interface";
 import { useQuery } from "@tanstack/react-query";
-import { getAllLotteriesService, getAllProductsService, getCurrentLotteryService, getProductsByLotteryIdService, getAllEntityFinancesService, getAllVoucherbyLoterry, getAllVoucherState } from "./products.service";
+import {
+  getAllLotteriesService,
+  getAllProductsService,
+  getCurrentLotteryService,
+  getProductsByLotteryIdService,
+  getAllEntityFinancesService,
+  getAllVoucherbyLoterry,
+  getAllVoucherState,
+  getUserID,
+} from "./products.service";
 import type { Voucher } from "../user/usercompra.service";
 // Hook para obtener todos los productos
 export const useGetAllProducts = () => {
   return useQuery<Product[], Error>({
-    queryKey: ['get-all-products'],
+    queryKey: ["get-all-products"],
     queryFn: getAllProductsService,
     staleTime: 1000 * 60 * 5, // 5 minutos
     retry: 2,
   });
 };
 
-
 // Hook para obtener todos los sorteos
 export const useGetAllLotteries = () => {
   return useQuery<Lottery[], Error>({
-    queryKey: ['get-all-lotteries'],
+    queryKey: ["get-all-lotteries"],
     queryFn: getAllLotteriesService,
     staleTime: 1000 * 60 * 5, // 5 minutos
     retry: 2,
   });
 };
 
-
 // Hook para obtener la lotería activa actual
 export const useGetCurrentLottery = () => {
   return useQuery<Lottery, Error>({
-    queryKey: ['current-lottery'],
+    queryKey: ["current-lottery"],
     queryFn: getCurrentLotteryService,
     staleTime: 1000 * 60 * 2, // 2 minutos (se actualiza más frecuentemente)
     retry: 3,
@@ -35,14 +46,13 @@ export const useGetCurrentLottery = () => {
   });
 };
 
-
 // Hook para obtener productos por ID de lotería
 export const useGetProductsByLotteryId = (lotteryId: string | undefined) => {
   return useQuery<Product[], Error>({
-    queryKey: ['lottery-products', lotteryId],
+    queryKey: ["lottery-products", lotteryId],
     queryFn: () => {
       if (!lotteryId) {
-        throw new Error('Se requiere un ID de lotería');
+        throw new Error("Se requiere un ID de lotería");
       }
       return getProductsByLotteryIdService(lotteryId);
     },
@@ -52,13 +62,27 @@ export const useGetProductsByLotteryId = (lotteryId: string | undefined) => {
   });
 };
 
+export const useGetUserOne = (id: string | undefined) => {
+  return useQuery<Voucher[], Error>({
+    queryKey: ["userID", id],
+    queryFn: () => {
+      if (!id) {
+        throw new Error("Se requiere un ID de lotería");
+      }
+      return getUserID(id);
+    },
+    staleTime: 1000 * 60 * 3, // 3 minutos
+    retry: 2,
+    enabled: !!id, // Solo ejecuta la query si hay un id válido
+  });
+};
 
 // ==================== ENTITY FINANCE QUERIES ====================
 
 // Hook para obtener todas las cuentas financieras
 export const useGetAllEntityFinances = () => {
   return useQuery<EntityFinance[], Error>({
-    queryKey: ['get-all-entity-finances'],
+    queryKey: ["get-all-entity-finances"],
     queryFn: getAllEntityFinancesService,
     staleTime: 1000 * 60 * 5, // 5 minutos
     retry: 2,
@@ -67,8 +91,8 @@ export const useGetAllEntityFinances = () => {
 
 export const useGetAllVoucherByLottery = (lotteryId: string | undefined) => {
   return useQuery<Voucher[], Error>({
-    queryKey: ['voucher-entity-finance', lotteryId],
-    queryFn: () => getAllVoucherbyLoterry(lotteryId ?? ''),
+    queryKey: ["voucher-entity-finance", lotteryId],
+    queryFn: () => getAllVoucherbyLoterry(lotteryId ?? ""),
     enabled: !!lotteryId,
   });
 };
@@ -85,7 +109,7 @@ export interface VoucherState {
 
 export const useGetAllVoucherStates = () => {
   return useQuery<VoucherState[], Error>({
-    queryKey: ['voucher-states'],
+    queryKey: ["voucher-states"],
     queryFn: () => getAllVoucherState(),
   });
 };
