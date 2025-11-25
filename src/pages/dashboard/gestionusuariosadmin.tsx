@@ -10,26 +10,27 @@ export default function GestionImaganes() {
     : "Sorteo";
 
   return (
-    <div className="flex justify-center">
-      <div className="rounded-2xl shadow-2xl p-8 md:relative overflow-hidden">
-        <div className="flex flex-col md:flex-row items-center md:items-center gap-4 md:gap-6 p-6">
+    <div className="flex items-center justify-center p-4 mt-25">
+      <div className="max-w-4xl w-full">
+        {/* Logo y Título Principal */}
+        <div className="flex flex-col items-center gap-6 mb-8">
           <img
             src="/img/logoSR.png"
-            alt="Logo"
-            className="w-40 h-40 md:w-80 md:h-80 rounded-full shadow-lg mx-auto md:mx-0"
+            alt="Logo SobreRuedas"
+            className="w-32 h-32 md:w-40 md:h-40 rounded-full shadow-xl object-cover"
           />
-          <div className="text-center md:text-left">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white">
+          <div className="text-center space-y-3">
+            <h1 className="text-5xl md:text-6xl font-bold text-white">
               SobreRuedas
-            </h2>
-            <p className="text-sm md:text-base lg:text-lg text-slate-300 mt-1">
-              {numeroSorteo}
-            </p>
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-400">{numeroSorteo}</p>
           </div>
         </div>
-        <div className="flex justify-center">
+
+        {/* Texto Principal con Animación */}
+        <div className="flex justify-center mt-12">
           <ShimmeringText
-            className="text-2xl md:text-4xl font-extrabold text-white"
+            className="text-4xl md:text-5xl font-bold text-white"
             text="Entregando Sueños"
           />
         </div>

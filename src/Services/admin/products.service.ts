@@ -272,32 +272,97 @@ export const rejectVoucherService = async (id: string): Promise<void> => {
 };
 
 // Servicio para obtener el progreso del sorteo
-export const getProgresoSorteo = async (lotteryId: string): Promise<DataState> => {
+export const getProgresoSorteo = async (
+  lotteryId: string
+): Promise<DataState> => {
   const response = await networkClient.get<{
     success: boolean;
     message: string;
     data: DataState;
   }>(`${envs.VITE_API_URL}/api/Ticket/lottery/${lotteryId}/occupancy`, {});
-  
+
   if (!response || !response.success || !response.data) {
-    throw new Error(response?.message || "Error al obtener progreso del sorteo");
+    throw new Error(
+      response?.message || "Error al obtener progreso del sorteo"
+    );
   }
 
   return response.data;
 };
 
-
 // Servicio para obtener el progreso del sorteo
-export const getProgresoSorteoFaltante = async (lotteryId: string): Promise<DataState> => {
+export const getProgresoSorteoFaltante = async (
+  lotteryId: string
+): Promise<DataState> => {
   const response = await networkClient.get<{
     success: boolean;
     message: string;
     data: DataState;
-  }>(`${envs.VITE_API_URL}/api/Ticket/lottery/${lotteryId}/available-count`, {});
-  
+  }>(
+    `${envs.VITE_API_URL}/api/Ticket/lottery/${lotteryId}/available-count`,
+    {}
+  );
+
   if (!response || !response.success || !response.data) {
-    throw new Error(response?.message || "Error al obtener progreso del sorteo");
+    throw new Error(
+      response?.message || "Error al obtener progreso del sorteo"
+    );
   }
 
+  return response.data;
+};
+
+// Servicio para completar un sorteo
+export const completeLotteryService = async (
+  lotteryId: string
+): Promise<void> => {
+  const response = await networkClient.patch<{
+    success: boolean;
+    message: string;
+  }>(`${envs.VITE_API_URL}/api/Lottery/${lotteryId}/complete`, {});
+
+  if (!response || !response.success) {
+    throw new Error(response?.message || "Error al completar sorteo");
+  }
+};
+
+// Servicio para cancelar un sorteo
+export const cancelLotteryService = async (
+  lotteryId: string
+): Promise<void> => {
+  const response = await networkClient.patch<{
+    success: boolean;
+    message: string;
+  }>(`${envs.VITE_API_URL}/api/Lottery/${lotteryId}/cancel`, {});
+
+  if (!response || !response.success) {
+    throw new Error(response?.message || "Error al cancelar sorteo");
+  }
+};
+
+// Interface para estados de lotería
+export interface LotteryState {
+  lotteryProductStateId: string;
+  secuencial: number;
+  code: string;
+  name: string;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Servicio para obtener un estado de lotería por ID
+export const getLotteryStateByIdService = async (
+  id: string
+): Promise<LotteryState> => {
+  const response = await networkClient.get<{
+    success: boolean;
+    message: string;
+    data: LotteryState;
+  }>(`${envs.VITE_API_URL}/api/LotteryState/${id}`);
+
+  if (!response || !response.success || !response.data) {
+    throw new Error(response?.message || "Error al obtener estado de lotería");
+  }
   return response.data;
 };

@@ -6,6 +6,8 @@ import {
   createEntityFinanceService,
   approveVoucherService,
   rejectVoucherService,
+  completeLotteryService,
+  cancelLotteryService,
 } from "./products.service";
 import type {
   CreateLotteryDto,
@@ -195,6 +197,64 @@ export const useRejectVoucher = () => {
       const errorMessage = getErrorMessage(error);
       toast.error(errorMessage);
       console.error("Error al rechazar voucher:", error);
+    },
+  });
+};
+
+// ==================== LOTTERY COMPLETE MUTATIONS ====================
+
+/**
+ * Hook para completar un sorteo
+ * Invalida las queries de sorteos después de completar
+ */
+export const useCompleteLottery = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (lotteryId: string) => completeLotteryService(lotteryId),
+    onSuccess: () => {
+      // Invalidar queries relacionadas con sorteos
+      queryClient.invalidateQueries({ queryKey: ["get-all-lotteries"] });
+      queryClient.invalidateQueries({ queryKey: ["current-lottery"] });
+      queryClient.invalidateQueries({ queryKey: ["sorteo-progreso"] });
+      queryClient.invalidateQueries({ queryKey: ["sorteo-progreso-faltante"] });
+      toast.success("Sorteo completado exitosamente", {
+        description: "El sorteo ha sido marcado como completo",
+      });
+    },
+    onError: (error: any) => {
+      const errorMessage = getErrorMessage(error);
+      toast.error("Error al completar sorteo", {
+        description: errorMessage,
+      });
+      console.error("Error al completar sorteo:", error);
+    },
+  });
+};
+
+/**
+ * Hook para cancelar un sorteo
+ * Invalida las queries de sorteos después de cancelar
+ */
+export const useCancelLottery = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (lotteryId: string) => cancelLotteryService(lotteryId),
+    onSuccess: () => {
+      // Invalidar queries relacionadas con sorteos
+      queryClient.invalidateQueries({ queryKey: ["get-all-lotteries"] });
+      queryClient.invalidateQueries({ queryKey: ["current-lottery"] });
+      toast.success("Sorteo cancelado exitosamente", {
+        description: "El sorteo ha sido marcado como cancelado",
+      });
+    },
+    onError: (error: any) => {
+      const errorMessage = getErrorMessage(error);
+      toast.error("Error al cancelar sorteo", {
+        description: errorMessage,
+      });
+      console.error("Error al cancelar sorteo:", error);
     },
   });
 };

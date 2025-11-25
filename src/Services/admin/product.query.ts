@@ -16,6 +16,8 @@ import {
   getProgresoSorteo,
   type DataState,
   getProgresoSorteoFaltante,
+  getLotteryStateByIdService,
+  type LotteryState,
 } from "./products.service";
 import type { Voucher } from "../user/usercompra.service";
 // Hook para obtener todos los productos
@@ -117,8 +119,6 @@ export const useGetAllVoucherStates = () => {
   });
 };
 
-
-
 export const useGetProgresoSorteo = (lotteryId: string) => {
   return useQuery<DataState, Error>({
     queryKey: ["sorteo-progreso", lotteryId],
@@ -133,3 +133,18 @@ export const useGetProgresoSorteoFaltante = (lotteryId: string) => {
   });
 };
 
+// Hook para obtener un estado de lotería por ID
+export const useGetLotteryStateById = (stateId: string | undefined) => {
+  return useQuery<LotteryState, Error>({
+    queryKey: ["lottery-state", stateId],
+    queryFn: () => {
+      if (!stateId) {
+        throw new Error("Se requiere un ID de estado");
+      }
+      return getLotteryStateByIdService(stateId);
+    },
+    staleTime: 1000 * 60 * 10, // 10 minutos (los estados no cambian frecuentemente)
+    retry: 2,
+    enabled: !!stateId,
+  });
+};

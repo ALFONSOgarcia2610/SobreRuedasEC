@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useGetAllTicketsByVoucher } from "@/Services/user/usercompra.query";
-import { Loader2, Sparkles, Star } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 interface TicketsDialogProps {
   open: boolean;
@@ -35,8 +35,8 @@ export function TicketsDialog({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-10/12! overflow-y-auto h-10/12! lg:h-8/12!">
-        <DialogHeader>
+      <DialogContent className="max-w-10/12! overflow-y-auto h-10/12! lg:h-8/12! p-0 gap-0 flex flex-col">
+        <DialogHeader className="px-4 pt-2 pb-1 shrink-0">
           <DialogTitle>
             Tickets del Voucher
             <span className="ml-3 text-base font-semibold text-green-400 align-middle">
@@ -58,45 +58,108 @@ export function TicketsDialog({
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 py-4 justify-items-start">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-2 content-start items-start px-4 pb-4 flex-1 overflow-y-auto">
               {(queryTickets.data ?? []).map((ticket, idx) => {
                 const t = (ticket as any)?.data ? (ticket as any).data : ticket;
                 // Formatear el número con ceros a la izquierda
-                const ticketNum = String(t.number ?? t.ticketNumber ?? t.numero ?? "").padStart(padLength, "0");
+                const ticketNum = String(
+                  t.number ?? t.ticketNumber ?? t.numero ?? ""
+                ).padStart(padLength, "0");
                 // Cambia la validación: si el estado es "AVAILABLE", muestra "Pendiente"
-                const noAsignado = t?.ticketStateId === "b4c5d6e7-f8a9-4b0c-1d2e-3f4a5b6c7d8e";
+                const noAsignado =
+                  t?.ticketStateId === "b4c5d6e7-f8a9-4b0c-1d2e-3f4a5b6c7d8e";
                 return (
                   <div
                     key={t?.ticketId || idx}
-                    className="relative flex flex-col items-center justify-center border-2 border-[#353a4d] rounded-[18px] p-3 shadow-xl min-h-[90px] w-full max-w-[130px] mx-auto bg-gradient-to-br from-[#23263a] via-[#2d314d] to-[#353a4d] transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-                    style={{
-                      boxShadow:
-                        "0 4px 24px 0 rgba(53,58,77,0.18), 0 1.5px 0 0 #353a4d inset",
-                    }}
+                    className="relative w-full aspect-[4/4] mx-auto transition-all duration-300 hover:scale-105 hover:-rotate-1 mt-3"
+                    style={{ maxWidth: "120px" }}
                   >
-                    {/* Logo y estrellas pastel */}
-                    <div className="flex flex-col items-center justify-center w-full pt-1 pb-0 z-10">
-                      <img
-                        src="/public/img/logoSR.png"
-                        alt="Logo"
-                        className="w-6 h-6 mb-2 drop-shadow-[0_1px_2px_rgba(80,80,120,0.7)]"
-                      />
-                      <div className="flex items-center gap-2 mb-0.5">
-                        <Star className="w-3 h-3 text-amber-400" />
-                        <Sparkles className="w-3 h-3 text-amber-400" />
-                        <Star className="w-3 h-3 text-amber-400" />
+                    {/* Ticket de lotería con bordes dentados */}
+                    <div className="relative w-full h-full bg-gradient-to-br from-emerald-50 via-white to-green-50 rounded-lg shadow-2xl overflow-hidden border-2 border-green-600">
+                      {/* Decoración de bordes dentados superior */}
+                      <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-green-600 to-green-500 flex justify-around items-center">
+                        {[...Array(10)].map((_, i) => (
+                          <div
+                            key={i}
+                            className="w-0.5 h-0.5 bg-white rounded-full opacity-60"
+                          />
+                        ))}
+                      </div>
+
+                      {/* Decoración de bordes dentados inferior */}
+                      <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-green-600 to-green-500 flex justify-around items-center">
+                        {[...Array(10)].map((_, i) => (
+                          <div
+                            key={i}
+                            className="w-0.5 h-0.5 bg-white rounded-full opacity-60"
+                          />
+                        ))}
+                      </div>
+
+                      {/* Perforaciones laterales */}
+                      <div className="absolute left-0 top-0 bottom-0 w-1.5 flex flex-col justify-around items-center bg-gradient-to-r from-green-600/20 to-transparent">
+                        {[...Array(6)].map((_, i) => (
+                          <div
+                            key={i}
+                            className="w-1 h-1 bg-green-600 rounded-full"
+                          />
+                        ))}
+                      </div>
+                      <div className="absolute right-0 top-0 bottom-0 w-1.5 flex flex-col justify-around items-center bg-gradient-to-l from-green-600/20 to-transparent">
+                        {[...Array(6)].map((_, i) => (
+                          <div
+                            key={i}
+                            className="w-1 h-1 bg-green-600 rounded-full"
+                          />
+                        ))}
+                      </div>
+
+                      {/* Contenido del ticket */}
+                      <div className="relative flex flex-col items-center justify-center h-full px-2 py-2 z-10">
+                        {/* Número del ticket */}
+                        <div className="flex flex-col items-center justify-center w-full">
+                          {noAsignado ? (
+                            <div className="text-center space-y-2">
+                              <div className="text-[10px] font-semibold text-amber-600 bg-amber-50 px-2 py-1 rounded border border-amber-300">
+                                PENDIENTE
+                              </div>
+                              <p className="text-[8px] text-gray-600 leading-tight px-2">
+                                Se mostrará el número cuando se apruebe el pago
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="text-center">
+                              <div className="bg-gradient-to-br from-green-600 to-emerald-700 text-white font-black text-2xl px-3 py-1 rounded-lg shadow-lg border border-green-400 tracking-wider transform rotate-[-2deg]">
+                                {ticketNum}
+                              </div>
+                              <div className="flex justify-center gap-0.5 mt-2">
+                                {[...Array(5)].map((_, i) => (
+                                  <div
+                                    key={i}
+                                    className="w-0.5 h-0.5 bg-green-400 rounded-full"
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Patrón de fondo sutil */}
+                      <div className="absolute inset-0 opacity-5 pointer-events-none">
+                        <div
+                          className="absolute inset-0"
+                          style={{
+                            backgroundImage:
+                              "repeating-linear-gradient(45deg, transparent, transparent 10px, currentColor 10px, currentColor 11px)",
+                            color: "#059669",
+                          }}
+                        />
                       </div>
                     </div>
-                    {/* Número o texto */}
-                    <span className="text-sm font-semibold mt-2 px-2 py-1 rounded-lg bg-green-200 text-green-800 border shadow-sm">
-                      {noAsignado ? (
-                        "Pendiente"
-                      ) : (
-                        <span className="inline-flex items-center gap-1">
-                          {ticketNum}
-                        </span>
-                      )}
-                    </span>
+
+                    {/* Sombra del ticket */}
+                    <div className="absolute inset-0 bg-green-900/10 blur-xl transform translate-y-2 -z-10 rounded-lg" />
                   </div>
                 );
               })}

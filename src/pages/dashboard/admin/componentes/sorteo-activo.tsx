@@ -30,9 +30,9 @@ export default function SorteoActivo() {
   } = useGetCurrentLottery();
   const { data: products, isLoading: isLoadingProducts } =
     useGetProductsByLotteryId(currentLottery?.lotteryId);
-    const lotteryId = currentLottery?.lotteryId ?? "";
-    const progresoSorteo = useGetProgresoSorteo(lotteryId);
-    const porcentaje = progresoSorteo.data;
+  const lotteryId = currentLottery?.lotteryId ?? "";
+  const progresoSorteo = useGetProgresoSorteo(lotteryId);
+  const porcentaje = progresoSorteo.data;
   if (isLoading) {
     return (
       <div className="space-y-6">
@@ -68,16 +68,22 @@ export default function SorteoActivo() {
 
   if (!currentLottery) {
     return (
-      <Card className="bg-slate-900 border-slate-800">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-yellow-400">
+      <div className="flex flex-col items-center justify-center py-20 px-4">
+        <div className="text-center space-y-4 max-w-md">
+          <div className="inline-flex p-6 bg-slate-800 rounded-full mb-4">
+            <Ticket className="w-16 h-16 text-slate-500" />
+          </div>
+          <h2 className="text-3xl font-bold text-slate-300">
             No hay sorteo activo
-          </CardTitle>
-          <CardDescription className="text-slate-400">
-            Actualmente no hay ningún sorteo en curso
-          </CardDescription>
-        </CardHeader>
-      </Card>
+          </h2>
+          <p className="text-slate-400 text-lg">
+            Actualmente no hay ningún sorteo en curso.
+          </p>
+          <p className="text-slate-500 text-sm">
+            Crea un nuevo sorteo para comenzar a gestionar ventas y productos.
+          </p>
+        </div>
+      </div>
     );
   }
 
