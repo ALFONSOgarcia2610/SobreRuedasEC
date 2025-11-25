@@ -136,10 +136,10 @@ export function TerminosCondiciones({ trigger }: TerminosCondicionesProps) {
 
                         <section className="bg-slate-800 p-4 rounded-lg border border-slate-700">
                             <p className="text-sm text-gray-400">
-                                <strong className="text-white">Última actualización:</strong> 25 de Octubre de 2025
+                                <strong className="text-white">Última actualización:</strong> 27 Noviembre de 2025
                             </p>
                             <p className="text-sm text-gray-400 mt-2">
-                                Para consultas sobre estos términos, contáctenos a: info@sobreruedas.ec
+                                Para consultas sobre estos términos, contáctenos a: sobreruedasec@hotmail.com
                             </p>
                         </section>
                     </div>

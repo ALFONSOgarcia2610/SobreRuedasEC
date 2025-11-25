@@ -2,8 +2,8 @@ import { useGetAllProducts, useGetAllLotteries } from '@/Services/admin/product.
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DataTable } from '@/commons/data-table';
-import { productColumns, productMobileColumns } from './columns/product-columns';
-import { lotteryColumns, lotteryMobileColumns } from './columns/lottery-columns';
+import { productColumns } from './columns/product-columns';
+import { lotteryColumns } from './columns/lottery-columns';
 import AddProductDialog from './dialogs/AddProductDialog';
 import AddLotteryDialog from './dialogs/AddLotteryDialog';
 import ActivateProductsDialog from './dialogs/ActivateProductsDialog';
@@ -48,7 +48,6 @@ export default function CreateProductPage() {
 
               <DataTable
                 columns={productColumns}
-                mobileColumns={productMobileColumns}
                 data={allProducts}
                 filterConfig={{
                   columnId: 'name',
@@ -84,7 +83,6 @@ export default function CreateProductPage() {
 
               <DataTable
                 columns={lotteryColumns}
-                mobileColumns={lotteryMobileColumns}
                 data={allLotteries}
                 filterConfig={{
                   columnId: 'number',

@@ -61,9 +61,9 @@ export default function AddEntityFinanceDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-green-600 hover:bg-green-700 text-white">
+        <Button className="bg-green-300 hover:bg-green-400 text-green-900 font-bold cursor-pointer">
           <Plus className="mr-2 h-4 w-4" />
-          Agregar Cuenta
+          Agregar
         </Button>
       </DialogTrigger>
       <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-2xl">
@@ -155,7 +155,7 @@ export default function AddEntityFinanceDialog() {
             variant="outline"
             onClick={() => setOpen(false)}
             disabled={createMutation.isPending}
-            className="bg-slate-800 border-slate-700 text-white hover:bg-slate-700"
+            className="bg-red-200 border-slate-700 text-red-900"
           >
             Cancelar
           </Button>

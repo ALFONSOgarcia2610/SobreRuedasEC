@@ -41,7 +41,7 @@ export const useCreateVoucherMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (voucherData: CreateVoucherDto) =>
+    mutationFn: (voucherData: FormData) =>
       createVoucherService(voucherData),
     onSuccess: () => {
       // Invalida las queries relacionadas si las hay

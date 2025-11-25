@@ -4,6 +4,7 @@ import {
   useGetCurrentLottery,
   useGetAllVoucherStates,
   useGetAllEntityFinances,
+  useGetProgresoSorteoFaltante,
 } from "@/Services/admin/product.query";
 import { useGetAllUsers } from "@/Services/admin/users.query";
 import { DataTable } from "@/commons/data-table";
@@ -16,7 +17,8 @@ export default function VoucherVendidos() {
   const { data: allEntityFinances = [] } = useGetAllEntityFinances();
   const { data: allVoucherStates = [] } = useGetAllVoucherStates();
   const { data: allUsers = [] } = useGetAllUsers();
-
+   const progresoSorteo = useGetProgresoSorteoFaltante(lotteryId || "");
+    const faltante = progresoSorteo.data;
   // Construir mapa id -> nombre para entidades
   const entityMap: Record<string, string> = {};
   (allEntityFinances || []).forEach((e: any) => {
@@ -53,6 +55,13 @@ export default function VoucherVendidos() {
             {QueryVouchers.isLoading ? "..." : QueryVouchers.data?.length ?? 0})
           </h3>
         </div>
+        <p className="font-bold">
+          {faltante ? (
+            <span className="text-green-600">{`${faltante}`}</span>
+          ) : (
+            <span className="text-foreground">Sin información</span>
+          )} números para completar el sorteo
+        </p>
       </div>
 
       <DataTable

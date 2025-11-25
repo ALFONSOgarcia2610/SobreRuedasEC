@@ -11,7 +11,9 @@ import type {
 } from "@/interfaces/product.interface";
 import { networkClient } from "@/providers/restClient";
 import type { Voucher } from "../user/usercompra.service";
-
+export interface DataState {
+  data: number;
+}
 export const productService = {
   createProduct: async (data: CreateProductDto): Promise<Product> => {
     const productData = {
@@ -267,4 +269,35 @@ export const rejectVoucherService = async (id: string): Promise<void> => {
   if (!response || !response.success) {
     throw new Error(response?.message || "Error al rechazar voucher");
   }
+};
+
+// Servicio para obtener el progreso del sorteo
+export const getProgresoSorteo = async (lotteryId: string): Promise<DataState> => {
+  const response = await networkClient.get<{
+    success: boolean;
+    message: string;
+    data: DataState;
+  }>(`${envs.VITE_API_URL}/api/Ticket/lottery/${lotteryId}/occupancy`, {});
+  
+  if (!response || !response.success || !response.data) {
+    throw new Error(response?.message || "Error al obtener progreso del sorteo");
+  }
+
+  return response.data;
+};
+
+
+// Servicio para obtener el progreso del sorteo
+export const getProgresoSorteoFaltante = async (lotteryId: string): Promise<DataState> => {
+  const response = await networkClient.get<{
+    success: boolean;
+    message: string;
+    data: DataState;
+  }>(`${envs.VITE_API_URL}/api/Ticket/lottery/${lotteryId}/available-count`, {});
+  
+  if (!response || !response.success || !response.data) {
+    throw new Error(response?.message || "Error al obtener progreso del sorteo");
+  }
+
+  return response.data;
 };

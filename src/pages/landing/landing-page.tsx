@@ -1,4 +1,3 @@
-
 "use client";
 import { HeroVideoDialogDemo } from "./componentes/hero-video";
 import { AnimatedCircularProgressBarDemo } from "../comunes/CircularBar";
@@ -6,13 +5,15 @@ import { NumerosBendecidos } from "./componentes/numeros-bendecidos";
 import { PreciosBoletos } from "./componentes/precios-boletos";
 import { Footer } from "./componentes/footer";
 import GestionImaganes from "./componentes/imagenes-carro";
-import { useGetCurrentLottery, useGetProductsByLotteryId } from "@/Services/admin/product.query";
+import { useGetCurrentLottery, useGetProductsByLotteryId, useGetProgresoSorteo } from "@/Services/admin/product.query";
 
 export default function LandingPage() {
+ 
     const { data: currentLottery } = useGetCurrentLottery();
-    const { data: products } = useGetProductsByLotteryId(currentLottery?.lotteryId);
-
-    // Concatenar nombres de productos con " & "
+    const lotteryId = currentLottery?.lotteryId ?? "";
+    const { data: products } = useGetProductsByLotteryId(lotteryId);
+    const progresoSorteo = useGetProgresoSorteo(lotteryId);
+    const porcentaje = progresoSorteo.data;
     const productosTexto = products && products.length > 0
         ? products.map(p => p.name).join(' & ')
         : 'Premios increíbles';
@@ -36,7 +37,7 @@ export default function LandingPage() {
                 <GestionImaganes />
             </section >
             <section className="-mt-25">
-                <AnimatedCircularProgressBarDemo />
+                <AnimatedCircularProgressBarDemo progress={typeof porcentaje === "number" ? porcentaje : 0} />
             </section>
             <section>
                 <NumerosBendecidos />

@@ -66,7 +66,7 @@ export default function AddLotteryDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-green-600 hover:bg-green-700 text-white">
+        <Button className="bg-green-300 hover:bg-green-400 text-green-900 font-bold cursor-pointer">
           <Plus className="mr-2 h-4 w-4" />
           Agregar Sorteo
         </Button>
@@ -167,7 +167,7 @@ export default function AddLotteryDialog() {
             variant="outline"
             onClick={() => setOpen(false)}
             disabled={createLottery.isPending}
-            className="bg-slate-800 border-slate-700 text-white hover:bg-slate-700"
+            className="bg-red-200 border-slate-700 text-red-900 hover:bg-red-300"
           >
             Cancelar
           </Button>

@@ -1,6 +1,7 @@
 import {
   useGetCurrentLottery,
   useGetProductsByLotteryId,
+  useGetProgresoSorteo,
 } from "@/Services/admin/product.query";
 import {
   Card,
@@ -14,7 +15,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
   Calendar,
   DollarSign,
-  Hash,
   Ticket,
   TrendingUp,
   Package,
@@ -30,7 +30,9 @@ export default function SorteoActivo() {
   } = useGetCurrentLottery();
   const { data: products, isLoading: isLoadingProducts } =
     useGetProductsByLotteryId(currentLottery?.lotteryId);
-
+    const lotteryId = currentLottery?.lotteryId ?? "";
+    const progresoSorteo = useGetProgresoSorteo(lotteryId);
+    const porcentaje = progresoSorteo.data;
   if (isLoading) {
     return (
       <div className="space-y-6">
@@ -79,13 +81,6 @@ export default function SorteoActivo() {
     );
   }
 
-  // Calcular porcentaje de tickets vendidos
-  const ticketsVendidos = 6556; // TODO: Obtener de la API cuando esté disponible
-  const porcentajeVendido =
-    currentLottery.maxTickets > 0
-      ? Math.round((ticketsVendidos / currentLottery.maxTickets) * 100)
-      : 0;
-
   return (
     <div className="space-y-6">
       <div className="">
@@ -113,7 +108,7 @@ export default function SorteoActivo() {
 
         <CardContent className="space-y-2">
           {/* Grid de estadísticas */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Número de sorteo */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -130,21 +125,6 @@ export default function SorteoActivo() {
                   >
                     Activo
                   </Badge>
-                </div>
-              </div>
-            </div>
-            <div className="bg-slate-700 rounded-lg p-4 border border-slate-700">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-200 rounded-lg">
-                  <Hash className="w-5 h-5 text-blue-800" />
-                </div>
-                <div>
-                  <p className="text-xs text-white uppercase tracking-wide font-bold">
-                    Número
-                  </p>
-                  <p className="text-2xl font-bold text-white">
-                    {currentLottery.number}
-                  </p>
                 </div>
               </div>
             </div>
@@ -177,7 +157,7 @@ export default function SorteoActivo() {
                     Máx. Tickets
                   </p>
                   <p className="text-2xl font-bold text-white">
-                    {currentLottery.maxTickets.toLocaleString()}
+                    {(currentLottery.maxTickets + 1).toLocaleString()}
                   </p>
                 </div>
               </div>
@@ -191,23 +171,16 @@ export default function SorteoActivo() {
                 Progreso de ventas
               </span>
               <span className="text-green-400 font-bold">
-                {porcentajeVendido}%
+                {typeof porcentaje === "number" ? porcentaje : 0}%
               </span>
             </div>
             <div className="w-full bg-slate-700 rounded-full h-4 overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-green-500 to-green-600 rounded-full transition-all duration-500 ease-out relative"
-                style={{ width: `${porcentajeVendido}%` }}
+                style={{ width: `${porcentaje}%` }}
               >
                 <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
               </div>
-            </div>
-            <div className="flex items-center justify-between text-xs text-slate-400">
-              <span>{ticketsVendidos.toLocaleString()} vendidos</span>
-              <span>
-                {(currentLottery.maxTickets - ticketsVendidos).toLocaleString()}{" "}
-                disponibles
-              </span>
             </div>
           </div>
         </CardContent>

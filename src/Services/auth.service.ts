@@ -61,7 +61,7 @@ export const registerUser = async (payload: RegisterUserDto): Promise<RegisterRe
     
     const userData = response.data;
     if (userData.token) {
-      Cookies.set('auth_token', userData.token, { expires: 7 });
+      Cookies.set('auth_token', userData.token, { expires: 0.125 });
     }
 
     // Actualizar el store del usuario
@@ -117,7 +117,7 @@ export const loginService = async (payload: LoginDto): Promise<string> => {
 
     // Guardar el token en las cookies (expira en 7 días)
     if (response.data.token) {
-      Cookies.set('auth_token', response.data.token, { expires: 7 });
+      Cookies.set('auth_token', response.data.token, { expires: 0.125 });
     }
 
     // Actualizar el store del usuario (se guardará automáticamente en localStorage por la suscripción)

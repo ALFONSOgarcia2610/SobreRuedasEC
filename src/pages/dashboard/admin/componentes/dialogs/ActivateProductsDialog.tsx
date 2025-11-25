@@ -90,7 +90,7 @@ export default function ActivateProductsDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+        <Button className="bg-blue-300 hover:bg-blue-400 text-blue-900 font-bold cursor-pointer">
           <Link2 className="mr-2 h-4 w-4" />
           Activar Productos
         </Button>
@@ -272,7 +272,7 @@ export default function ActivateProductsDialog() {
               setOpen(false);
             }}
             disabled={createLotteryProduct.isPending}
-            className="bg-slate-800 border-slate-700 text-white hover:bg-slate-700"
+            className="bg-red-200 border-slate-700 text-red-900"
           >
             Cancelar
           </Button>

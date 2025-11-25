@@ -46,13 +46,17 @@ export interface Ticket {
 }
 
 export const createVoucherService = async (
-  voucherData: CreateVoucherDto
+  voucherData: FormData
 ): Promise<Voucher> => {
   const response = await networkClient.post<{
     success: boolean;
     message: string;
     data: Voucher;
-  }>(`${envs.VITE_API_URL}/api/Voucher`, voucherData);
+  }>(`${envs.VITE_API_URL}/api/Voucher`, voucherData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 
   if (!response || !response.success || !response.data) {
     throw new Error(response?.message || "Error al crear voucher");

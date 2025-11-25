@@ -71,6 +71,7 @@ export function PurchaseVerificationDialog({
     progress: 0,
     total: 0,
   });
+  const [voucherImage, setVoucherImage] = useState<File | null>(null);
 
   // Obtener cuentas financieras y sorteo activo
   const { data: cuentasFinancieras, isLoading: isLoadingCuentas } =
@@ -122,16 +123,16 @@ export function PurchaseVerificationDialog({
 
     try {
       // 1. Crear el voucher
-      const voucherData = {
-        entityFinanceId: cuentaSeleccionada, // ID temporal (se ignora por ahora)
-        entidadEmisora: entityMemoria.trim(), // Banco desde donde se envió la transferencia
-        referenceNumber: referenceNumber.trim(),
-        amount: precio,
-      };
+      const formData = new FormData();
+      formData.append("entityFinanceId", cuentaSeleccionada);
+      formData.append("entidadEmisora", entityMemoria.trim());
+      formData.append("referenceNumber", referenceNumber.trim());
+      formData.append("amount", String(precio));
+      if (voucherImage) {
+        formData.append("image", voucherImage);
+      }
 
-      const voucherResponse = await createVoucherMutation.mutateAsync(
-        voucherData
-      );
+      const voucherResponse = await createVoucherMutation.mutateAsync(formData);
 
       const voucherId = voucherResponse.voucherId;
 
@@ -526,6 +527,27 @@ export function PurchaseVerificationDialog({
               <p className="text-xs text-slate-400 mt-1.5">
                 El banco de tu cuenta personal desde donde hiciste la
                 transferencia
+              </p>
+            </div>
+
+            {/* Campo para subir imagen del comprobante */}
+            <div className="bg-slate-800 border border-slate-700 rounded-lg p-3">
+              <Label
+                htmlFor="voucherImage"
+                className="text-sm text-white mb-2 flex items-center gap-2"
+              >
+                Comprobante de Pago
+              </Label>
+              <Input
+                id="voucherImage"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setVoucherImage(e.target.files?.[0] ?? null)}
+                disabled={isProcessing}
+                className="w-full bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-green-400 focus:ring-green-400"
+              />
+              <p className="text-xs text-slate-400 mt-1.5">
+                Sube una imagen clara de tu comprobante de pago
               </p>
             </div>
           </div>

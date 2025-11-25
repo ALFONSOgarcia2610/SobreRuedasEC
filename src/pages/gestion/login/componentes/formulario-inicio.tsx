@@ -10,6 +10,12 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
 
+declare global {
+    interface Window {
+        __navigateToCompraSorteo?: () => void;
+    }
+}
+
 export default function LoginForm({
     className,
     ...props
@@ -31,6 +37,8 @@ export default function LoginForm({
     };
 
     const handleSubmit = () => {
+        // Definir función global para navegación post-login
+        window.__navigateToCompraSorteo = () => navigate({ to: '/usuario/compraSorteo' });
         // Validaciones
         if (!formData.email || !formData.password) {
             toast.error('Por favor completa todos los campos');
@@ -50,8 +58,8 @@ export default function LoginForm({
             },
             {
                 onSuccess: () => {
-                    // Navegar al dashboard
-                    navigate({ to: '/dashboard' });
+                    // Navegar a compra de sorteo
+                    navigate({ to: '/usuario/compraSorteo' });
                 }
             }
         );
@@ -87,12 +95,7 @@ export default function LoginForm({
                             <div className="grid gap-2 sm:gap-3">
                                 <div className="flex items-center">
                                     <Label htmlFor="password" className="text-gray-300 text-sm">Contraseña</Label>
-                                    <a
-                                        href="#"
-                                        className="ml-auto text-xs sm:text-sm underline-offset-2 hover:underline text-amber-400"
-                                    >
-                                        ¿Olvidaste tu contraseña?
-                                    </a>
+                                
                                 </div>
                                 <Input
                                     id="password"

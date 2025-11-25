@@ -119,7 +119,7 @@ export function Footer() {
                                 <Mail size={18} className="text-blue-400" />
                                 <div>
                                     <p className="text-sm text-slate-300">Email</p>
-                                    <p className="text-sm font-medium">info@sobreruedas.ec</p>
+                                    <p className="text-sm font-medium">sobreruedasec@hotmail.com</p>
                                 </div>
                             </div>
                             <div className="flex items-center space-x-3">
@@ -159,7 +159,6 @@ export function Footer() {
 
                         {/* Badge de confianza */}
                         <div className="flex items-center space-x-4">
-
                             <div className="flex items-center space-x-2 bg-slate-800 px-4 py-2 rounded-full">
                                 <Lock size={16} className="text-blue-400" />
                                 <span className="text-xs font-medium">Pagos Seguros</span>
@@ -168,7 +167,6 @@ export function Footer() {
                     </div>
                 </div>
             </div>
-
             {/* Botón flotante de ayuda */}
             <div className="fixed bottom-6 right-6 z-50">
                 <a

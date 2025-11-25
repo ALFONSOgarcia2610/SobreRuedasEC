@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Wallet } from 'lucide-react';
 import AddEntityFinanceDialog from './dialogs/AddEntityFinanceDialog';
 import { DataTable } from '@/commons/data-table';
-import { entityFinanceColumns, entityFinanceMobileColumns } from './columns/entityfinance-columns';
+import { entityFinanceColumns } from './columns/entityfinance-columns';
 
 export default function CuentasFinancieras() {
   const { data: entityFinances = [], isLoading } = useGetAllEntityFinances();
@@ -20,10 +20,10 @@ export default function CuentasFinancieras() {
               <div className="h-8 w-1 bg-green-600 rounded-full" />
               <div>
                 <CardTitle className="text-2xl font-bold text-white">
-                  Cuentas Registradas ({isLoading ? '...' : entityFinances.length})
+                  Cuentas ({isLoading ? '...' : entityFinances.length})
                 </CardTitle>
                 <CardDescription className="text-slate-400">
-                  Gestiona las entidades financieras del sistema
+                  Gestiona las entidades financieras
                 </CardDescription>
               </div>
             </div>
@@ -34,7 +34,6 @@ export default function CuentasFinancieras() {
         <CardContent>
           <DataTable
             columns={entityFinanceColumns}
-            mobileColumns={entityFinanceMobileColumns}
             data={entityFinances}
             filterConfig={{
               columnId: 'name',
@@ -54,8 +53,8 @@ export default function CuentasFinancieras() {
         <Card className="bg-slate-900/50 border-slate-700">
           <CardContent className="pt-6">
             <div className="flex items-start gap-3 text-sm text-slate-400">
-              <div className="p-2 bg-blue-600/20 rounded-lg mt-0.5">
-                <Wallet className="w-4 h-4 text-blue-400" />
+              <div className="p-2 bg-blue-200 rounded-lg mt-0.5">
+                <Wallet className="w-4 h-4 text-blue-900" />
               </div>
               <div>
                 <p className="font-medium text-slate-300 mb-1">Información</p>

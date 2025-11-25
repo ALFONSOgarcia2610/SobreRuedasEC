@@ -257,19 +257,19 @@ export const makeVouchersColumns = (
 
       if (stateName.includes("aprobado") || stateName.includes("approved")) {
         variant = "default";
-        className = "bg-green-200 text-green-800 hover:bg-green-700";
+        className = "bg-green-200 text-green-800 font-bold";
       } else if (
         stateName.includes("rechazado") ||
         stateName.includes("rejected")
       ) {
         variant = "destructive";
-        className = "bg-red-200 text-red-800 hover:bg-red-700";
+        className = "bg-red-200 text-red-800 font-bold";
       } else if (
         stateName.includes("pendiente") ||
         stateName.includes("pending")
       ) {
         variant = "secondary";
-        className = "bg-yellow-200 text-yellow-800 hover:bg-yellow-700";
+        className = "bg-yellow-200 text-yellow-800 font-bold";
       }
 
       return (

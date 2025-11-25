@@ -13,6 +13,9 @@ import {
   getAllVoucherbyLoterry,
   getAllVoucherState,
   getUserID,
+  getProgresoSorteo,
+  type DataState,
+  getProgresoSorteoFaltante,
 } from "./products.service";
 import type { Voucher } from "../user/usercompra.service";
 // Hook para obtener todos los productos
@@ -113,3 +116,20 @@ export const useGetAllVoucherStates = () => {
     queryFn: () => getAllVoucherState(),
   });
 };
+
+
+
+export const useGetProgresoSorteo = (lotteryId: string) => {
+  return useQuery<DataState, Error>({
+    queryKey: ["sorteo-progreso", lotteryId],
+    queryFn: () => getProgresoSorteo(lotteryId ?? ""),
+  });
+};
+
+export const useGetProgresoSorteoFaltante = (lotteryId: string) => {
+  return useQuery<DataState, Error>({
+    queryKey: ["sorteo-progreso-faltante", lotteryId],
+    queryFn: () => getProgresoSorteoFaltante(lotteryId ?? ""),
+  });
+};
+

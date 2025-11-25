@@ -90,25 +90,17 @@ const progressBarStyles = `
 }
 `;
 
-export function AnimatedCircularProgressBarDemo() {
+export function AnimatedCircularProgressBarDemo({ progress }: { progress: number }) {
 
     const [value, setValue] = useState(0);
     const [displayValue, setDisplayValue] = useState(0);
     const [animationValue, setAnimationValue] = useState(0);
     const dataSorteo = useSorteoCarros();
-
-    // Trabajar solo con porcentajes - convertir datos a porcentaje
-    const totalBoletos = dataSorteo.data?.TotalBoletos || 1000;
-    const boletosVendidos = dataSorteo.data?.BoletosVendidos || 0;
-    const targetValue = Math.round((boletosVendidos / totalBoletos) * 100); // Porcentaje base
-
-
+    const targetValue = progress;
     useEffect(() => {
-        // Solo ejecutar animación cuando tengamos datos
         if (!dataSorteo.data || targetValue === 0) return;
-        // Animación inicial de llenado de la barra
-        const animationDuration = 3000; // 3 segundos
-        const steps = 90; // Número de pasos para la animación
+        const animationDuration = 1000; 
+        const steps = 10;
         const stepValue = targetValue / steps;
         const stepTime = animationDuration / steps;
 

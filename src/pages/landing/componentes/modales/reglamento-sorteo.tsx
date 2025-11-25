@@ -304,9 +304,9 @@ export function ReglamentoSorteo({ trigger }: ReglamentoSorteoProps) {
                                     Para consultas sobre el sorteo:
                                 </p>
                                 <div className="bg-slate-800 p-4 rounded-lg border border-slate-700 space-y-1">
-                                    <p><strong className="text-white">Email:</strong> sorteos@sobreruedas.ec</p>
-                                    <p><strong className="text-white">Teléfono:</strong> +593 99 123 4567</p>
-                                    <p><strong className="text-white">WhatsApp:</strong> +593 99 123 4567</p>
+                                    <p><strong className="text-white">Email:</strong> sobreruedasec@hotmail.com</p>
+                                    <p><strong className="text-white">Teléfono:</strong> +593 98 594 1069</p>
+                                    <p><strong className="text-white">WhatsApp:</strong> +593 98 594 1069</p>
                                     <p><strong className="text-white">Horario:</strong> Lun - Dom, 8:00 AM - 10:00 PM</p>
                                     <p><strong className="text-white">Dirección:</strong> Portoviejo, Manabí, Ecuador</p>
                                 </div>
@@ -319,7 +319,7 @@ export function ReglamentoSorteo({ trigger }: ReglamentoSorteoProps) {
                                 y cumple con toda la normativa ecuatoriana vigente en materia de juegos de azar y sorteos.
                             </p> */}
                             <p className="text-sm text-yellow-300 mt-2">
-                                <strong className="text-white">Última actualización:</strong> 25 de Octubre de 2025
+                                <strong className="text-white">Última actualización:</strong> 22 de Noviembre de 2025
                             </p>
                         </section>
                     </div>

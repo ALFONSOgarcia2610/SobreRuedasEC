@@ -2,15 +2,7 @@ import type { ColumnDef } from "@tanstack/react-table"
 import type { EntityFinance } from "@/interfaces/product.interface"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { MoreHorizontal, Pencil, Trash2, Copy, Building2, CreditCard, Hash, User } from "lucide-react"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { Copy, CreditCard, Hash, User } from "lucide-react"
 import { toast } from "sonner"
 
 export const entityFinanceColumns: ColumnDef<EntityFinance>[] = [
@@ -113,121 +105,11 @@ export const entityFinanceColumns: ColumnDef<EntityFinance>[] = [
     header: "Estado",
     cell: () => {
       return (
-        <Badge className="bg-green-600/20 text-green-400 border-green-600">
+        <Badge className="bg-green-200 text-green-900 font-bold">
           Activa
         </Badge>
       )
     },
   },
-  {
-    id: "acciones",
-    header: "Acciones",
-    cell: ({ row }) => {
-      const entity = row.original
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Abrir menú</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-slate-900 border-slate-700">
-            <DropdownMenuLabel className="text-white">Acciones</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => {
-                navigator.clipboard.writeText(entity.entityFinanceId)
-                toast.success('ID copiado')
-              }}
-              className="cursor-pointer text-slate-300 hover:bg-slate-800"
-            >
-              <Copy className="mr-2 h-4 w-4" />
-              Copiar ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator className="bg-slate-700" />
-            <DropdownMenuItem className="cursor-pointer text-blue-400 hover:bg-slate-800">
-              <Pencil className="mr-2 h-4 w-4" />
-              Editar
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer text-red-400 hover:bg-slate-800">
-              <Trash2 className="mr-2 h-4 w-4" />
-              Eliminar
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
 ]
 
-// Columnas para móvil
-export const entityFinanceMobileColumns: ColumnDef<EntityFinance>[] = [
-  {
-    accessorKey: "name",
-    header: "Entidad",
-    cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-        <Building2 className="w-4 h-4 text-blue-400" />
-        <span className="font-semibold text-white">{row.getValue("name")}</span>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "numberAccount",
-    header: "Cuenta",
-    cell: ({ row }) => (
-      <div className="font-mono text-green-400 text-sm">
-        {row.getValue("numberAccount")}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "nameOwner",
-    header: "Titular",
-    cell: ({ row }) => (
-      <div className="text-white text-sm">
-        {row.getValue("nameOwner")}
-      </div>
-    ),
-  },
-  {
-    id: "acciones",
-    header: "",
-    cell: ({ row }) => {
-      const entity = row.original
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-slate-900 border-slate-700">
-            <DropdownMenuLabel className="text-white">Acciones</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => {
-                navigator.clipboard.writeText(entity.entityFinanceId)
-                toast.success('ID copiado')
-              }}
-              className="text-slate-300 hover:bg-slate-800"
-            >
-              <Copy className="mr-2 h-4 w-4" />
-              Copiar ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator className="bg-slate-700" />
-            <DropdownMenuItem className="text-blue-400 hover:bg-slate-800">
-              <Pencil className="mr-2 h-4 w-4" />
-              Editar
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-red-400 hover:bg-slate-800">
-              <Trash2 className="mr-2 h-4 w-4" />
-              Eliminar
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
-]

@@ -79,7 +79,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent className="bg-slate-800">
         <NavMain items={roleConfig.navMain} userRole={currentUser.role} />
-        <NavSecondary items={roleConfig.navSecondary} />
+        <NavSecondary
+          items={roleConfig.navSecondary
+            .filter(item => typeof item.url === "string")
+            .map(item => ({
+              ...item,
+              url: item.url as string,
+            }))}
+        />
       </SidebarContent>
       <SidebarFooter className="bg-slate-800 border-t border-slate-700">
         <NavUser

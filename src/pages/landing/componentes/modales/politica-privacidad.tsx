@@ -200,8 +200,8 @@ export function PoliticaPrivacidad({ trigger }: PoliticaPrivacidadProps) {
                                     Para consultas sobre privacidad y protección de datos:
                                 </p>
                                 <div className="bg-slate-800 p-4 rounded-lg border border-slate-700 space-y-1">
-                                    <p><strong className="text-white">Email:</strong> privacidad@sobreruedas.ec</p>
-                                    <p><strong className="text-white">Teléfono:</strong> +593 99 123 4567</p>
+                                    <p><strong className="text-white">Email:</strong> sobreruedasec@hotmail.com</p>
+                                    <p><strong className="text-white">Teléfono:</strong> +593 98 594 1069</p>
                                     <p><strong className="text-white">Dirección:</strong> Portoviejo, Manabí, Ecuador</p>
                                 </div>
                             </div>
@@ -209,7 +209,7 @@ export function PoliticaPrivacidad({ trigger }: PoliticaPrivacidadProps) {
 
                         <section className="bg-blue-900/20 p-4 rounded-lg border border-blue-700">
                             <p className="text-sm text-blue-300">
-                                <strong className="text-white">Última actualización:</strong> 25 de Octubre de 2025
+                                <strong className="text-white">Última actualización:</strong> 27 Noviembre de 2025
                             </p>
                             <p className="text-sm text-blue-300 mt-2">
                                 Esta política cumple con la Ley Orgánica de Protección de Datos Personales de Ecuador.

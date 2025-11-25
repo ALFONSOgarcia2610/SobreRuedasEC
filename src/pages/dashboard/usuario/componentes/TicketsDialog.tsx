@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useGetAllTicketsByVoucher } from "@/Services/user/usercompra.query";
-import { Hash, Loader2, Sparkles, Star } from "lucide-react";
+import { Loader2, Sparkles, Star } from "lucide-react";
 
 interface TicketsDialogProps {
   open: boolean;
@@ -21,6 +21,17 @@ export function TicketsDialog({
 }: TicketsDialogProps) {
   const queryTickets = useGetAllTicketsByVoucher(voucherId);
   console.log(queryTickets);
+
+  // Calcular el máximo de dígitos según el ticket más alto
+  const ticketsArray = queryTickets.data ?? [];
+  const maxTicketNumber = Math.max(
+    ...ticketsArray.map((ticket: any) => {
+      const t = ticket?.data ? ticket.data : ticket;
+      return Number(t.number ?? t.ticketNumber ?? t.numero ?? 0);
+    }),
+    0
+  );
+  const padLength = maxTicketNumber > 0 ? String(maxTicketNumber).length : 3;
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -50,7 +61,10 @@ export function TicketsDialog({
             <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 py-4 justify-items-start">
               {(queryTickets.data ?? []).map((ticket, idx) => {
                 const t = (ticket as any)?.data ? (ticket as any).data : ticket;
-                const noAsignado = t?.number === 0;
+                // Formatear el número con ceros a la izquierda
+                const ticketNum = String(t.number ?? t.ticketNumber ?? t.numero ?? "").padStart(padLength, "0");
+                // Cambia la validación: si el estado es "AVAILABLE", muestra "Pendiente"
+                const noAsignado = t?.ticketStateId === "b4c5d6e7-f8a9-4b0c-1d2e-3f4a5b6c7d8e";
                 return (
                   <div
                     key={t?.ticketId || idx}
@@ -79,11 +93,7 @@ export function TicketsDialog({
                         "Pendiente"
                       ) : (
                         <span className="inline-flex items-center gap-1">
-                          <Hash
-                            strokeWidth={1.5}
-                            className="w-4 h-4 text-[#7dd3fc]"
-                          />{" "}
-                          {t.number}
+                          {ticketNum}
                         </span>
                       )}
                     </span>

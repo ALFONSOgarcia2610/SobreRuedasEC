@@ -11,17 +11,16 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from "@/components/ui/drawer";
-import { useSorteoCarros } from "@/pages/services/landing.query";
+import { useGetCurrentLottery, useGetProgresoSorteo } from "@/Services/admin/product.query";
 export function Header() {
     const location = useLocation();
     const isActiveRoute = (path: string) => {
         return location.pathname === path;
     };
-    const dataSorteo = useSorteoCarros();
-    // Trabajar solo con porcentajes - convertir datos a porcentaje
-    const totalBoletos = dataSorteo.data?.TotalBoletos || 1000;
-    const boletosVendidos = dataSorteo.data?.BoletosVendidos || 0;
-    const targetValue = Math.round((boletosVendidos / totalBoletos) * 100); // Porcentaje base
+   const { data: currentLottery } = useGetCurrentLottery();
+    const lotteryId = currentLottery?.lotteryId ?? "";
+    const progresoSorteo = useGetProgresoSorteo(lotteryId);
+    const porcentaje = progresoSorteo.data;
 
     return (
         <>
@@ -33,7 +32,7 @@ export function Header() {
                             <div className="flex items-center space-x-6 text-sm">
                                 <div className="flex items-center space-x-2">
                                     <span className="animate-pulse">🔥</span>
-                                    <span className="font-medium">{targetValue}% VENDIDO</span>
+                                    <span className="font-bold">{typeof porcentaje === "number" ? porcentaje : 0}% VENDIDO</span>
                                 </div>
                             </div>
                             <div className="hidden md:flex items-center space-x-4 text-sm">
