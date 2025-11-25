@@ -3,7 +3,6 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import { Button } from './components/ui/button'
-import { AnimatedCircularProgressBarDemo } from './pages/comunes/CircularBar'
 import { ComponentCard } from './pages/comunes/card'
 import { ShinyButton } from './components/ui/shiny-button'
 
@@ -32,7 +31,6 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-      <AnimatedCircularProgressBarDemo />
       <ComponentCard />
       <Button variant={'outline'} className='!bg-amber-200'>Click me</Button>
       <ShinyButton className='!bg-amber-200'>Comprar Ya!</ShinyButton>

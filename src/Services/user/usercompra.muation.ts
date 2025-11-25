@@ -3,7 +3,7 @@ import {
   createVoucherService,
   createTicketService,
 } from "./usercompra.service";
-import type { CreateVoucherDto, CreateTicketDto } from "./usercompra.service";
+import type { CreateTicketDto } from "./usercompra.service";
 import { toast } from "sonner";
 import type { AxiosError } from "axios";
 
