@@ -118,7 +118,7 @@ export function NumerosBendecidos({ className, isLoading = false }: NumerosBende
                         </div>
 
                         {/* Estado */}
-                        <div className="mb-2">
+                        <div className="">
                             {item.entregado ? (
                                 <span className="text-xs font-bold text-green-900 bg-green-200 px-2 py-1 rounded">
                                     ¡Premio Entregado!

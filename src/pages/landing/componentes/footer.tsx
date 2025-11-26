@@ -12,7 +12,10 @@ export function Footer() {
       const productosTexto = products && products.length > 0
           ? products.map(p => p.name).join(' & ')
           : 'Premios increíbles';
-
+ // Concatenar nombres de productos con " & "
+      const productosTextodes = products && products.length > 0
+          ? products.map(p => p.description).join(' & ')
+          : 'Premios increíbles';
     return (
         <footer className="bg-slate-800 text-white">
             {/* Sección principal del footer */}
@@ -153,7 +156,7 @@ export function Footer() {
                                 ® Desarrollado por GarciaSystem.
                             </p> */}
                             <p className="text-slate-500 text-xs mt-1">
-                                Sorteo {productosTexto}.
+                                Sorteo {productosTexto} {productosTextodes}
                             </p>
                         </div>
 

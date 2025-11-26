@@ -6,7 +6,6 @@ import { useState } from "react";
 import {
   Hash,
   Shield,
-  CheckCircle,
   ArrowRight,
   Crown,
   DollarSign,
@@ -217,7 +216,7 @@ export function PreciosBoletosUsuario() {
                       {paquete.numeros}
                     </h3>
                   </div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-400 mb-0.5">
+                  <p className="text-xs sm:text-sm font-medium text-gray-400 md:mb-0 -mb-8">
                     Números
                   </p>
                   <p
@@ -237,16 +236,8 @@ export function PreciosBoletosUsuario() {
                   <p className="text-xs text-gray-400">USD</p>
                 </div>
 
-                {/* Indicador simple para móviles */}
-                <div className="mb-2 sm:hidden">
-                  <div className="flex items-center justify-center space-x-1">
-                    <CheckCircle size={10} className="text-green-400" />
-                    <Shield size={10} className="text-blue-400" />
-                  </div>
-                </div>
-
                 {/* Botón de acción - Más compacto en móvil */}
-                <div className="flex justify-center">
+                <div className="flex justify-center -mt-10 sm:-mt-5">
                   <ShinyButton
                     onClick={() =>
                       handleComprar(paquete.numeros, paquete.precio)

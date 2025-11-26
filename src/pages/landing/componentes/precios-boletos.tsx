@@ -5,8 +5,6 @@ import {
     Hash,
     TrendingUp,
     Star,
-    Shield,
-    CheckCircle,
     Target,
     Lightbulb,
     ArrowRight,
@@ -81,7 +79,7 @@ export function PreciosBoletos() {
                 {paquetes.map((paquete, index) => (
                     <Card
                         key={index}
-                        className={`relative p-9 sm:p-5 md:p-6 text-center transition-all duration-300 hover:shadow-xl group ${paquete.popular
+                        className={`relative p-5 sm:p-5 md:p-6 text-center transition-all duration-300 hover:shadow-xl group ${paquete.popular
                             ? 'border-2 border-amber-400 shadow-lg shadow-amber-400/30 transform scale-105 bg-slate-800/90 backdrop-blur-sm ring-2 ring-amber-400/50'
                             : 'border border-gray-600 hover:border-amber-500/50 bg-slate-800/90 backdrop-blur-sm hover:shadow-amber-400/10'
                             }`}
@@ -99,7 +97,7 @@ export function PreciosBoletos() {
                         )}
 
                         {/* Cantidad de números */}
-                        <div className="mb-1 sm:mb-2">
+                        <div className="-mb-5 sm:mb-2">
                             <div className="flex items-center justify-center space-x-1 mb-1">
                                 <Hash size={16} className={`sm:hidden ${paquete.popular ? "text-amber-400" : "text-gray-400"}`} />
                                 <Hash size={20} className={`hidden sm:block ${paquete.popular ? "text-amber-400" : "text-gray-400"}`} />
@@ -114,33 +112,12 @@ export function PreciosBoletos() {
                         </div>
 
                         {/* Precio */}
-                        <div className="mb-1 sm:mb-2">
-                            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-0.5">
+                        <div className="sm:mb-2 -mb-5">
+                            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white ">
                                 ${paquete.precio.toFixed(2)}
                             </div>
                             <p className="text-xs text-gray-400">USD</p>
                         </div>
-
-                        {/* Features del paquete - Solo en pantallas medianas y grandes */}
-                        <div className="space-y-0.5 mb-2 sm:mb-3 hidden sm:block">
-                            <div className="flex items-center justify-center space-x-1 text-xs text-gray-300">
-                                <CheckCircle size={12} className="text-green-400" />
-                                <span>Certificado</span>
-                            </div>
-                            <div className="flex items-center justify-center space-x-1 text-xs text-gray-300">
-                                <Shield size={12} className="text-blue-400" />
-                                <span>Auditado</span>
-                            </div>
-                        </div>
-
-                        {/* Indicador simple para móviles */}
-                        <div className="mb-2 sm:hidden">
-                            <div className="flex items-center justify-center space-x-1">
-                                <CheckCircle size={25} className="text-green-400" />
-                                <Shield size={25} className="text-blue-400" />
-                            </div>
-                        </div>
-
                         {/* Botón de acción - Más compacto en móvil */}
                         <div className="flex justify-center">
                             <Link to="/register">
