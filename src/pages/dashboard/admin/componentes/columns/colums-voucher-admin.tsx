@@ -24,6 +24,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useGetUserOne } from "@/Services/admin/product.query";
 
 // Componente separado para la celda de tickets
 export const TicketsCell = ({ voucherId }: { voucherId: string }) => {
@@ -195,7 +196,6 @@ export const ActionCell = ({
 export const makeVouchersColumns = (
   entityNames: Record<string, string | undefined> = {},
   voucherStateNames: Record<string, string | undefined> = {},
-  userNames: Record<string, string | undefined> = {}
 ): ColumnDef<Voucher>[] => [
   {
     accessorKey: "referenceNumber",
@@ -211,10 +211,28 @@ export const makeVouchersColumns = (
     header: "Usuario",
     cell: ({ row }) => {
       const id = row.getValue("userId") as string | undefined;
-      const display = id && userNames[id] ? userNames[id] : id || "—";
+      // Usar el hook para obtener los datos del usuario
+      const { data: usuario, isLoading } = useGetUserOne(id);
+
+      if (!id) {
+        return (
+          <div className="font-medium text-white max-w-[200px] truncate">—</div>
+        );
+      }
+
+      if (isLoading) {
+        return (
+          <div className="font-medium text-white max-w-[200px] truncate">
+            Cargando...
+          </div>
+        );
+      }
+
       return (
         <div className="font-medium text-white max-w-[200px] truncate">
-          {display}
+          {usuario
+            ? `${usuario.firstName} ${usuario.lastName}`
+            : id}
         </div>
       );
     },

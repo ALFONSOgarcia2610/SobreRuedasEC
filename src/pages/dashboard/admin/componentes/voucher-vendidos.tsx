@@ -43,7 +43,7 @@ export default function VoucherVendidos() {
     }
   });
 
-  const columns = makeVouchersColumns(entityMap, voucherStateMap, userMap);
+  const columns = makeVouchersColumns(entityMap, voucherStateMap);
 
   return (
     <div>

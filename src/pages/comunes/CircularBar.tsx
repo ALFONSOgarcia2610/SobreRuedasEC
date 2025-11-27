@@ -223,9 +223,7 @@ export function AnimatedCircularProgressBarDemo({ progress }: { progress: number
                             {displayValue >= 100 && (
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <div className="absolute inset-0 bg-gradient-to-r from-green-500/30 via-emerald-500/30 to-green-500/30 rounded-2xl animate-pulse"></div>
-                                    <div className="text-emerald-300 font-black text-lg animate-bounce">
-                                        ¡SORTEO COMPLETO!
-                                    </div>
+                                    
                                 </div>
                             )}
 

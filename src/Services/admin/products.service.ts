@@ -10,7 +10,7 @@ import type {
   EntityFinance,
 } from "@/interfaces/product.interface";
 import { networkClient } from "@/providers/restClient";
-import type { Voucher } from "../user/usercompra.service";
+import type { TicketGanador, Voucher } from "../user/usercompra.service";
 export interface DataState {
   data: number;
 }
@@ -219,21 +219,22 @@ export const getAllVoucherbyLoterry = async (
 };
 
 // Servicio para obtener usuario por id
-export const getUserID = async (id: string): Promise<Voucher[]> => {
+export const getUserID = async (id: string): Promise<User> => {
   const response = await networkClient.get<{
     success: boolean;
     message: string;
-    data: Voucher[];
-  }>(`${envs.VITE_API_URL}/api/User/${id}?pageNumber=1&pageSize=250`);
+    data: User;
+  }>(`${envs.VITE_API_URL}/api/User/${id}`);
 
   if (!response || !response.success || !response.data) {
-    throw new Error(response?.message || "Error al obtener usuario");
+    throw new Error(response?.message || "Error al obtener usuario por ID");
   }
-  return response.data;
+  return response.data; // <-- Solo retorna el usuario
 };
 
 // Servicio para obtener todos los estados de voucher
 import type { VoucherState } from "./product.query";
+import type { User } from "@/interfaces/usuario/usuario.interface";
 export const getAllVoucherState = async (): Promise<VoucherState[]> => {
   const response = await networkClient.get<{
     success: boolean;
@@ -365,4 +366,21 @@ export const getLotteryStateByIdService = async (
     throw new Error(response?.message || "Error al obtener estado de lotería");
   }
   return response.data;
+};
+
+// Servicio para obtener los datos de un ticket por su número
+export const getTicketByNumberService = async (
+  number: number
+): Promise<TicketGanador> => {
+  const response = await networkClient.get<{
+    success: boolean;
+    message: string;
+    data: TicketGanador;
+  }>(
+    `${envs.VITE_API_URL}/api/Ticket/number/${number}`
+  );
+  if (!response || !response.success || !response.data) {
+    throw new Error(response?.message || "Error al obtener ticket por número");
+  }
+  return response.data; // <-- Solo retorna el ticket
 };

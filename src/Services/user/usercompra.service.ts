@@ -45,6 +45,23 @@ export interface Ticket {
   errors: any[];
 }
 
+export interface TicketGanador {
+
+    ticketId: string;
+    ticketStateId: string;
+    userId: string;
+    voucherId: string;
+    lotteryId: string;
+    productId: string | null;
+    economical: number;
+    number: number;
+    paymentId: string | null;
+    createAt: string;
+    updateAt: string;
+
+}
+
+
 export const createVoucherService = async (
   voucherData: FormData
 ): Promise<Voucher> => {

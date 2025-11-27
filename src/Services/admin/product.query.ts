@@ -18,8 +18,10 @@ import {
   getProgresoSorteoFaltante,
   getLotteryStateByIdService,
   type LotteryState,
+  getTicketByNumberService,
 } from "./products.service";
-import type { Voucher } from "../user/usercompra.service";
+import type { Voucher, TicketGanador } from "../user/usercompra.service";
+import type { User } from "@/interfaces/usuario/usuario.interface";
 // Hook para obtener todos los productos
 export const useGetAllProducts = () => {
   return useQuery<Product[], Error>({
@@ -68,7 +70,7 @@ export const useGetProductsByLotteryId = (lotteryId: string | undefined) => {
 };
 
 export const useGetUserOne = (id: string | undefined) => {
-  return useQuery<Voucher[], Error>({
+  return useQuery<User, Error>({
     queryKey: ["userID", id],
     queryFn: () => {
       if (!id) {
@@ -146,5 +148,19 @@ export const useGetLotteryStateById = (stateId: string | undefined) => {
     staleTime: 1000 * 60 * 10, // 10 minutos (los estados no cambian frecuentemente)
     retry: 2,
     enabled: !!stateId,
+  });
+};
+
+// Hook para obtener los datos de un ticket por su número
+export const useGetTicketByNumber = (number: number | undefined) => {
+  return useQuery<TicketGanador, Error>({
+    queryKey: ["ticket-by-number", number],
+    queryFn: () => {
+      if (typeof number !== "number") {
+        throw new Error("Se requiere un número de ticket válido");
+      }
+      return getTicketByNumberService(number);
+    },
+    enabled: typeof number === "number",
   });
 };
