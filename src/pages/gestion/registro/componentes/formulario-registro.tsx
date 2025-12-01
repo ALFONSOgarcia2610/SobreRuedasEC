@@ -77,6 +77,11 @@ export default function RegistroForm({
 
   // Manejar el submit del formulario
   const handleSubmit = () => {
+    // Definir función global para navegación post-login/registro
+    if (typeof window !== "undefined") {
+      window.__navigateToCompraSorteo = () => navigate({ to: "/usuario/compraSorteo" });
+    }
+
     // Limpiar errores previos
     setErrors({});
 

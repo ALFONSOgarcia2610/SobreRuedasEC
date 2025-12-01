@@ -17,13 +17,12 @@ export interface DataState {
 export const productService = {
   createProduct: async (data: CreateProductDto): Promise<Product> => {
     const productData = {
-      productStateId:
-        data.productStateId || "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
       code: String(data.code),
       name: String(data.name),
       description: String(data.description),
       value: Number(data.value),
       isCash: Boolean(data.isCash),
+      lotteryId: String(data.lotteryId),
     };
     const response = await networkClient.post<any>(
       `${envs.VITE_API_URL}/api/Product`,

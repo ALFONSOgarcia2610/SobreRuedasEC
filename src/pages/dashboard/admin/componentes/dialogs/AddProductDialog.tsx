@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/dialog';
 import { Plus } from 'lucide-react';
 import { toast } from 'sonner';
+import { useGetCurrentLottery } from '@/Services/admin/product.query';
 
 interface ProductFormData {
   code: string;
@@ -23,11 +24,12 @@ interface ProductFormData {
   description: string;
   value: number;
   isCash: boolean;
+  lotteryId: string;
 }
 
 export default function AddProductDialog() {
-  const [open, setOpen] = useState(false);
-  const createProduct = useCreateProduct();
+  const { data: currentLottery } = useGetCurrentLottery();
+  const lotteryId = currentLottery?.lotteryId ?? "";
 
   const [productData, setProductData] = useState<ProductFormData>({
     code: '',
@@ -35,7 +37,10 @@ export default function AddProductDialog() {
     description: '',
     value: 0,
     isCash: true,
+    lotteryId,
   });
+  const [open, setOpen] = useState(false);
+  const createProduct = useCreateProduct();
 
   const handleInputChange = (field: string, value: string | number | boolean) => {
     setProductData(prev => ({ ...prev, [field]: value }));
@@ -54,8 +59,9 @@ export default function AddProductDialog() {
     }
 
     try {
-      await createProduct.mutateAsync(productData);
-      
+      // Siempre manda lotteryId actualizado
+      await createProduct.mutateAsync({ ...productData, lotteryId });
+
       // Limpiar formulario y cerrar
       setProductData({
         code: '',
@@ -63,6 +69,7 @@ export default function AddProductDialog() {
         description: '',
         value: 0,
         isCash: true,
+        lotteryId,
       });
       setOpen(false);
     } catch (error: any) {

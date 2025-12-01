@@ -1,10 +1,10 @@
 export interface CreateProductDto {
-  productStateId?: string;
   code: string;
   name: string;
   description: string;
   value: number;
   isCash: boolean;
+  lotteryId: string;
 }
 
 export interface Product {

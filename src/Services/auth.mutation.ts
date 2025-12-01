@@ -44,6 +44,13 @@ export const useRegisterUser = () => {
                     });
                 }
             }
+            // Navegar a compra de sorteo igual que en login
+            if (typeof window !== 'undefined') {
+                const navigate = window.__navigateToCompraSorteo;
+                if (typeof navigate === 'function') {
+                    navigate();
+                }
+            }
         },
         onError: (error) => {
             toast.error('Error en el registro', {

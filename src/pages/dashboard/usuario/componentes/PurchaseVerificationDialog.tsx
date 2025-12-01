@@ -32,7 +32,6 @@ import { useGetAllEntityFinances } from "@/Services/admin/product.query";
 import { useGetCurrentLottery } from "@/Services/admin/product.query";
 import {
   useCreateVoucherMutation,
-  useCreateTicketMutation,
 } from "@/Services/user/usercompra.muation";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -80,7 +79,6 @@ export function PurchaseVerificationDialog({
 
   // Mutations
   const createVoucherMutation = useCreateVoucherMutation();
-  const createTicketMutation = useCreateTicketMutation();
 
   // Obtener datos de la cuenta seleccionada
   const datosBancarios = cuentasFinancieras?.find(
@@ -122,7 +120,7 @@ export function PurchaseVerificationDialog({
     setIsProcessing(true);
 
     try {
-      // 1. Crear el voucher
+      // 1. Crear el voucher SOLO con los campos requeridos
       const formData = new FormData();
       formData.append("entityFinanceId", cuentaSeleccionada);
       formData.append("entidadEmisora", entityMemoria.trim());
@@ -131,45 +129,11 @@ export function PurchaseVerificationDialog({
       if (voucherImage) {
         formData.append("image", voucherImage);
       }
+      formData.append("ticketQuantity", String(numeros));
 
-      const voucherResponse = await createVoucherMutation.mutateAsync(formData);
+      await createVoucherMutation.mutateAsync(formData);
 
-      const voucherId = voucherResponse.voucherId;
-
-      if (!voucherId) {
-        throw new Error("No se pudo obtener el ID del voucher creado");
-      }
-
-      // 2. Crear los tickets (uno por cada número de boleto)
-      const lotteryId = currentLottery.lotteryId || currentLottery.id;
-
-      if (!lotteryId) {
-        throw new Error("No se pudo obtener el ID del sorteo activo");
-      }
-
-      // Actualizar estado para mostrar progreso de tickets
-      setProcessingState({
-        step: "tickets",
-        progress: 0,
-        total: numeros,
-      });
-
-      // Mostrar el spinner mientras se procesan los tickets
-      for (let i = 0; i < numeros; i++) {
-        const ticketData = {
-          userId: "", // Se valida con el token en el backend
-          voucherId: voucherId,
-          lotteryId: lotteryId,
-        };
-        await createTicketMutation.mutateAsync(ticketData);
-
-        // Actualizar progreso
-        setProcessingState({
-          step: "tickets",
-          progress: i + 1,
-          total: numeros,
-        });
-      }
+      // El servicio ya no requiere lotteryId ni creación de tickets manualmente
 
       // Éxito
       toast.success("¡Compra registrada exitosamente!", {
@@ -244,10 +208,9 @@ export function PurchaseVerificationDialog({
                     <div
                       className="h-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-300 ease-out"
                       style={{
-                        width: `${
-                          (processingState.progress / processingState.total) *
+                        width: `${(processingState.progress / processingState.total) *
                           100
-                        }%`,
+                          }%`,
                       }}
                     />
                   </div>
