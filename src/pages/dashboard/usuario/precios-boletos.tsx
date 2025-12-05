@@ -243,15 +243,15 @@ export function PreciosBoletosUsuario() {
                 {/* Botón de acción - Más compacto en móvil */}
                 <div className="flex justify-center -mt-10 sm:-mt-5">
                   {sorteoCompletado ? (
-                    <ShinyButton
+                    <button
                       disabled
-                      className="px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 text-[10px] sm:text-xs md:text-sm font-bold w-full bg-gray-600 cursor-not-allowed opacity-50"
+                      className="px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 text-[10px] sm:text-xs md:text-sm font-bold w-full bg-gray-600 cursor-not-allowed opacity-50 rounded-md"
                     >
                       <div className="flex items-center justify-center space-x-1">
                         <span className="sm:hidden">Agotado</span>
                         <span className="hidden sm:inline">Sorteo Completado</span>
                       </div>
-                    </ShinyButton>
+                    </button>
                   ) : (
                     <ShinyButton
                       onClick={() =>
@@ -357,14 +357,14 @@ export function PreciosBoletosUsuario() {
                 {/* Botón */}
                 <div>
                   {sorteoCompletado ? (
-                    <ShinyButton
+                    <button
                       disabled
                       className="w-full py-2.5 text-sm font-semibold bg-gray-600 text-white rounded-lg cursor-not-allowed opacity-50"
                     >
                       <div className="flex items-center justify-center space-x-2">
                         <span>Sorteo Completado</span>
                       </div>
-                    </ShinyButton>
+                    </button>
                   ) : customPrice > 0 ? (
                     <ShinyButton
                       onClick={() =>
