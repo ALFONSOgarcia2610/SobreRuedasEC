@@ -3,7 +3,7 @@ import { Ganador } from "./CreateProduct";
 import { ShinyButton } from "@/components/ui/shiny-button";
 import { Tickets } from "lucide-react";
 
-export function TicketGanadorInput() {
+export function TicketGanadorInput({ lotteryId }: { lotteryId: string }) {
     const [numero, setNumero] = useState<number | "">("");
     const [consultar, setConsultar] = useState<number | null>(null);
 
@@ -28,7 +28,7 @@ export function TicketGanadorInput() {
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-30"></div>
             </ShinyButton>
             {typeof consultar === "number" && consultar > 0 && (
-                <Ganador numeroTicket={consultar} />
+                <Ganador numeroTicket={consultar} lotteryId={lotteryId} />
             )}
         </div>
     );

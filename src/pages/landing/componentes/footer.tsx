@@ -8,13 +8,12 @@ export function Footer() {
     const { data: currentLottery } = useGetCurrentLottery();
       const { data: products } = useGetProductsByLotteryId(currentLottery?.lotteryId);
   
-      // Concatenar nombres de productos con " & "
-      const productosTexto = products && products.length > 0
-          ? products.map(p => p.name).join(' & ')
-          : 'Premios increíbles';
- // Concatenar nombres de productos con " & "
-      const productosTextodes = products && products.length > 0
-          ? products.map(p => p.description).join(' & ')
+      // Filtrar solo productos principales (isCash === false)
+      const productosPrincipales = products?.filter(p => p.isCash === false) ?? [];
+      
+      // Concatenar nombre y descripción de cada producto
+      const productosTexto = productosPrincipales.length > 0
+          ? productosPrincipales.map(p => `${p.name} - ${p.description}`).join(' & ')
           : 'Premios increíbles';
     return (
         <footer className="bg-slate-800 text-white">
@@ -156,7 +155,7 @@ export function Footer() {
                                 ® Desarrollado por GarciaSystem.
                             </p> */}
                             <p className="text-slate-500 text-xs mt-1">
-                                Sorteo {productosTexto} {productosTextodes}
+                                Sorteo {productosTexto}
                             </p>
                         </div>
 

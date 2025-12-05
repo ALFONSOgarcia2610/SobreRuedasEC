@@ -143,7 +143,7 @@ export const getProductsByLotteryIdService = async (
     message: string;
     data: Product[];
   }>(
-    `${envs.VITE_API_URL}/api/Product/lottery/${lotteryId}?pageNumber=1&pageSize=10`
+    `${envs.VITE_API_URL}/api/Product/lottery/${lotteryId}?pageNumber=1&pageSize=1000`
   );
 
   if (!response || !response.success || !response.data) {
@@ -351,6 +351,33 @@ export interface LotteryState {
   updatedAt: string;
 }
 
+// Interface para estados de producto
+export interface ProductState {
+  productStateId: string;
+  secuencial: number;
+  code: string;
+  name: string;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Servicio para obtener un estado de producto por ID
+export const getProductStateByIdService = async (
+  id: string
+): Promise<ProductState> => {
+  const response = await networkClient.get<{
+    success: boolean;
+    message: string;
+    data: ProductState;
+  }>(`${envs.VITE_API_URL}/api/ProductState/${id}`);
+
+  if (!response || !response.success || !response.data) {
+    throw new Error(response?.message || "Error al obtener estado de producto");
+  }
+  return response.data;
+};
+
 // Servicio para obtener un estado de lotería por ID
 export const getLotteryStateByIdService = async (
   id: string
@@ -369,17 +396,35 @@ export const getLotteryStateByIdService = async (
 
 // Servicio para obtener los datos de un ticket por su número
 export const getTicketByNumberService = async (
-  number: number
+  number: number,
+  lotteryId: string
 ): Promise<TicketGanador> => {
   const response = await networkClient.get<{
     success: boolean;
     message: string;
     data: TicketGanador;
   }>(
-    `${envs.VITE_API_URL}/api/Ticket/number/${number}`
+    `${envs.VITE_API_URL}/api/Ticket/lottery/${lotteryId}/number/${number}`
   );
   if (!response || !response.success || !response.data) {
     throw new Error(response?.message || "Error al obtener ticket por número");
   }
   return response.data; // <-- Solo retorna el ticket
+};
+
+// Servicio para generar productos con números aleatorios
+export const generateTicketsService = async (
+  lotteryId: string,
+  quantity: number
+): Promise<void> => {
+  const response = await networkClient.post<{
+    success: boolean;
+    message: string;
+  }>(`${envs.VITE_API_URL}/api/Product/lottery/${lotteryId}/generateTickets`, {
+    quantity,
+  });
+
+  if (!response || !response.success) {
+    throw new Error(response?.message || "Error al generar tickets aleatorios");
+  }
 };

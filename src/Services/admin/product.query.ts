@@ -19,6 +19,8 @@ import {
   getLotteryStateByIdService,
   type LotteryState,
   getTicketByNumberService,
+  getProductStateByIdService,
+  type ProductState,
 } from "./products.service";
 import type { Voucher, TicketGanador } from "../user/usercompra.service";
 import type { User } from "@/interfaces/usuario/usuario.interface";
@@ -151,16 +153,35 @@ export const useGetLotteryStateById = (stateId: string | undefined) => {
   });
 };
 
+// Hook para obtener un estado de producto por ID
+export const useGetProductStateById = (stateId: string | undefined) => {
+  return useQuery<ProductState, Error>({
+    queryKey: ["product-state", stateId],
+    queryFn: () => {
+      if (!stateId) {
+        throw new Error("Se requiere un ID de estado");
+      }
+      return getProductStateByIdService(stateId);
+    },
+    staleTime: 1000 * 60 * 10, // 10 minutos (los estados no cambian frecuentemente)
+    retry: 2,
+    enabled: !!stateId,
+  });
+};
+
 // Hook para obtener los datos de un ticket por su número
-export const useGetTicketByNumber = (number: number | undefined) => {
+export const useGetTicketByNumber = (number: number | undefined, lotteryId: string | undefined) => {
   return useQuery<TicketGanador, Error>({
     queryKey: ["ticket-by-number", number],
     queryFn: () => {
       if (typeof number !== "number") {
         throw new Error("Se requiere un número de ticket válido");
       }
-      return getTicketByNumberService(number);
+      if (!lotteryId) {
+        throw new Error("Se requiere un ID de lotería válido");
+      }
+      return getTicketByNumberService(number, lotteryId);
     },
-    enabled: typeof number === "number",
+    enabled: typeof number === "number" && !!lotteryId,
   });
 };

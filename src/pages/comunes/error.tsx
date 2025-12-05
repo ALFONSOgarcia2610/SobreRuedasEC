@@ -38,15 +38,6 @@ export default function Error404Page() {
               </p>
             </div>
 
-            {/* Ilustración decorativa */}
-            <div className="py-3">
-              <div className="flex items-center justify-center space-x-2 text-4xl sm:text-5xl">
-                <span className="animate-bounce" style={{ animationDelay: '0s' }}>🚗</span>
-                <span className="animate-bounce" style={{ animationDelay: '0.1s' }}>💨</span>
-                <span className="animate-bounce" style={{ animationDelay: '0.2s' }}>❓</span>
-              </div>
-            </div>
-
             {/* Botones de acción */}
             <div className="flex flex-col sm:flex-row gap-2 justify-center items-center pt-3">
               <Button

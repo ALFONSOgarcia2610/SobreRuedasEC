@@ -14,8 +14,12 @@ export default function LandingPage() {
     const { data: products } = useGetProductsByLotteryId(lotteryId);
     const progresoSorteo = useGetProgresoSorteo(lotteryId);
     const porcentaje = progresoSorteo.data;
-    const productosTexto = products && products.length > 0
-        ? products.map(p => p.name).join(' & ')
+    
+    // Filtrar solo productos principales (isCash === false)
+    const productosPrincipales = products?.filter(p => p.isCash === false) ?? [];
+    
+    const productosTexto = productosPrincipales.length > 0
+        ? productosPrincipales.map(p => p.name).join(' & ')
         : 'Premios increíbles';
 
     return (

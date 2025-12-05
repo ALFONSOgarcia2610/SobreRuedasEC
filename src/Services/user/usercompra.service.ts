@@ -18,6 +18,8 @@ export interface Voucher {
   createAt: string;
   updateAt: string;
   userId?: string;
+  pictureId?: string;
+  voucherStateId?: string;
 }
 
 export interface CreateTicketDto {
@@ -154,4 +156,9 @@ export const getAllEntityFinanceService = async (
     );
   }
   return response.data;
+};
+
+// Servicio para obtener la URL de la imagen por pictureId
+export const getPictureUrlService = (pictureId: string): string => {
+  return `${envs.VITE_API_URL}/api/Picture/${pictureId}/file`;
 };

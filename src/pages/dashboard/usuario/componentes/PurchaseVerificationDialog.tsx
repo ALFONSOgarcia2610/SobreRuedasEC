@@ -71,6 +71,7 @@ export function PurchaseVerificationDialog({
     total: 0,
   });
   const [voucherImage, setVoucherImage] = useState<File | null>(null);
+  const [imageError, setImageError] = useState<string>("");
 
   // Obtener cuentas financieras y sorteo activo
   const { data: cuentasFinancieras, isLoading: isLoadingCuentas } =
@@ -92,6 +93,107 @@ export function PurchaseVerificationDialog({
     navigator.clipboard.writeText(text);
     setCopiedField(field);
     setTimeout(() => setCopiedField(null), 2000);
+  };
+
+  // Función para comprimir imagen
+  const compressImage = (file: File): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          
+          // Reducir tamaño si es muy grande
+          const MAX_WIDTH = 1200;
+          const MAX_HEIGHT = 1200;
+          
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                const compressedFile = new File([blob], file.name, {
+                  type: 'image/jpeg',
+                  lastModified: Date.now(),
+                });
+                resolve(compressedFile);
+              } else {
+                reject(new Error('Error al comprimir imagen'));
+              }
+            },
+            'image/jpeg',
+            0.8 // Calidad 80%
+          );
+        };
+        img.onerror = () => reject(new Error('Error al cargar imagen'));
+      };
+      reader.onerror = () => reject(new Error('Error al leer archivo'));
+    });
+  };
+
+  // Manejar selección de imagen
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      setVoucherImage(null);
+      setImageError("");
+      return;
+    }
+
+    // Validar tipo
+    if (!file.type.startsWith('image/')) {
+      setImageError("El archivo debe ser una imagen");
+      setVoucherImage(null);
+      return;
+    }
+
+    // Validar tamaño (máximo 10MB antes de comprimir)
+    if (file.size > 10 * 1024 * 1024) {
+      setImageError("La imagen no debe superar 10MB");
+      setVoucherImage(null);
+      return;
+    }
+
+    try {
+      // Comprimir imagen
+      const compressedFile = await compressImage(file);
+      setVoucherImage(compressedFile);
+      setImageError("");
+      
+      // Mostrar tamaño reducido
+      const originalSizeMB = (file.size / 1024 / 1024).toFixed(2);
+      const compressedSizeMB = (compressedFile.size / 1024 / 1024).toFixed(2);
+      console.log(`Imagen comprimida: ${originalSizeMB}MB → ${compressedSizeMB}MB`);
+      
+      toast.success("Imagen optimizada", {
+        description: `Tamaño reducido de ${originalSizeMB}MB a ${compressedSizeMB}MB`,
+      });
+    } catch (error) {
+      console.error('Error al comprimir imagen:', error);
+      setImageError("Error al procesar la imagen");
+      setVoucherImage(null);
+    }
   };
 
   // Función para confirmar compra y crear voucher + tickets
@@ -120,20 +222,23 @@ export function PurchaseVerificationDialog({
     setIsProcessing(true);
 
     try {
-      // 1. Crear el voucher SOLO con los campos requeridos
+      // 1. Crear el voucher con FormData
       const formData = new FormData();
-      formData.append("entityFinanceId", cuentaSeleccionada);
-      formData.append("entidadEmisora", entityMemoria.trim());
-      formData.append("referenceNumber", referenceNumber.trim());
-      formData.append("amount", String(precio));
+      formData.append("EntityFinanceId", cuentaSeleccionada);
+      formData.append("EntidadEmisora", entityMemoria.trim());
+      formData.append("ReferenceNumber", referenceNumber.trim());
+      formData.append("Amount", String(precio));
       if (voucherImage) {
-        formData.append("image", voucherImage);
+        formData.append("Image", voucherImage);
       }
-      formData.append("ticketQuantity", String(numeros));
+      formData.append("TicketQuantity", String(numeros));
+
+      console.log('FormData a enviar:');
+      for (const pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
 
       await createVoucherMutation.mutateAsync(formData);
-
-      // El servicio ya no requiere lotteryId ni creación de tickets manualmente
 
       // Éxito
       toast.success("¡Compra registrada exitosamente!", {
@@ -145,6 +250,8 @@ export function PurchaseVerificationDialog({
       setReferenceNumber("");
       setEntityMemoria("");
       setCuentaSeleccionada("");
+      setVoucherImage(null);
+      setImageError("");
       setProcessingState({
         step: "voucher",
         progress: 0,
@@ -499,18 +606,29 @@ export function PurchaseVerificationDialog({
                 htmlFor="voucherImage"
                 className="text-sm text-white mb-2 flex items-center gap-2"
               >
-                Comprobante de Pago
+                Comprobante de Pago <span className="text-slate-400">(Opcional)</span>
               </Label>
               <Input
                 id="voucherImage"
                 type="file"
                 accept="image/*"
-                onChange={(e) => setVoucherImage(e.target.files?.[0] ?? null)}
+                onChange={handleImageChange}
                 disabled={isProcessing}
                 className="w-full bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-green-400 focus:ring-green-400"
               />
+              {imageError && (
+                <p className="text-xs text-red-400 mt-1.5 flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" />
+                  {imageError}
+                </p>
+              )}
+              {voucherImage && !imageError && (
+                <p className="text-xs text-green-400 mt-1.5">
+                  ✓ Archivo: {voucherImage.name} ({(voucherImage.size / 1024 / 1024).toFixed(2)}MB)
+                </p>
+              )}
               <p className="text-xs text-slate-400 mt-1.5">
-                Sube una imagen clara de tu comprobante de pago
+                Opcional: Sube una imagen clara de tu comprobante. La imagen será optimizada automáticamente.
               </p>
             </div>
           </div>

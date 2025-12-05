@@ -12,7 +12,7 @@ import {
   Ticket,
   AlertCircle,
 } from "lucide-react";
-import { useGetCurrentLottery } from "@/Services/admin/product.query";
+import { useGetCurrentLottery, useGetProgresoSorteo } from "@/Services/admin/product.query";
 import { PurchaseVerificationDialog } from "./componentes/PurchaseVerificationDialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -31,6 +31,10 @@ export function PreciosBoletosUsuario() {
 
   // Obtener sorteo activo usando el servicio correcto
   const { data: currentLottery, isLoading, isError } = useGetCurrentLottery();
+
+  const lotteryId = currentLottery?.lotteryId ?? "";
+  const { data: porcentaje } = useGetProgresoSorteo(lotteryId);
+  const sorteoCompletado = typeof porcentaje === "number" && porcentaje >= 100;
 
   // Precio base por boleto desde el sorteo activo (voucherPrice)
   const precioUnitario = currentLottery?.voucherPrice || 1.5;
@@ -238,26 +242,38 @@ export function PreciosBoletosUsuario() {
 
                 {/* Botón de acción - Más compacto en móvil */}
                 <div className="flex justify-center -mt-10 sm:-mt-5">
-                  <ShinyButton
-                    onClick={() =>
-                      handleComprar(paquete.numeros, paquete.precio)
-                    }
-                    className={`px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 text-[10px] sm:text-xs md:text-sm font-bold group-hover:scale-105 transition-transform duration-300 w-full ${
-                      paquete.popular
-                        ? "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg"
-                        : "bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white"
-                    }`}
-                  >
-                    <div className="flex items-center justify-center space-x-1">
-                      <span className="sm:hidden gap-2">Comprar</span>
-                      <span className="hidden sm:inline">Comprar</span>
-                      <ArrowRight size={10} className="sm:hidden" />
-                      <ArrowRight
-                        size={12}
-                        className="hidden sm:block md:w-3.5 md:h-3.5"
-                      />
-                    </div>
-                  </ShinyButton>
+                  {sorteoCompletado ? (
+                    <ShinyButton
+                      disabled
+                      className="px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 text-[10px] sm:text-xs md:text-sm font-bold w-full bg-gray-600 cursor-not-allowed opacity-50"
+                    >
+                      <div className="flex items-center justify-center space-x-1">
+                        <span className="sm:hidden">Agotado</span>
+                        <span className="hidden sm:inline">Sorteo Completado</span>
+                      </div>
+                    </ShinyButton>
+                  ) : (
+                    <ShinyButton
+                      onClick={() =>
+                        handleComprar(paquete.numeros, paquete.precio)
+                      }
+                      className={`px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 text-[10px] sm:text-xs md:text-sm font-bold group-hover:scale-105 transition-transform duration-300 w-full ${
+                        paquete.popular
+                          ? "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg"
+                          : "bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white"
+                      }`}
+                    >
+                      <div className="flex items-center justify-center space-x-1">
+                        <span className="sm:hidden gap-2">Comprar</span>
+                        <span className="hidden sm:inline">Comprar</span>
+                        <ArrowRight size={10} className="sm:hidden" />
+                        <ArrowRight
+                          size={12}
+                          className="hidden sm:block md:w-3.5 md:h-3.5"
+                        />
+                      </div>
+                    </ShinyButton>
+                  )}
                 </div>
               </Card>
             ))}
@@ -340,7 +356,16 @@ export function PreciosBoletosUsuario() {
 
                 {/* Botón */}
                 <div>
-                  {customPrice > 0 ? (
+                  {sorteoCompletado ? (
+                    <ShinyButton
+                      disabled
+                      className="w-full py-2.5 text-sm font-semibold bg-gray-600 text-white rounded-lg cursor-not-allowed opacity-50"
+                    >
+                      <div className="flex items-center justify-center space-x-2">
+                        <span>Sorteo Completado</span>
+                      </div>
+                    </ShinyButton>
+                  ) : customPrice > 0 ? (
                     <ShinyButton
                       onClick={() =>
                         handleComprar(parseInt(customQuantity), customPrice)

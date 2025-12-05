@@ -1,40 +1,97 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useGetCurrentLottery, useGetProductsByLotteryId, useGetProductStateById } from "@/Services/admin/product.query";
 
 interface NumerosBendecidosProps {
     className?: string;
     isLoading?: boolean;
 }
 
+// Componente para mostrar cada número con su estado
+function NumeroBendecido({ productStateId, number }: { productStateId: string; number?: string }) {
+    const { data: productState, isLoading, isError } = useGetProductStateById(productStateId);
+
+    if (isLoading) {
+        return (
+            <div className="text-center p-2 lg:p-3">
+                <Skeleton className="h-8 w-20 mx-auto mb-2 bg-slate-700" />
+                <Skeleton className="h-5 w-24 mx-auto bg-slate-700" />
+            </div>
+        );
+    }
+
+    // Si no hay productStateId válido o hay error, mostrar como disponible por defecto
+    if (!productStateId || isError || !productState) {
+        console.log('ProductStateId:', productStateId, 'Error:', isError, 'State:', productState);
+        // Por defecto mostrar como disponible si no hay información del estado
+        return (
+            <div className="text-center p-2 lg:p-3">
+                <div className="text-xl sm:text-2xl lg:text-xl font-bold font-mono tracking-wider mb-2 relative">
+                    <span className="text-white">
+                        {number || 'N/A'}
+                    </span>
+                </div>
+                <div className="">
+                    <span className="text-xs font-bold text-amber-900 bg-amber-200 px-2 py-1 rounded">
+                        Premio Disponible
+                    </span>
+                </div>
+            </div>
+        );
+    }
+
+    // Verificar si el estado es "Disponible" (sin tachar)
+    const estadoNombre = productState?.name?.toLowerCase().trim() || '';
+    const isDisponible = estadoNombre === 'disponible';
+    const isAsignado = estadoNombre === 'asignado';
+
+    return (
+        <div className="text-center p-2 lg:p-3">
+            {/* Número con tachado SOLO si NO está disponible */}
+            <div className="text-xl sm:text-2xl lg:text-xl font-bold font-mono tracking-wider mb-2 relative">
+                <span className={`${isDisponible ? 'text-white' : 'text-gray-400'}`}>
+                    {number || 'N/A'}
+                </span>
+                {/* Tachar SOLO si NO es disponible */}
+                {!isDisponible && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-full h-0.5 bg-gradient-to-r from-transparent via-red-500 to-transparent"></div>
+                    </div>
+                )}
+            </div>
+
+            {/* Estado */}
+            <div className="">
+                {isDisponible ? (
+                    <span className="text-xs font-bold text-amber-900 bg-amber-200 px-2 py-1 rounded">
+                        Premio Disponible
+                    </span>
+                ) : isAsignado ? (
+                    <span className="text-xs font-bold text-blue-900 bg-blue-200 px-2 py-1 rounded">
+                        Asignado
+                    </span>
+                ) : (
+                    <span className="text-xs font-bold text-green-900 bg-green-200 px-2 py-1 rounded">
+                        ¡Premio Entregado!
+                    </span>
+                )}
+            </div>
+        </div>
+    );
+}
+
 export function NumerosBendecidos({ className, isLoading = false }: NumerosBendecidosProps) {
-    const [numerosGanadores] = useState([
-        { numero: "01013", premio: "¡Premio Entregado!", entregado: true },
-        { numero: "16528", premio: "¡Premio Entregado!", entregado: true },
-        { numero: "24390", premio: "¡Premio Entregado!", entregado: true },
-        { numero: "31431", premio: "Disponible", entregado: false },
-        { numero: "40774", premio: "Disponible", entregado: false },
-        { numero: "55321", premio: "¡Premio Entregado!", entregado: true },
-        { numero: "67890", premio: "Disponible", entregado: false },
-        { numero: "74182", premio: "¡Premio Entregado!", entregado: true },
-        { numero: "85723", premio: "Disponible", entregado: false },
-        { numero: "90198", premio: "Disponible", entregado: false }
-    ]);
+    const { data: currentLottery } = useGetCurrentLottery();
+    const lotteryId = currentLottery?.lotteryId ?? "";
+    const { data: products, isLoading: loadingProducts } = useGetProductsByLotteryId(lotteryId);
 
-    // Función para formatear números sin espacios
-    const formatNumberWithSpaces = (numero: string) => {
-        return numero; // Sin espacios
-    };
-
-    useEffect(() => {
-        // Ya no necesitamos animación del índice actual
-        return;
-    }, [isLoading]);
+    // Filtrar solo productos bendecidos (isCash = true)
+    const productosBendecidos = products?.filter(p => p.isCash === true) || [];
 
     // Skeleton para estado de carga
-    if (isLoading) {
+    if (isLoading || loadingProducts) {
         return (
             <div className={`max-w-6xl mx-auto px-4 py-6 sm:py-8 md:py-12 ${className}`}>
                 {/* Título Skeleton */}
@@ -100,37 +157,29 @@ export function NumerosBendecidos({ className, isLoading = false }: NumerosBende
 
             {/* Lista de Números - Una columna en móvil, 5 columnas en pantallas grandes */}
             <div className="max-w-sm mx-auto lg:max-w-6xl grid grid-cols-1 lg:grid-cols-5 gap-3 lg:gap-4 mb-6 sm:mb-8">
-                {numerosGanadores.map((item) => (
-                    <div
-                        key={item.numero}
-                        className="text-center p-2 lg:p-3"
-                    >
-                        {/* Número con tachado elegante si está entregado */}
-                        <div className="text-xl sm:text-2xl lg:text-xl font-bold font-mono tracking-wider mb-2 relative">
-                            <span className={`${item.entregado ? 'text-gray-400' : 'text-white'}`}>
-                                {formatNumberWithSpaces(item.numero)}
-                            </span>
-                            {item.entregado && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="w-full h-0.5 bg-gradient-to-r from-transparent via-red-500 to-transparent"></div>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Estado */}
-                        <div className="">
-                            {item.entregado ? (
-                                <span className="text-xs font-bold text-green-900 bg-green-200 px-2 py-1 rounded">
-                                    ¡Premio Entregado!
-                                </span>
-                            ) : (
-                                <span className="text-xs font-bold text-amber-900 bg-amber-200 px-2 py-1 rounded">
-                                    Premio Disponible
-                                </span>
-                            )}
-                        </div>
+                {productosBendecidos.length > 0 ? (
+                    productosBendecidos.map((producto) => {
+                        console.log('Producto bendecido:', {
+                            productId: producto.productId,
+                            productStateId: producto.productStateId,
+                            number: producto.number,
+                            name: producto.name
+                        });
+                        return (
+                            <NumeroBendecido 
+                                key={producto.productId}
+                                productStateId={producto.productStateId}
+                                number={producto.number}
+                            />
+                        );
+                    })
+                ) : (
+                    <div className="col-span-full text-center py-8">
+                        <p className="text-gray-400 text-sm sm:text-base">
+                            No hay números bendecidos disponibles en este momento
+                        </p>
                     </div>
-                ))}
+                )}
             </div>
 
         </div>

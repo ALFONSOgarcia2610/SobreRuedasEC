@@ -3,7 +3,6 @@ import { useCreateProduct } from '@/Services/admin/product.mutation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import {
   Dialog,
@@ -36,7 +35,7 @@ export default function AddProductDialog() {
     name: '',
     description: '',
     value: 0,
-    isCash: true,
+    isCash: false,
     lotteryId,
   });
   const [open, setOpen] = useState(false);
@@ -68,7 +67,7 @@ export default function AddProductDialog() {
         name: '',
         description: '',
         value: 0,
-        isCash: true,
+        isCash: false,
         lotteryId,
       });
       setOpen(false);
@@ -149,20 +148,6 @@ export default function AddProductDialog() {
               value={productData.description}
               onChange={(e) => handleInputChange('description', e.target.value)}
             />
-          </div>
-
-          <div className="flex items-center space-x-2 pt-2">
-            <Checkbox
-              id="isCash"
-              onCheckedChange={(checked) => handleInputChange('isCash', checked === true)}
-              className="border-slate-600 data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
-            />
-            <Label
-              htmlFor="isCash"
-              className="text-sm font-medium text-white cursor-pointer select-none"
-            >
-              ¿Es Bendecido?
-            </Label>
           </div>
         </div>
 

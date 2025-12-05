@@ -16,6 +16,7 @@ export interface Product {
   description: string;
   value: number;
   isCash: boolean;
+  number?: string; // Número del boleto/ticket (solo para productos bendecidos)
   createdAt: string;
   updatedAt: string;
   // Alias para compatibilidad

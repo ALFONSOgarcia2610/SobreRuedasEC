@@ -8,6 +8,7 @@ import {
   rejectVoucherService,
   completeLotteryService,
   cancelLotteryService,
+  generateTicketsService,
 } from "./products.service";
 import type {
   CreateLotteryDto,
@@ -255,6 +256,37 @@ export const useCancelLottery = () => {
         description: errorMessage,
       });
       console.error("Error al cancelar sorteo:", error);
+    },
+  });
+};
+
+// ==================== GENERATE TICKETS MUTATION ====================
+
+/**
+ * Hook para generar tickets con números aleatorios
+ * Invalida las queries relacionadas después de generar
+ */
+export const useGenerateTickets = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ lotteryId, quantity }: { lotteryId: string; quantity: number }) =>
+      generateTicketsService(lotteryId, quantity),
+    onSuccess: (_, variables) => {
+      // Invalidar queries relacionadas con productos y tickets
+      queryClient.invalidateQueries({ queryKey: ["lottery-products"] });
+      queryClient.invalidateQueries({ queryKey: ["sorteo-progreso"] });
+      queryClient.invalidateQueries({ queryKey: ["sorteo-progreso-faltante"] });
+      toast.success("Tickets generados exitosamente", {
+        description: `Se generaron ${variables.quantity} números aleatorios bendecidos`,
+      });
+    },
+    onError: (error: any) => {
+      const errorMessage = getErrorMessage(error);
+      toast.error("Error al generar tickets", {
+        description: errorMessage,
+      });
+      console.error("Error al generar tickets:", error);
     },
   });
 };

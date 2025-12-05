@@ -1,10 +1,17 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { ColumnDef } from "@tanstack/react-table";
-import { Eye } from "lucide-react";
+import { Eye, Image as ImageIcon } from "lucide-react";
 import type { Voucher } from "@/Services/user/usercompra.service";
+import { getPictureUrlService } from "@/Services/user/usercompra.service";
 import { useState } from "react";
 import { TicketsDialog } from "./TicketsDialog";
 import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 // Componente separado para la celda de tickets
 export const TicketsCell = ({ voucherId }: { voucherId: string }) => {
@@ -23,6 +30,46 @@ export const TicketsCell = ({ voucherId }: { voucherId: string }) => {
         onClose={() => setOpen(false)}
         voucherId={voucherId}
       />
+    </>
+  );
+};
+
+// Componente para previsualizar imagen del comprobante
+export const ImagePreviewCell = ({ pictureId }: { pictureId?: string }) => {
+  const [open, setOpen] = useState(false);
+
+  if (!pictureId) {
+    return <div className="text-xs text-slate-500">Sin imagen</div>;
+  }
+
+  const imageUrl = getPictureUrlService(pictureId);
+
+  return (
+    <>
+      <button
+        className="p-2 rounded hover:bg-blue-600/20 text-blue-200"
+        title="Ver comprobante"
+        onClick={() => setOpen(true)}
+      >
+        <ImageIcon className="w-5 h-5" />
+      </button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="bg-slate-900 border-slate-700 max-w-3xl">
+          <DialogHeader>
+            <DialogTitle className="text-white">Comprobante de Pago</DialogTitle>
+          </DialogHeader>
+          <div className="flex justify-center items-center bg-slate-800 rounded-lg p-4">
+            <img
+              src={imageUrl}
+              alt="Comprobante de pago"
+              className="max-w-full max-h-[70vh] object-contain rounded"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="%23666">Imagen no disponible</text></svg>';
+              }}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
@@ -116,6 +163,12 @@ export const makeVouchersColumns = (
         </div>
       );
     },
+  },
+  {
+    accessorKey: "pictureId",
+    header: "Comprobante",
+    cell: ({ row }) => <ImagePreviewCell pictureId={row.getValue("pictureId")} />,
+    enableSorting: false,
   },
   {
     id: "verTickets",

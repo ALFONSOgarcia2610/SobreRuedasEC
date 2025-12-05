@@ -10,13 +10,18 @@ import {
     ArrowRight,
     Crown
 } from "lucide-react";
-import { useGetCurrentLottery } from "@/Services/admin/product.query";
+import { useGetCurrentLottery, useGetProgresoSorteo } from "@/Services/admin/product.query";
 
 export function PreciosBoletos() {
     const { data: currentLottery } = useGetCurrentLottery();
+    const lotteryId = currentLottery?.lotteryId ?? "";
+    const { data: porcentaje } = useGetProgresoSorteo(lotteryId);
 
     // Precio base por boleto desde el sorteo activo (voucherPrice)
     const precioBase = currentLottery?.voucherPrice || 1.00;
+    
+    // Verificar si el sorteo está completado (100%)
+    const sorteoCompletado = typeof porcentaje === "number" && porcentaje >= 100;
 
     const paquetes = [
         {
@@ -120,21 +125,33 @@ export function PreciosBoletos() {
                         </div>
                         {/* Botón de acción - Más compacto en móvil */}
                         <div className="flex justify-center">
-                            <Link to="/register">
-                                <ShinyButton
-                                    className={`px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 text-[10px] sm:text-xs md:text-sm font-bold group-hover:scale-105 transition-transform duration-300 w-full ${paquete.popular
-                                        ? 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg'
-                                        : 'bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white'
-                                        }`}
+                            {sorteoCompletado ? (
+                                <button
+                                    disabled
+                                    className="px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 text-[10px] sm:text-xs md:text-sm font-bold w-full bg-gray-600 cursor-not-allowed opacity-50 rounded-lg"
                                 >
                                     <div className="flex items-center justify-center space-x-1">
-                                        <span className="sm:hidden">Ir</span>
-                                        <span className="hidden sm:inline">Participar</span>
-                                        <ArrowRight size={10} className="sm:hidden" />
-                                        <ArrowRight size={12} className="hidden sm:block md:w-3.5 md:h-3.5" />
+                                        <span className="sm:hidden">Agotado</span>
+                                        <span className="hidden sm:inline">Sorteo Completado</span>
                                     </div>
-                                </ShinyButton>
-                            </Link>
+                                </button>
+                            ) : (
+                                <Link to="/register">
+                                    <ShinyButton
+                                        className={`px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 text-[10px] sm:text-xs md:text-sm font-bold group-hover:scale-105 transition-transform duration-300 w-full ${paquete.popular
+                                            ? 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg'
+                                            : 'bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white'
+                                            }`}
+                                    >
+                                        <div className="flex items-center justify-center space-x-1">
+                                            <span className="sm:hidden">Ir</span>
+                                            <span className="hidden sm:inline">Participar</span>
+                                            <ArrowRight size={10} className="sm:hidden" />
+                                            <ArrowRight size={12} className="hidden sm:block md:w-3.5 md:h-3.5" />
+                                        </div>
+                                    </ShinyButton>
+                                </Link>
+                            )}
                         </div>
                     </Card>
                 ))}
