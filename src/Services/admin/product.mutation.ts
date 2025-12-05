@@ -59,8 +59,13 @@ export const useCreateProduct = () => {
   return useMutation({
     mutationFn: (data: CreateProductDto) => productService.createProduct(data),
     onSuccess: () => {
-      // Invalidar las queries de productos para refrescar la lista
+      // Invalidar todas las queries relacionadas con productos
       queryClient.invalidateQueries({ queryKey: ["get-all-products"] });
+      queryClient.invalidateQueries({ queryKey: ["lottery-products"] });
+      queryClient.invalidateQueries({ queryKey: ["current-lottery"] });
+      queryClient.invalidateQueries({ queryKey: ["progreso-sorteo"] });
+      queryClient.invalidateQueries({ queryKey: ["sorteo-progreso"] });
+      queryClient.invalidateQueries({ queryKey: ["sorteo-progreso-faltante"] });
       toast.success("Producto creado exitosamente");
     },
     onError: (error: AxiosError) => {
@@ -164,10 +169,13 @@ export const useApproveVoucher = () => {
   return useMutation({
     mutationFn: (id: string) => approveVoucherService(id),
     onSuccess: () => {
-      // Invalidar queries relacionadas con vouchers
+      // Invalidar queries relacionadas con vouchers y progreso
       queryClient.invalidateQueries({
         queryKey: ["voucher-entity-finance"],
       });
+      queryClient.invalidateQueries({ queryKey: ["progreso-sorteo"] });
+      queryClient.invalidateQueries({ queryKey: ["sorteo-progreso"] });
+      queryClient.invalidateQueries({ queryKey: ["sorteo-progreso-faltante"] });
       toast.success("Voucher aprobado exitosamente");
     },
     onError: (error: any) => {
@@ -188,10 +196,13 @@ export const useRejectVoucher = () => {
   return useMutation({
     mutationFn: (id: string) => rejectVoucherService(id),
     onSuccess: () => {
-      // Invalidar queries relacionadas con vouchers
+      // Invalidar queries relacionadas con vouchers y progreso
       queryClient.invalidateQueries({
         queryKey: ["voucher-entity-finance"],
       });
+      queryClient.invalidateQueries({ queryKey: ["progreso-sorteo"] });
+      queryClient.invalidateQueries({ queryKey: ["sorteo-progreso"] });
+      queryClient.invalidateQueries({ queryKey: ["sorteo-progreso-faltante"] });
       toast.success("Voucher rechazado exitosamente");
     },
     onError: (error: any) => {
@@ -273,8 +284,10 @@ export const useGenerateTickets = () => {
     mutationFn: ({ lotteryId, quantity }: { lotteryId: string; quantity: number }) =>
       generateTicketsService(lotteryId, quantity),
     onSuccess: (_, variables) => {
-      // Invalidar queries relacionadas con productos y tickets
+      // Invalidar todas las queries relacionadas con productos y tickets
+      queryClient.invalidateQueries({ queryKey: ["get-all-products"] });
       queryClient.invalidateQueries({ queryKey: ["lottery-products"] });
+      queryClient.invalidateQueries({ queryKey: ["progreso-sorteo"] });
       queryClient.invalidateQueries({ queryKey: ["sorteo-progreso"] });
       queryClient.invalidateQueries({ queryKey: ["sorteo-progreso-faltante"] });
       toast.success("Tickets generados exitosamente", {

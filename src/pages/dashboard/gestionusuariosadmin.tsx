@@ -30,7 +30,7 @@ export default function GestionImaganes() {
         {/* Texto Principal con Animación */}
         <div className="flex justify-center mt-12">
           <ShimmeringText
-            className="text-4xl md:text-5xl font-bold text-white"
+            className="text-2xl md:text-2xl font-bold text-white"
             text="Entregando Sueños"
           />
         </div>

@@ -44,10 +44,10 @@ export function ReglamentoSorteo({ trigger }: ReglamentoSorteoProps) {
                             <h3 className="text-xl font-semibold text-white mb-3">1. Organizador del Sorteo</h3>
                             <div className="space-y-2 text-sm">
                                 <p className="leading-relaxed">
-                                    <strong className="text-white">Razón Social:</strong> SobreRuedas Ecuador S.A.
+                                    <strong className="text-white">Nombre Comercial:</strong> Sobre Ruedas / Entregando Sueños
                                 </p>
                                 <p className="leading-relaxed">
-                                    <strong className="text-white">RUC:</strong> 1234567890001
+                                    <strong className="text-white">RUC:</strong> 1316321718001
                                 </p>
                                 <p className="leading-relaxed">
                                     <strong className="text-white">Domicilio:</strong> Portoviejo, Manabí, Ecuador
@@ -63,7 +63,7 @@ export function ReglamentoSorteo({ trigger }: ReglamentoSorteoProps) {
                             <div className="space-y-3 text-sm">
                                 <div className="bg-slate-800 p-4 rounded-lg border border-slate-700">
                                     <p className="leading-relaxed">
-                                        <strong className="text-white">Premio Principal:</strong> Vehículo automóvil según especificaciones
+                                        <strong className="text-white">Premio Principal:</strong> Según especificaciones
                                         publicadas en la plataforma
                                     </p>
                                     <p className="leading-relaxed mt-2">

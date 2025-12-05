@@ -272,7 +272,7 @@ export default function SorteoActivo() {
                           : "bg-purple-100 text-purple-800 border-purple-600"
                       }
                     >
-                      {product.isCash ? "Principal" : "Bendecido"}
+                      {product.isCash ? "Bendecido" : "Principal"}
                     </Badge>
                   </div>
                   {/* Descripción */}
